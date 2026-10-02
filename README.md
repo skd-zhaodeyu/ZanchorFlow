@@ -8,10 +8,35 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
 
 下面两组均来自实际使用，完成 5 页 9:16 的 ZAnchorFlow 技术介绍。点击查看整套 PPTX、PDF 与编辑方式。
 
-| Magic Layers | Image Layer |
-|---|---|
-| [案例与可编辑 PPTX](examples/magic-layer/README.md) | [案例与可编辑 PPTX](examples/image-layer/README.md) |
-| ![Magic Layers 五页总览](examples/magic-layer/overview.png) | ![Image Layer 五页总览](examples/image-layer/overview.png) |
+### Magic Layers
+
+[案例与编辑方式](examples/magic-layer/README.md) · [可编辑 PPTX](examples/magic-layer/presentation.pptx) · [PDF 预览](examples/magic-layer/presentation.pdf)
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="examples/magic-layer/page-01.png"><img src="examples/magic-layer/page-01.png" width="150" alt="Magic Layers 第 1 页"></a><br><sub>PAGE 01</sub></td>
+    <td align="center" width="20%"><a href="examples/magic-layer/page-02.png"><img src="examples/magic-layer/page-02.png" width="150" alt="Magic Layers 第 2 页"></a><br><sub>PAGE 02</sub></td>
+    <td align="center" width="20%"><a href="examples/magic-layer/page-03.png"><img src="examples/magic-layer/page-03.png" width="150" alt="Magic Layers 第 3 页"></a><br><sub>PAGE 03</sub></td>
+    <td align="center" width="20%"><a href="examples/magic-layer/page-04.png"><img src="examples/magic-layer/page-04.png" width="150" alt="Magic Layers 第 4 页"></a><br><sub>PAGE 04</sub></td>
+    <td align="center" width="20%"><a href="examples/magic-layer/page-05.png"><img src="examples/magic-layer/page-05.png" width="150" alt="Magic Layers 第 5 页"></a><br><sub>PAGE 05</sub></td>
+  </tr>
+</table>
+
+### Image Layer
+
+[案例与编辑方式](examples/image-layer/README.md) · [可编辑 PPTX](examples/image-layer/presentation.pptx) · [PDF 预览](examples/image-layer/presentation.pdf)
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="examples/image-layer/page-01.png"><img src="examples/image-layer/page-01.png" width="150" alt="Image Layer 第 1 页"></a><br><sub>PAGE 01</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer/page-02.png"><img src="examples/image-layer/page-02.png" width="150" alt="Image Layer 第 2 页"></a><br><sub>PAGE 02</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer/page-03.png"><img src="examples/image-layer/page-03.png" width="150" alt="Image Layer 第 3 页"></a><br><sub>PAGE 03</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer/page-04.png"><img src="examples/image-layer/page-04.png" width="150" alt="Image Layer 第 4 页"></a><br><sub>PAGE 04</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer/page-05.png"><img src="examples/image-layer/page-05.png" width="150" alt="Image Layer 第 5 页"></a><br><sub>PAGE 05</sub></td>
+  </tr>
+</table>
+
+点击单页图片可查看大图。
 
 两次使用均恢复了 264 个原生文字框。Magic Layers 按返回对象保留图形结构；Image Layer 提供 26 个独立透明前景图片资产和 5 张背景，便于整体移动、替换和删除。具体编辑单位见案例页。
 
