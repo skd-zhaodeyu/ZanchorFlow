@@ -1,0 +1,152 @@
+schema_version: '1.0'
+skill_name: zanchorflow
+skill_version: 0.9.0-rc19-candidate
+package_status: CANDIDATE_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED
+protocol_baseline: RC17
+runtime_rule: verify hashes and load current-step chapters with mandatory prerequisites
+  from canonical references
+canonical_protocols:
+- path: references/01_PPT内容架构与大纲生成协议_v1.2.md
+  version: v1.2
+  sha256: cb09da079639b35730308dcc35399da0fa022adfb15c5596ab93e48dd014e9f0
+  classification: runtime
+  stage: 1
+- path: references/02_Stage1至Stage2语义接口协议_v1.0.md
+  version: v1.0
+  sha256: db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2
+  classification: runtime
+  stage: 2
+- path: references/03_PPT视觉探索与Anchor延续协议_v2.12.md
+  version: v2.12
+  sha256: 17bd1941fbdda0f9ebb5fd00708410e28716c321597149af107132da29bdbfdd
+  classification: runtime
+  stage: 3
+- path: references/04_页面二维生成前置约束与渲染协议_v2.9.md
+  version: v2.9
+  sha256: e48948890fc9a513a94dcc4826480916716fd8d39ac36dc24589d08e453c1624
+  classification: runtime
+  stage: 4
+- path: references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md
+  version: v1.4
+  sha256: dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb
+  classification: runtime
+  stage: 5
+- path: references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md
+  version: v2.4
+  sha256: eb4eee2e613b016105bbbf2ee9e1297eddabcf026f0b8b6cf01d66c791f9a3fa
+  classification: runtime
+  stage: 6
+- path: references/07_Stage3_文字处理_消字与复原规范_v1.5.md
+  version: v1.5
+  sha256: fc59541466f97c3399f843e6a596675d054eecb8193900f5318cc4a3536edaec
+  classification: runtime
+  stage: 7
+- path: references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md
+  version: v1.1
+  sha256: 386148b2cd0263df9c95172bad20352e21be58d30d5351075f0d8cdac54acc5d
+  classification: runtime
+  stage: 8
+non_runtime:
+- tests/
+- docs/
+non_runtime_exceptions:
+- docs/codex-canva-bridge.md
+progressive_loading:
+  stage1:
+  - 1
+  stage1_to_stage2:
+  - 2
+  stage2_exploration:
+  - 3
+  stage2_rendering:
+  - 4
+  stage3_text:
+  - 7
+  stage2_to_stage3_magic_layer:
+  - 5
+  stage3_magic_layer:
+  - 6
+  stage3_image_layer:
+  - 8
+implementation_dependencies:
+  python: required
+  python_pptx: required_for_codex_single_page_validation_and_native_merge
+  lxml: required_for_codex_single_page_validation_and_native_merge
+  pywin32: required_for_native_merge
+  Pillow: conditional_image_layer_geometry_and_tests
+  pytest: required_for_tests
+  openpyxl: required_for_tests
+  PowerPoint_COM: capability_preflight_required
+  canva_magic_layers: external
+  canva_web_pptx_acquisition: codex_host_browser_and_local_finalizer_or_external_adapter
+  360_reveal_layer: external
+  numpy: conditional_image_layer_geometry_only
+implementation_status:
+  local_pptx_merge: verified_on_local_windows_fixture
+  stage2_qualification_runtime: implemented_and_locally_tested
+  canva_web_pptx_acquisition: HOST_CONTRACT_LOCAL_SELF_CHECKED_LIVE_REVALIDATION_REQUIRED
+  codex_magic_layers_wiring: DEFINED_LIVE_UNVERIFIED
+  codex_provenance_bridge: LOCAL_CONTRACT_CHECKS_PASS_LIVE_REVALIDATION_REQUIRED
+  deck_assembly_entry: OFFLINE_CONTRACT_CHECKS_PASS_LIVE_UNVERIFIED
+  stage3_graphic_typography_guard: implemented_and_locally_tested
+  stage3_text_plan_gate: implemented_and_locally_tested
+  stage2_formal_display_contract: implemented_and_locally_tested
+  stage2_human_visual_approval_gate: implemented_and_locally_tested
+  stage3_formal_display_contract: implemented_and_locally_tested
+  stage1_contextual_decision_contract: implemented_and_pre_stage3_tested
+  anchor_formal_candidate_set: implemented_and_locally_tested
+  opaque_full_slide_default: protocol_enforced_requires_real_imagegen_e2e
+  image_layer_backend: IMPLEMENTED_OFFLINE_LIVE_UNVERIFIED
+  image_layer_revision: OFFLINE_REGRESSION_PASS_389_TESTS_ZERO_NEW_MODEL_CALLS
+  controlled_magic_canvas_mapping: LOCAL_GEOMETRY_AND_SEAL_CONTRACT_VERIFIED_FULL_LIVE_TEXT_RESTORE_UNVERIFIED
+  host_dom_event_candidate: STANDALONE_LIVE_SUCCESS_FORMAL_WIRING_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED
+  approved_image_target_wiring: LOCAL_POSITIVE_AND_LINEAGE_FIXTURES_VERIFIED_NO_NEW_REMOTE_CALLS
+tests:
+  command: python -m pytest tests -q
+  rc13_skill_regression: run previous Skill 0.9.0-rc13 regression, preserving known
+    platform/rc9 execution limitations
+  protocol_rc16_validation: 'RC16: 03 v2.12 / 04 v2.9 add narrow poster/promotional
+    Typography applicability; 07 v1.5 clarifies native-text visual-fit tolerance;
+    06 v2.4 receives pointer-only updates to 07 v1.5; Runtime adds a RESTORE_TEXT-only
+    post-download rebuild guard; Host acquisition adds fail-closed same-record recovery-link
+    provenance; live Codex/Canva validation remains separate.'
+  protocol_rc17_validation: RC17 adds optional Image Layer backend via Reference 08
+    while Reference 05/06 remain Magic-specific; live 360/Image Layer validation remains
+    separate.
+  protocol_rc19_validation: Bundle v3 geometry evidence, limitations inheritance,
+    bounded severe quality retry, plan readiness; zero new model calls.
+  rc19_offline_results:
+    passed: 389
+    failed: 0
+    network_attempts: 0
+    new_model_calls: 0
+    existing_result_pages_replayed: 5
+  canvas_download_revision_offline_results:
+    passed: 440
+    failed: 0
+    network_attempts: 0
+    new_model_calls: 0
+    actual_export_pages_geometry_checked: 3
+    live_recovery_branches: UNVERIFIED
+    full_live_native_text_restore: UNVERIFIED
+  github_publication_results:
+    local_full_passed: 499
+    failed: 0
+    skipped: 0
+    office_integration_passed: 2
+    remote_model_calls_added: 0
+    live_recovery_branches: UNVERIFIED
+    live_glyph_misclassification: UNVERIFIED
+    controlled_model_context_replay: UNVERIFIED
+image_layer_protocol_revision: v1.1
+updated_at_utc: '2026-10-02T14:20:48Z'
+revision_scope:
+- controlled_magic_canvas_mapping
+- host_dom_event_candidate_with_original_fallback
+- noncritical_glyph_local_handling
+- progressive_context_loading
+- david_z_attribution
+- approved_image_target_wiring
+- github_distribution
+source_baseline_note: Existing skill_version and protocol_baseline are retained source
+  compatibility identifiers; updated_at_utc and ZIP SHA-256 distinguish this revision.

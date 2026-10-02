@@ -1,0 +1,29 @@
+name: Validate source and installation package
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: windows-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install verified test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Offline tests without Office
+        run: python -B -m pytest zanchorflow/tests -q -m "not integration" --ignore=zanchorflow/tests/test_native_merge.py --basetemp "${{ runner.temp }}/zanchorflow-pytest" -o cache_dir="${{ runner.temp }}/zanchorflow-cache"
+      - name: Verify shipped package matches source
+        run: python -B tools/build.py --check dist/zanchorflow.zip
+      - name: Package preflight
+        run: python -B zanchorflow/scripts/preflight.py --skill-dir zanchorflow --output-dir "${{ runner.temp }}/zanchorflow-preflight" --scope package
+      - name: Public tree privacy check
+        run: python -B tools/check_public.py

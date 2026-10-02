@@ -1,0 +1,7 @@
+* text=auto
+zanchorflow/** -text
+*.zip -text
+*.pptx -text
+*.pdf -text
+*.png -text
+*.sha256 -text

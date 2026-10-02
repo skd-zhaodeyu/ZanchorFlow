@@ -1,0 +1,4 @@
+-r zanchorflow/requirements-image.txt
+-r zanchorflow/requirements-office.txt
+pytest==9.0.2
+openpyxl==3.1.5
