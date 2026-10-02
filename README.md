@@ -103,3 +103,12 @@ Download the fixed-name installation ZIP, check its SHA-256, and follow the inst
 ## License
 
 [MIT](LICENSE) · David-Z. Third-party services and materials retain their own terms. No third-party fonts or model source code are bundled.
+
+<details>
+<summary>支持作者</summary>
+
+如果 ZAnchorFlow 对你有帮助，欢迎自愿打赏。感谢支持。
+
+<a href="docs/assets/support-wechat.png"><img src="docs/assets/support-wechat.png" width="240" alt="David-Z 微信收款二维码"></a>
+
+</details>
