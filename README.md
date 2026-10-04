@@ -6,7 +6,7 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
 
 ## 看看真实成果
 
-下面两组均来自实际使用：Magic Layers 展示 5 页 9:16 竖向演示，Image Layer 更新为 5 页 16:9 横向演示。点击查看最终 PPTX、PDF 与编辑方式。
+下面三组均来自实际使用：Magic Layers 与 Image Layer 的竖向案例各有 5 页 9:16 演示，Image Layer 的横向案例有 5 页 16:9 演示。点击查看各套最终 PPTX、PDF 与编辑方式。
 
 ### Magic Layers
 
@@ -22,7 +22,25 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
   </tr>
 </table>
 
-### Image Layer
+### Image Layer · 竖向演示
+
+2026-10-02 · 5 页 9:16 · 264 个原生文字框
+
+[案例与编辑方式](examples/image-layer-portrait/README.md) · [可编辑 PPTX](examples/image-layer-portrait/presentation.pptx) · [PDF 预览](examples/image-layer-portrait/presentation.pdf)
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="examples/image-layer-portrait/page-01.png"><img src="examples/image-layer-portrait/page-01.png" width="150" alt="Image Layer 竖向案例第 1 页"></a><br><sub>PAGE 01</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer-portrait/page-02.png"><img src="examples/image-layer-portrait/page-02.png" width="150" alt="Image Layer 竖向案例第 2 页"></a><br><sub>PAGE 02</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer-portrait/page-03.png"><img src="examples/image-layer-portrait/page-03.png" width="150" alt="Image Layer 竖向案例第 3 页"></a><br><sub>PAGE 03</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer-portrait/page-04.png"><img src="examples/image-layer-portrait/page-04.png" width="150" alt="Image Layer 竖向案例第 4 页"></a><br><sub>PAGE 04</sub></td>
+    <td align="center" width="20%"><a href="examples/image-layer-portrait/page-05.png"><img src="examples/image-layer-portrait/page-05.png" width="150" alt="Image Layer 竖向案例第 5 页"></a><br><sub>PAGE 05</sub></td>
+  </tr>
+</table>
+
+### Image Layer · 横向演示
+
+2026-10-03—2026-10-04 · 5 页 16:9 · 133 个原生文字对象
 
 [案例与编辑方式](examples/image-layer/README.md) · [可编辑 PPTX](examples/image-layer/presentation.pptx) · [PDF 预览](examples/image-layer/presentation.pdf)
 
@@ -38,9 +56,9 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
 
 点击单页图片可查看大图。
 
-Magic Layers 案例恢复了 264 个原生文字框，并按返回对象保留图形结构。最新 Image Layer 案例包含 133 个原生文字对象与 29 个图片对象；文字可单独修改，插画按图层资产整体移动、替换或删除。具体编辑单位见案例页。
+Magic Layers 案例恢复了 264 个原生文字框，并按返回对象保留图形结构。Image Layer 竖向案例包含 264 个原生文字框、26 个透明前景图片资产和 5 张背景；横向案例包含 133 个原生文字对象与 29 个图片对象。文字可单独修改，插画按图层资产整体移动、替换或删除。具体编辑单位见各案例页。
 
-Magic Layers 案例制作于 2026-10-01，最新 Image Layer 案例制作于 2026-10-03—2026-10-04。展示与下载均对应各次最终成果；当前 skill 包的程序验证另见开发说明。
+Magic Layers 案例制作于 2026-10-01，Image Layer 竖向案例制作于 2026-10-02，横向案例制作于 2026-10-03—2026-10-04。展示与下载均对应各次最终成果；当前 skill 包的程序验证另见开发说明。
 
 ## 工作流程
 
