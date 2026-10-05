@@ -6,7 +6,7 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
 
 ## 看看真实成果
 
-下面三组均来自实际使用：Magic Layers 与 Image Layer 的竖向案例各有 5 页 9:16 演示，Image Layer 的横向案例有 5 页 16:9 演示。点击查看各套最终 PPTX、PDF 与编辑方式。
+下面汇集三套可编辑 PPTX 案例与一套 10 页页面生成示例，均来自实际使用。可以查看整套成果，也可以单独了解样页探索、风格延续和页面生成。
 
 ### Magic Layers
 
@@ -51,6 +51,31 @@ ZAnchorFlow 是面向 Codex 的 skill。它把内容规划、Anchor 样页探索
     <td align="center" width="20%"><a href="examples/image-layer/page-03.png"><img src="examples/image-layer/page-03.png" width="150" alt="Image Layer 第 3 页"></a><br><sub>PAGE 03</sub></td>
     <td align="center" width="20%"><a href="examples/image-layer/page-04.png"><img src="examples/image-layer/page-04.png" width="150" alt="Image Layer 第 4 页"></a><br><sub>PAGE 04</sub></td>
     <td align="center" width="20%"><a href="examples/image-layer/page-05.png"><img src="examples/image-layer/page-05.png" width="150" alt="Image Layer 第 5 页"></a><br><sub>PAGE 05</sub></td>
+  </tr>
+</table>
+
+### 页面生成 · 紫桃视觉织构
+
+2026-10-04 · 10 页横向 PNG 视觉稿 · 五种封面风格探索
+
+本例展示选定 Anchor 后的风格延续与逐页构图，交付形式为 PNG 视觉页面。
+
+[完整 10 页与五种样页探索](examples/page-generation/README.md)
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-01.png"><img src="examples/page-generation/pages/page-01.png" width="150" alt="页面生成示例第 1 页"></a><br><sub>PAGE 01</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-02.png"><img src="examples/page-generation/pages/page-02.png" width="150" alt="页面生成示例第 2 页"></a><br><sub>PAGE 02</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-03.png"><img src="examples/page-generation/pages/page-03.png" width="150" alt="页面生成示例第 3 页"></a><br><sub>PAGE 03</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-04.png"><img src="examples/page-generation/pages/page-04.png" width="150" alt="页面生成示例第 4 页"></a><br><sub>PAGE 04</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-05.png"><img src="examples/page-generation/pages/page-05.png" width="150" alt="页面生成示例第 5 页"></a><br><sub>PAGE 05</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-06.png"><img src="examples/page-generation/pages/page-06.png" width="150" alt="页面生成示例第 6 页"></a><br><sub>PAGE 06</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-07.png"><img src="examples/page-generation/pages/page-07.png" width="150" alt="页面生成示例第 7 页"></a><br><sub>PAGE 07</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-08.png"><img src="examples/page-generation/pages/page-08.png" width="150" alt="页面生成示例第 8 页"></a><br><sub>PAGE 08</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-09.png"><img src="examples/page-generation/pages/page-09.png" width="150" alt="页面生成示例第 9 页"></a><br><sub>PAGE 09</sub></td>
+    <td align="center" width="20%"><a href="examples/page-generation/pages/page-10.png"><img src="examples/page-generation/pages/page-10.png" width="150" alt="页面生成示例第 10 页"></a><br><sub>PAGE 10</sub></td>
   </tr>
 </table>
 
