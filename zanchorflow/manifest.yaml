@@ -1,14 +1,14 @@
 schema_version: '1.0'
 skill_name: zanchorflow
-skill_version: 0.9.0-rc19-candidate
-package_status: CANDIDATE_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED
+skill_version: '1.0'
+package_status: RELEASE
 protocol_baseline: RC17
 runtime_rule: verify hashes and load current-step chapters with mandatory prerequisites
   from canonical references
 canonical_protocols:
 - path: references/01_PPT内容架构与大纲生成协议_v1.2.md
   version: v1.2
-  sha256: cb09da079639b35730308dcc35399da0fa022adfb15c5596ab93e48dd014e9f0
+  sha256: 95e5d412ffd7e6726c1aec9457e1f496e5e65beb69fd6607f8cd4fecb61edab5
   classification: runtime
   stage: 1
 - path: references/02_Stage1至Stage2语义接口协议_v1.0.md
@@ -18,32 +18,32 @@ canonical_protocols:
   stage: 2
 - path: references/03_PPT视觉探索与Anchor延续协议_v2.12.md
   version: v2.12
-  sha256: 17bd1941fbdda0f9ebb5fd00708410e28716c321597149af107132da29bdbfdd
+  sha256: b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4
   classification: runtime
   stage: 3
 - path: references/04_页面二维生成前置约束与渲染协议_v2.9.md
   version: v2.9
-  sha256: e48948890fc9a513a94dcc4826480916716fd8d39ac36dc24589d08e453c1624
+  sha256: 22c19a522c5989b6227aa1165799344e00657f73ea4351370adfddeb5c2a7b48
   classification: runtime
   stage: 4
 - path: references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md
   version: v1.4
-  sha256: dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb
+  sha256: 50c0404a0b2ea0bea3b045d1043dcfcd91f08659efd808af2b34c15665820e24
   classification: runtime
   stage: 5
 - path: references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md
   version: v2.4
-  sha256: eb4eee2e613b016105bbbf2ee9e1297eddabcf026f0b8b6cf01d66c791f9a3fa
+  sha256: 4a92efb6b362801b57c8fe808e9c215fc3c771f422d06aeca87fe980b8bedb31
   classification: runtime
   stage: 6
 - path: references/07_Stage3_文字处理_消字与复原规范_v1.5.md
   version: v1.5
-  sha256: fc59541466f97c3399f843e6a596675d054eecb8193900f5318cc4a3536edaec
+  sha256: 6fa18ff6e740cea9ac7576bfbac4aeb5931d08b3ed526cd6a740fa638d65d0d1
   classification: runtime
   stage: 7
 - path: references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md
   version: v1.1
-  sha256: 386148b2cd0263df9c95172bad20352e21be58d30d5351075f0d8cdac54acc5d
+  sha256: d434cf28c9657f04ce142f550815a761f4beb4744b0c167fcc806bc2ad4ded88
   classification: runtime
   stage: 8
 non_runtime:
@@ -76,11 +76,12 @@ implementation_dependencies:
   Pillow: conditional_image_layer_geometry_and_tests
   pytest: required_for_tests
   openpyxl: required_for_tests
-  PowerPoint_COM: capability_preflight_required
+  PowerPoint_COM: preferred_capability_preflight_required
   canva_magic_layers: external
   canva_web_pptx_acquisition: codex_host_browser_and_local_finalizer_or_external_adapter
   360_reveal_layer: external
   numpy: conditional_image_layer_geometry_only
+  WPS_COM: conditional_KWPP_Application_capability_preflight_required
 implementation_status:
   local_pptx_merge: verified_on_local_windows_fixture
   stage2_qualification_runtime: implemented_and_locally_tested
@@ -101,6 +102,11 @@ implementation_status:
   controlled_magic_canvas_mapping: LOCAL_GEOMETRY_AND_SEAL_CONTRACT_VERIFIED_FULL_LIVE_TEXT_RESTORE_UNVERIFIED
   host_dom_event_candidate: STANDALONE_LIVE_SUCCESS_FORMAL_WIRING_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED
   approved_image_target_wiring: LOCAL_POSITIVE_AND_LINEAGE_FIXTURES_VERIFIED_NO_NEW_REMOTE_CALLS
+  wps_native_merge_fallback: LOCAL_KWPP_NATIVE_IMPORT_REOPEN_EDIT_AND_FORMAL_ASSEMBLY_FIXTURES_VERIFIED_OTHER_HOSTS_UNVERIFIED
+  file_first_download: OFFLINE_683_PASS_AND_READONLY_PREVIEW_VERIFIED_LIVE_NAMING_AND_FORMAL_BIND_UNVERIFIED
+  design_id_upload_naming: IMPLEMENTED_SEPARATE_HASHED_OBSERVATIONS_LEGACY_ATTEMPTS_IMMUTABLE
+  download_preview: LOCAL_POWERPOINT_READONLY_PNG_EXPORT_AND_SOURCE_HASH_PRESERVATION_VERIFIED
+  canva_optional_title: LIVE_READONLY_API_TITLE_OMISSION_OBSERVED_HOST_CAPTURE_CONTRACT_TESTED
 tests:
   command: python -m pytest tests -q
   rc13_skill_regression: run previous Skill 0.9.0-rc13 regression, preserving known
@@ -139,7 +145,7 @@ tests:
     live_glyph_misclassification: UNVERIFIED
     controlled_model_context_replay: UNVERIFIED
 image_layer_protocol_revision: v1.1
-updated_at_utc: '2026-10-02T14:20:48Z'
+updated_at_utc: '2026-10-07T15:04:43Z'
 revision_scope:
 - controlled_magic_canvas_mapping
 - host_dom_event_candidate_with_original_fallback
@@ -148,5 +154,88 @@ revision_scope:
 - david_z_attribution
 - approved_image_target_wiring
 - github_distribution
+- optional_ordinary_heading_consistency
+- normal_heading_seed_protection
+- dual_package_source_build
+- independent_native_title_postprocessing
+- title_residual_notes_without_auto_repair
+- flat_shadow_evidence_guidance
+- compact_interface_examples
+- wps_native_merge_fallback
+- agent_conditional_python_guidance
+- flat_illustration_primary_mechanism
+- graphic_identity_without_transcript
 source_baseline_note: Existing skill_version and protocol_baseline are retained source
   compatibility identifiers; updated_at_utc and ZIP SHA-256 distinguish this revision.
+title_consistency_validation:
+  full_local_passed: 549
+  failed: 0
+  skipped: 0
+  office_exercising_tests: 4
+  new_remote_calls: 0
+  ordinary_heading_protection: OFFLINE_CONTEXT_AND_SOURCE_BINDING_VERIFIED
+  both_backend_three_page_replay: OFFLINE_PROGRAM_AND_NATIVE_OFFICE_MERGE_VERIFIED
+  live_online_heading_generation: UNVERIFIED
+  live_remote_recovery: UNVERIFIED
+  agent_aesthetic_heading_classification: LIVE_UNVERIFIED
+title_refine_validation:
+  source_updated_at_utc: '2026-10-02T17:27:14Z'
+  full_local_passed: 591
+  failed: 0
+  skipped: 0
+  new_behavior_tests: 42
+  office_exercising_tests: 5
+  new_remote_calls: 0
+  postprocessing_example: EXECUTED_SAVED_REOPENED_AND_NATIVE_OFFICE_CHECKED
+  both_backend_final_seals: FINAL_BYTES_AND_STALE_REVIEW_FIXTURES_VERIFIED
+  independent_oracles: WRONG_NATIVE_SIZE_AND_CANVAS_FAULTS_DETECTED
+  flat_shadow_review: CURRENT_CONTROLLER_POSITIVE_AND_NEGATIVE_VISUAL_REVIEW_NOT_AUTOMATED_CLASSIFIER
+  baseline_identity_assertion: PREEXISTING_SCOPE_MISMATCH_REPRODUCED_AND_EXACT_SCOPE_NORMALIZATION_APPLIED
+  office_diagnostics: COM_0x80010108_DIAGNOSTIC_EMITTED_TESTS_COMPLETED
+  live_online_heading_generation: UNVERIFIED
+  live_remote_recovery: UNVERIFIED
+  live_glyph_misclassification: UNVERIFIED
+  controlled_model_context_replay: UNVERIFIED
+wps_adapt_validation:
+  source_updated_at_utc: '2026-10-03T04:41:34Z'
+  full_local_unique_passed: 623
+  failed: 0
+  skipped: 0
+  without_office_passed: 614
+  office_exercising_tests: 9
+  new_behavior_tests: 32
+  new_remote_calls: 0
+  native_application_selection: OFFLINE_SELECTION_AND_ERROR_FIXTURES_VERIFIED
+  wps_formal_assembly: BOTH_BACKENDS_CURRENT_SEAL_FIXTURES_MERGED_AND_PUBLISHED
+  same_application_visual_comparisons_passed: 6
+  font_alias_observation: LOCALIZED_FAMILY_NAME_VERIFIED_USING_INSTALLED_FONT_NAME_TABLE
+  office_diagnostics: COM_RPC_DIAGNOSTICS_EMITTED_OPERATIONS_AND_TESTS_COMPLETED
+  python_guidance: STATIC_GUIDANCE_AND_CURRENT_STEP_DEPENDENCY_DIAGNOSTICS_VERIFIED_AGENT_MISSING_ENVIRONMENT_BEHAVIOR_UNVERIFIED
+  other_wps_versions_complex_objects: UNVERIFIED
+  full_live_upstream: UNVERIFIED
+  live_remote_recovery: UNVERIFIED
+  live_glyph_misclassification: UNVERIFIED
+visual_text_validation:
+  source_updated_at_utc: '2026-10-03T06:41:22Z'
+  full_local_unique_passed: 653
+  without_office_passed: 644
+  office_unique_passed: 9
+  new_behavior_tests: 30
+  final_unresolved_test_failures: 0
+  first_office_run_failed: 1
+  wps_failed_case_isolated_rerun: PASS_WITH_ORIGINAL_ASSERTIONS_NO_PRODUCT_FIX
+  office_diagnostics: COM_RPC_DIAGNOSTICS_RETAINED_NOT_ALL_HOST_STABILITY_PROVEN
+  independent_context_recognition: TWO_SCENES_BASELINE_AND_CANDIDATE_PLUS_FIVE_BOUNDARY_SCENARIOS
+  actual_imagegen_cleanup_calls: 2
+  actual_imagegen_cleanup_results: TWO_SINGLE_PASS_VISUAL_CHECKS_PASS_NOT_PIXEL_IDENTITY
+  additional_canva_magic_paid_layer_calls: 0
+  full_live_upstream_and_recovery: UNVERIFIED
+  misdeletion_probability: NOT_ESTIMATED
+  new_runtime_stages_or_human_gates: 0
+download_revision: file-first-design-id-v1
+release_coverage:
+  image_layer: existing-real-output-reassessment-and-offline-contract-tests
+  new_remote_model_calls: 0
+  cross_machine_validation: not_verified
+  canva_download: previous-two-design-live-downloads-and-offline-lineage-regression
+  canva_new_magic_full_chain: not_live_verified

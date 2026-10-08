@@ -98,3 +98,27 @@ If the user chooses **Image Layer 分支**, Layer Plan and box review may procee
 At `LAYER_VISUAL_QA_REQUIRED`, evaluate actual editing capability, serious errors and ordinary model limitations. Register the three checks `layer_isolation`, `background_repair`, `recomposite_fidelity` as PASS / MODEL_LIMITATION / FAIL with structured hash-bound evidence via `register-visual-qa`. Both `LAYER_VISUAL_QA_PASS` and `LAYER_VISUAL_QA_ACCEPTED_WITH_LIMITATIONS` allow binding. Ordinary defects are recorded and carried into single-page Four Hard Gates and Deck-Level Validation as `accepted_limitations`; continue without repeated calls, compulsory repair or repeated approval. Never waive Content Truth, identity/lineage, semantic, page/order, geometry or file structure errors. Gates remain PASS / FAIL; new ordinary problems update limitations rather than automatically FAIL. Report actual editable ability and accepted limitations in delivery.
 
 Technical Retry uses existing `authorize-retry`. Severe Quality Retry alone uses `authorize-quality-retry --state <state> --slide-id <id> --evidence <severe-evidence.json> --authorization <paid-authorization.json>` and is considered only for a normally completed task with identity/geometry/assembly ruled out, severe evidence and current paid authorization. Same input, Plan, provider/model and parameters; at most one extra submit, reserved before dispatch, never automatically invoked. Keep both results; use the second if its severe error disappears, otherwise STOP, never a third call. Follow Reference 08 for schemas and evidence; normal MODEL_LIMITATION never triggers retry.
+
+
+<!-- TITLE_POLICY_BEGIN -->
+## Optional ordinary-heading restoration pointer
+
+The Image Layer branch inherits the same optional Title Contract from Reference 03 and native-text metadata from Reference 07. Current finalized_manifest registration and shared seal/provenance lineage checks validate the page's adopted snapshot and primary native element IDs; Graphics-first images and original layer placement remain untouched. A local display exception is not a deck heading seed or permission to remove Graphic Typography. Preserve Native Text Visual Fit, source binding, 5-source-pixel canvas tolerance, four Gates and all existing paid/retry conditions. No new title confirmation or remote reconstruction is required.
+The optional sequence is: all native text restored -> independent primary-title adjustment -> existing four Gates and seal -> final deck title notes. Intentional bound title formatting is reviewed against the common native target, while text truth/readability and non-title graphics retain their original checks. Bind reviews to final postprocessed bytes; do not rewrite frozen inputs or redo remote reconstruction. Final title residuals are disclosed without automatic page repair; PASS never means exact title identity.
+<!-- TITLE_POLICY_END -->
+
+
+### Native assembly application selection
+Use the existing sealed-page assembly and four Gates. Codex Host §4 defines --office-host auto|powerpoint|wps: prefer PowerPoint, use capability-tested KWPP.Application as the small WPS fallback, then keep that selection for the merge. This changes the native application only, not source identities, canvas mapping, text restoration or integrity checks. Existing validated candidates resume without another merge.
+
+## V1.0 执行补充
+
+新任务默认按独立编辑价值优先框选形状、卡片、图标、特殊箭头和共同编辑组合；未指定编辑目标时自行判断，不增加逐页询问。依照 docs/image-layer-box-selection.md，保留原 Plan 冻结、源像素坐标、几何与文字恢复合同。照片等完整资产不机械拆分，不增加必经原生形状重建，也不默认使用 302。
+
+新 Plan 的 editing_review_required 要求 docs/image-layer-backend.md 中的逐目标隐藏/移动证据。仍为既有三个 QA 检查及四 Hard Gates；普通瑕疵且能力保持才可 MODEL_LIMITATION，编辑目标失效不能洗成通过。QA 失败是质量结果，不是提交失败，正常保存并汇总；不合格页不进入合格封存，其他能推进的页继续。
+
+严格禁止自动再次 submit，技术失败也不例外。只有使用者主动提出当前修订才允许相应授权入口；旧费用许可/余额/key/风险标记不足以构成主动指令。页面/run 的调用历史跨 Plan 与后端保留，来源改变不伪装首次调用。既有 task_id 仅查询/下载；不主动催促重试。本文之前的技术/质量重试说明都须同时满足这一主动指令规则。具体字段、消费及旧报告兼容见当前 Host 指导。
+
+### 轻量维护补充
+
+沿当前 Host 指导精简重复结果镜像和本地检查，不移除来源/文件校验或逐目标覆盖。正常/恢复/重新导出的动作映射一致，稳定未知文件如实报告。DONE 本地结果缺失仅恢复原 task_id，独立目录验证后更新引用，不降级原状态或再次 submit。总览不是通过证据，原始目标图及四 Hard Gates 保留。

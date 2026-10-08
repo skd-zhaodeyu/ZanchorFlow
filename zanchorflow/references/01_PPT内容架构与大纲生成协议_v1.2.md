@@ -227,4 +227,17 @@ Do not design the visuals.
 
 ## Runtime dispatch: Outline review and reply
 
+### Minimal six-field input and Windows encoding
+
+The package manifest is manifest.yaml. Before these Python commands in a Windows session:
+~~~powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+~~~
+A minimal valid JSON shape (expand content for the real task; do not add slide_id):
+~~~json
+{"slides":[{"page_task":"说明工作流程","title":"从内容到交付","core_expression":"先明确内容，再生产页面","key_information":["确认内容与语义关系","确定视觉方向","逐页生产与验收"],"semantic_relation":"顺序流程","acceptance_criteria":["三个步骤完整且关系正确"]}]}
+~~~
+Runtime manages page identity separately. Keep the actual author review and approval below.
+
 After Stage 1 creates the ordered six-field Outline, register it with `python scripts/runtime.py stage1-draft --state <trusted-state.json> --outline <outline.json>`, then run `stage1-review --state ...`. Send the returned **complete** `review_view` to the user and STOP at `AWAITING_STAGE1_APPROVAL`. It shows every page's task, title, core expression, key information, semantic relation, and acceptance criteria. Do not load reference 02, compile the semantic interface, explore visuals, or call image generation before approval. On resume, reuse and show the current review draft. Process only the user's reply to that displayed review with `stage1-reply --state ... --message <actual-user-reply> --decision <approve|revise|rework|unclear>`; for precise edits, pass a JSON patch file with `--edits-json`. The `decision` is the Agent's contextual interpretation of the user's actual reply, not a transcription of keywords: `approve` accepts the current displayed version (or requested edits and then continues), `revise` applies requested edits but keeps review pending, `rework` returns to Stage 1, and `unclear` keeps the gate pending. Approval still requires the current displayed fingerprint, so the same words outside that live review cannot approve a stale or undisplayed Outline. An initially supplied, explicitly final direct-use outline may use `stage1-preapproved --state ... --outline ... --message <actual-user-instruction>` after faithful six-field validation; call that structured action only when the user's contextual intent is unambiguously direct-use/final.

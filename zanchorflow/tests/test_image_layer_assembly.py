@@ -24,7 +24,7 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def prepare_image_page(state, tmp_path, sid):
+def prepare_image_page(state, tmp_path, sid, manifest_payload=None):
     saved=runtime.load_runtime_state(state); clean=Path(saved['slides'][sid]['text_clean'])
     plan = tmp_path / f'{sid}-plan.json'
     plan.write_text(json.dumps({
@@ -37,6 +37,9 @@ def prepare_image_page(state, tmp_path, sid):
     Image.new('RGB', (1600,900), 'white').save(overlay)
     lb.register_plan(state, sid, plan, overlay); lb.approve_plan(state, sid)
     saved = runtime.load_runtime_state(state); plan_rec = saved['layer_bridge']['plans'][sid]
+    # Inherited assembly test emulates a persisted pre-V1 Plan/report.
+    plan_rec.pop('editing_review_required',None);plan_rec.pop('selection_policy',None)
+    runtime._save_runtime_state(state,saved)
 
     result_dir = tmp_path / f'{sid}-result'; raw = result_dir / 'raw'; raw.mkdir(parents=True)
     bg = Image.new('RGBA',(800,450),(255,255,255,255)); bg.save(raw/'bg.png')
@@ -65,7 +68,7 @@ def prepare_image_page(state, tmp_path, sid):
 
     for kind, obj in (
         ('canvas', {'width':1600,'height':900}),
-        ('finalized_manifest', {'schema_version':1,'entries':[]}),
+        ('finalized_manifest', manifest_payload if manifest_payload is not None else {'schema_version':1,'entries':[]}),
         ('font_fallback', {}),
     ):
         p=tmp_path/f'{sid}-{kind}.json'; p.write_text(json.dumps(obj),encoding='utf-8')
@@ -138,8 +141,8 @@ def test_image_assembly_stores_merged_provenance_under_layer_bridge(tmp_path,mon
     import assemble_deck as assembly
     state,pages=image_deck(tmp_path)
     for sid in ('S001','S002'): lb.seal_page(state,sid,pages[sid][1],pages[sid][2])
-    monkeypatch.setattr(assembly.preflight,'check',lambda *_a,**_k:{'blockers':[]})
-    def fake_merge(inputs,order,target,state_path):
+    monkeypatch.setattr(assembly.preflight,'check',lambda *_a,**_k:{'blockers':[], 'office_host':'powerpoint'})
+    def fake_merge(inputs,order,target,state_path, *, office_host='auto'):
         target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes('|'.join(order).encode())
         runtime.seal_merged_deck(state_path,order,inputs,target)
         return {'status':'PASS','path':str(target),'deck_order':order}
@@ -161,10 +164,10 @@ def test_image_status_restores_and_seals_each_page_before_advancing(tmp_path):
         runtime.register_stage2_artifact(state,f'text_clean:{sid}',clean)
     router.choose_backend(state,'image_layer')
     s1=prepare_image_page(state,tmp_path,'S001')
-    assert lb.status(state)=={'status':'RESTORE_TEXT','slide_id':'S001'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'RESTORE_TEXT','slide_id':'S001'}
     lb.seal_page(state,'S001',s1[1],s1[2])
-    assert lb.status(state)=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S002'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S002'}
     s2=prepare_image_page(state,tmp_path,'S002')
-    assert lb.status(state)=={'status':'RESTORE_TEXT','slide_id':'S002'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'RESTORE_TEXT','slide_id':'S002'}
     lb.seal_page(state,'S002',s2[1],s2[2])
-    assert lb.status(state)=={'status':'PREPARE_DECK','deck_order':['S001','S002']}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'PREPARE_DECK','deck_order':['S001','S002']}

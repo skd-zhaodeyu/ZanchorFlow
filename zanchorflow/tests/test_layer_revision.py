@@ -141,6 +141,7 @@ def completed(tmp_path,monkeypatch):
         'excluded_errors':{k:'PASS' for k in policy.EXCLUSIONS},'evidence':[{'file':str(ep),'sha256':lb_sha(ep)}]}
     auth={'authorized':True,'remaining_image_calls':1,'authorization_evidence':'Explicit offline fixture authorization',
         'text_clean_sha256':p['text_clean_sha256'],'plan_sha256':p['plan_sha256'],'provider':Provider.PROVIDER_ID,'model':Provider.MODEL}
+    auth.update(source='user',user_requested_relayer=True,user_message_id='synthetic-user-retry',user_message='Synthetic fixture asks to re-layer once',authorization_id='fixture-manual-1',page_id='S001',run_id=p['run_id'],provider_identity=lb._provider_identity(Provider))
     return state,write(tmp_path/'severe.json',proof),write(tmp_path/'authorization.json',auth),r
 
 def test_quality_retry_once_keeps_two_results_and_closes_forever(tmp_path,monkeypatch):
@@ -227,8 +228,8 @@ def test_limitations_survive_text_restore_seal_merge_and_delivery(tmp_path,monke
             'unchanged_extent':True,'claimed_capability_preserved':True}]
         write(review_path,review); lb.seal_page(state,sid,restored,review_path)
         assert router.page_provenance(runtime.load_runtime_state(state),sid)['accepted_limitations']==data['limitations']
-    monkeypatch.setattr(assembly.preflight,'check',lambda *a,**k:{'blockers':[]})
-    def merge(inputs,order,target,state_path):
+    monkeypatch.setattr(assembly.preflight,'check',lambda *a,**k:{'blockers':[], 'office_host':'powerpoint'})
+    def merge(inputs,order,target,state_path, *, office_host='auto'):
         target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes(b'offline-native-merge-contract')
         runtime.seal_merged_deck(state_path,order,inputs,target); return {'status':'PASS'}
     monkeypatch.setattr(assembly,'merge',merge)

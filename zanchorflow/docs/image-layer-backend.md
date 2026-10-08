@@ -70,14 +70,33 @@ register-visual-qa 的两种通过状态为 LAYER_VISUAL_QA_PASS / LAYER_VISUAL_
 
 整套匹配须加 page_id，防止跨页同名 id 混淆。相同、未扩大的普通局限不得重复处罚；新普通问题更新局限记录并重做相关下游检查，严重问题及不可豁免项仍 FAIL。Content Truth、文字真值/事实、来源/页面/task/result/lineage、页缺失/顺序、严重语义/geometry、PPTX 结构永不豁免。交付说明列出实际编辑能力和 accepted limitations。
 
-## 两个独立入口与质量证据
+## 使用者主动修订，禁止自动再次分层
 
-Technical Retry：现有 authorize-retry；仅技术失败，未知提交须现有风险授权。已有 task_id 只查询/续传。
+第一次调用后，无论质量差、残影、未知响应或技术异常，Agent 不自行再次 submit，不主动询问重试，也不借改框、换后端、改参数或新输入伪装首次调用。可以查询同一 task_id、续传、下载、本地检查和组装。
 
-Severe Quality Retry：`authorize-quality-retry --state <state> --slide-id <id> --evidence <severe.json> --authorization <paid.json>`。授权入口自身不调用模型，随后仅一次显式 submit；普通局限不适用。
+调用 ledger 按页面及 run 保留；Plan 改变会归档请求、结果和旧 Plan，不删除已调用事实。已有 task_id/结果的旧任务也视为调用过。费用授权、API key、风险标记和未消费重试额度不是新的修订指令。
 
-severe.json 必须绑定 page_id、text_clean_sha256、plan_sha256、result_sha256、task_id；classification=SEVERE；category 仅 input_content_mismatch / large_subject_loss / major_object_replaced_or_invented / severe_semantic_change / blank_or_unrecognizable；excluded_errors 的 wrong_result / task_identity / geometry / assembly 都为 PASS；evidence 为真实材料路径+SHA列表。拿错结果不能用 input_content_mismatch 冒充严重模型质量错误。
+只有使用者后来主动明确提出重新分层/修订，才登记一条真实指令。authorize-resubmit --authorization <user-request.json> 本身不调用服务。指令字段包括 source=user、user_requested_relayer=true、user_message_id、user_message、authorization_id、authorized=true、remaining_image_calls，以及 page_id/run_id/text_clean_sha256/plan_sha256/provider_identity（含模型参数）。未知或仍在运行的旧调用还须真实的 accept_duplicate_charge_risk=true。不能虚构用户消息；脚本检查结构/作用域，实际消息来源由执行者核对。
 
-paid.json 记录 authorized=true、remaining_image_calls≥1、authorization_evidence（用户真实授权来源）、输入SHA、PlanSHA、provider、model，revoked 不为 true。不可编造授权、不可复用已撤销/耗尽授权。Agent 在调用前按既有用户额度核实本次额外调用仍覆盖；此文件不含 API Key。
+每个页面的一条指令只消费一次；不能换 authorization_id 重放同一 user_message_id。授权在远程提交前事务消费，未知提交不退还。禁止把普通预算许可改写成主动重分层指令。分批修订必须在用户实际请求范围内，每页绑定自己的当前来源。
 
-在现有 ledger 记录 retry_reason 和 quality_retry_count；同一输入/Plan/provider/model 至多一次质量重拆，全部模型参数保持相同；事务预留在远程提交之前消费。未知提交不释放质量额度、不盲目补提，质量重拆的技术失败不能通过旧入口再付费 submit。两次结果分目录保留；第二次只判断严重错误是否消失：PASS 或 MODEL_LIMITATION 则用第二次继续，仍严重则 STOP，不第三次，不按美观分选优。
+Technical Retry 保留 authorize-retry --authorization <user-request.json>，未知状态同时需要现有 --accept-duplicate-charge-risk。Severe Quality Retry 保留原严重证据与费用字段，但授权文件也必须包含上述主动指令字段。普通质量差不会自动使用任何入口。用户主动修订可用通用入口；保持费用范围明确，不推断无限调用授权。
+
+## V1.0 逐目标编辑证据
+
+新登记的 Plan 带 editing_review_required=true，旧已冻结 Plan 保留旧验收。运行 layer_edit_review.py --bundle <current-bundle> --output <work/editing-preview>，产生每层隐藏与移动的本地对照以及 NOT_ASSESSED 收据；不调用模型或逐页启动 PowerPoint。
+
+新 QA 在已有三项检查内增加 target_edit_checks，每个目标一项：
+target_id、requested_action（move/resize/hide/replace，与冻结 Plan 的 primary_edit_action 一致；旧的描述性 edit_action 保留说明用途，未明确主动作时缺省 move）、assessment（PASS/MODEL_LIMITATION/FAIL）、capability_preserved、actual_independence、background_residual、neighbor_impact、connector_behavior、explanation、hidden_evidence=[{file,sha256}]；move 还需 move_evidence。关联当前 page_id 和 bundle_manifest_sha256。
+
+轻微瑕疵且约定能力仍成立可 MODEL_LIMITATION。完整对象残留、明显重影或关系破坏使目标失效时必须 FAIL，不能因“七层/可单独选中”写成成功。证据中的平移位置用于诊断，刻意造成的重叠或裁出画布不能误判成模型缺陷。
+
+合法 FAIL 报告正常登记，返回 LAYER_VISUAL_QA_FAILED、remote_result_received=true、quality_issue=true、automatic_resubmit=false，CLI 不把它变成提交错误。不合格页保留检查用结果，不能 bind/seal 为合格页；其他可推进页继续处理。status 保留原主要字段，增加 page_statuses 与 actionable_pages。只汇总实际能力，不催促使用者修订。
+
+原四项 Hard Gates、真实性、来源、task/result 身份、几何和整套顺序检查仍有效。新证据与历史报告按各自策略验证，补本地证据不重新分层。当前默认仍为 360；302 不进入默认或自动备用路线。
+
+## 本地结果恢复与轻量检查
+
+DONE 任务如果本地归一化结果或其图层缺失/损坏，可 query 原 task_id；完整有效结果直接复用。恢复使用独立目录，原 result、QA 和 ledger 保留，来源/Plan/后端/任务匹配且新文件核验完成后再换引用。恢复期间 RUNNING/FAILED/NOT_FOUND 不把原 DONE 降级，也不自动 submit；过期/无法获取要如实报告。已知原资产哈希与恢复内容不一致时保留原记录并返回恢复不符。
+
+预览工具从冻结主动作决定是否生成移动图：隐藏证据覆盖全部目标，仅 move 生成移动模拟。已有 composite 只在实读像素完全一致时复用。缓存先核验 Bundle/Plan/真实资产和已生成证据哈希；仅 manifest 一样不足以复用。overview 为 navigation_only，不能单独替代全分辨率目标检查，疑点要看原图。工具只标 NOT_ASSESSED，原四 Hard Gates 和禁止自动重分层规则不变。

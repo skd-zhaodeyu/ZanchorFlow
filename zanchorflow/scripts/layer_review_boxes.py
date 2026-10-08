@@ -40,6 +40,29 @@ def validate_plan(plan, width, height):
     return targets
 
 
+def rank_edit_candidates(candidates,max_foregrounds=6):
+    """Rank already identified edit units; do not split/group/detect pixels mechanically."""
+    if not isinstance(candidates,list) or not 1<=max_foregrounds<=6:raise ValueError('candidate/slot limit')
+    aliases={'shape_icon':'combined_graphic'}
+    preferred={'shape','card','icon','special_arrow','combined_graphic'}
+    ids=set();eligible=[];deferred=[]
+    for candidate in candidates:
+        if not isinstance(candidate,dict) or not isinstance(candidate.get('id'),str) or candidate['id'] in ids:
+            raise ValueError('candidate identity')
+        ids.add(candidate['id'])
+        explicit=candidate.get('user_explicit') is True
+        if not explicit and (candidate.get('protected_background') or candidate.get('independent_edit_value') is False):
+            deferred.append({**candidate,'defer_reason':'protected/decorative, no independent edit purpose'})
+        else:eligible.append(candidate)
+    indexed=list(enumerate(eligible))
+    indexed.sort(key=lambda x:(not bool(x[1].get('user_explicit')),
+        not bool(x[1].get('high_edit_value')),aliases.get(str(x[1].get('kind','')).strip().lower(),str(x[1].get('kind','')).strip().lower()) not in preferred,
+        not bool(x[1].get('clear_boundary')),x[0]))
+    selected=[x for _,x in indexed[:max_foregrounds]]
+    deferred += [{**x,'defer_reason':'foreground slot limit; preserve grouping decision'} for _,x in indexed[max_foregrounds:]]
+    return {'selected':selected,'deferred':deferred,'recommended_total_layers':1+len(eligible),
+            'selected_total_layers':1+len(selected)}
+
 def draw_overlay(image_path, plan_path, output_path):
     image=Image.open(image_path).convert('RGB')
     plan=json.loads(Path(plan_path).read_text(encoding='utf-8'))

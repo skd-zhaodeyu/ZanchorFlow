@@ -2,12 +2,12 @@
 
 ## Decision order
 
-1. List the objects the user explicitly wants to edit independently.
-2. Add only visually distinct objects with a plausible independent edit action. Treat a connected composition that moves together as one unit.
-3. For each candidate record: label, intended edit, source of box, visible extent, boundary clarity, expected separation difficulty, and whether background completion would be credible. Record model risks, but risk alone is not NOT_READY and does not create another approval gate. Defer only a concrete invalid selection or a target outside the approved edit purpose; assess ordinary output defects as MODEL_LIMITATION.
-4. Prioritize explicit edits, then high-value independent edits, then well-separated boundaries. If no edit brief exists, prefer objects meaningful when moved or hidden, with clear boundaries and visual prominence; disclose that this ranking is inferred. Small detail alone is not a reason to split.
-5. With max_foregrounds slots, group candidates that share the same edit action and a usable enclosing region. Record each grouped candidate with into_target_id pointing to its selected group. If a group box sweeps in unrelated objects or an entire scene, defer the less important candidate instead.
-6. State recommended_total_layers = 1 + all worthwhile independent units, selected_total_layers = 1 + submitted targets, and actual_total_layers = count of returned layers. These may differ.
+1. Explicit user editing goals override the default. Otherwise infer editing value without asking each page for an edit brief or strategy.
+2. Prefer shapes, independently edited cards, icons, special arrows and combined graphics. A card plus its icon, border, shadow and internal decoration is normally one unit. Select separate cards when their independent editing value warrants it; do not default to an entire row.
+3. Photos/textures are complete editable assets when independently moved/replaced. Background/decorative detail is not split mechanically. No automatic native shape reconstruction; PNG layers support movement/scale/hide/replace, not editable fills/strokes or automatically reattached arrows.
+4. New Plan targets may set primary_edit_action=move|resize|hide|replace; descriptive edit_action remains explanation, default primary action is move. Identify internal versus external connector ownership. Record editing action, grouping reason, boundary clarity, protected neighbors and credible background repair. The local rank_edit_candidates helper ranks already recognized/grouped units; it does not detect pixels or decide grouping.
+5. Within six foreground slots, combine only genuinely jointly edited objects or defer lower-value units; record recommended, selected and actual layer counts. Never absorb unrelated content in a broad box merely to meet the cap.
+6. Retain source-pixel boxes, finite adaptive margins, overlays and the original approved Plan/readiness process. No new per-page confirmation. Frozen old Plans keep their grouping; changes require the user's requested revision and never erase prior paid submission history.
 
 ## Box construction
 

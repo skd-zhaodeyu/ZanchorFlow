@@ -1,7 +1,7 @@
-"""PowerPoint-native merge of RC3 validated single-page decks.
+"""Office-native merge of validated single-page decks.
 
-PowerPoint performs import; this module rejects broken OOXML dependencies and
-loss of editable objects. It does not fall back to another merge engine.
+Prefer PowerPoint; WPS uses the same import and integrity checks. Application
+selection ends before real import; failures never retry another merge engine.
 """
 import argparse
 import hashlib
@@ -145,10 +145,37 @@ def _design_signature(prs):
              fill_sig(slide.slide_layout.slide_master.background.fill),
              fill_sig(slide.background.fill)) for slide in prs.slides]
 
-def _native_merge(inputs, order, target):
+OFFICE_PROGIDS = {'powerpoint': 'PowerPoint.Application', 'wps': 'KWPP.Application'}
+OFFICE_HOSTS = ('auto', 'powerpoint', 'wps')
+
+
+def _create_office_app(office_host, diagnostics):
+    if office_host not in OFFICE_HOSTS:
+        raise ValueError('unknown office host: ' + str(office_host))
     import win32com.client
-    app = win32com.client.DispatchEx('PowerPoint.Application')
+    hosts = ('powerpoint', 'wps') if office_host == 'auto' else (office_host,)
+    diagnostics.update(office_host=None, office_progid=None, office_attempts=[])
+    for host in hosts:
+        progid = OFFICE_PROGIDS[host]
+        try:
+            app = win32com.client.DispatchEx(progid)
+        except Exception as exc:
+            diagnostics['office_attempts'].append({'host': host, 'progid': progid, 'status': 'FAIL', 'detail': str(exc)})
+            if host == hosts[-1]:
+                raise RuntimeError('native application unavailable: ' + '; '.join(x['detail'] for x in diagnostics['office_attempts'])) from exc
+        else:
+            diagnostics['office_attempts'].append({'host': host, 'progid': progid, 'status': 'CREATED'})
+            diagnostics.update(office_host=host, office_progid=progid)
+            return app
+
+
+def _native_merge(inputs, order, target, *, office_host='auto', diagnostics=None):
+    import win32com.client
+    diagnostics = {} if diagnostics is None else diagnostics
+    app = _create_office_app(office_host, diagnostics)
+    selected = diagnostics['office_host']
     prs = None
+    failure = None
     try:
         app.Visible = True
         prs = app.Presentations.Add(-1)
@@ -164,22 +191,44 @@ def _native_merge(inputs, order, target):
             design = prs.Designs.Load(str(Path(by_id[slide_id]['path']).resolve()))
             prs.Slides(prs.Slides.Count).Design = design
         prs.SaveAs(str(target), 24)
-        prs.Close()
+        prs.Close(); prs = None
+        if selected == 'wps':
+            app = None
+            app = win32com.client.DispatchEx(OFFICE_PROGIDS[selected])
         prs = app.Presentations.Open(str(target), 0, 0, 0)
         actual = prs.Slides.Count
         prs.Save()
         prs.Close()
         prs = None
         if actual != len(order):
-            raise RuntimeError(f'PowerPoint reopened {actual} slides; expected {len(order)}')
+            raise RuntimeError(f'{selected} reopened {actual} slides; expected {len(order)}')
+    except BaseException as exc:
+        failure = exc
+        raise
     finally:
+        cleanup = []
         if prs is not None:
-            prs.Close()
-        app.Quit()
+            try:
+                prs.Close()
+            except Exception as exc:
+                cleanup.append('document close: ' + str(exc))
+        if selected == 'powerpoint' and app is not None:
+            try:
+                app.Quit()
+            except Exception as exc:
+                cleanup.append('application quit: ' + str(exc))
+        app = None
+        if cleanup:
+            diagnostics['cleanup_errors'] = cleanup
+            if failure is None:
+                raise RuntimeError('native cleanup failed: ' + '; '.join(cleanup))
+    return diagnostics
 
 
-def merge(inputs, deck_order, output, runtime_state_path=None):
+def merge(inputs, deck_order, output, runtime_state_path=None, *, office_host='auto'):
     """Merge validated single pages; return report. Output appears only on success."""
+    if office_host not in OFFICE_HOSTS:
+        raise ValueError('unknown office host: ' + str(office_host))
     code, reasons = _merge_input_diagnostics(inputs, deck_order, runtime_state_path)
     if code:
         return {'status': 'FAIL', 'code': code, 'details': reasons}
@@ -193,8 +242,9 @@ def merge(inputs, deck_order, output, runtime_state_path=None):
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
         candidate = Path(tmp)/'merged.pptx'
+        native = {}
         try:
-            _native_merge(inputs, deck_order, candidate)
+            _native_merge(inputs, deck_order, candidate, office_host=office_host, diagnostics=native)
             actual_prs = Presentation(candidate)
             errors = inspect_ooxml_dependencies(candidate)
             if len(actual_prs.slides) != len(deck_order):
@@ -208,22 +258,23 @@ def merge(inputs, deck_order, output, runtime_state_path=None):
             for i, (before, after) in enumerate(zip(expected, actual)):
                 errors.extend(f'slide_{i+1}_{reason}' for reason in _shape_signature_errors(before, after, GEOMETRY_TOLERANCE_EMU))
             if errors:
-                return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':errors}
+                return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':errors, **native}
             invalidate_merged_deck(runtime_state_path, deck_order, ordered)
             os.replace(candidate, output)
             seal_merged_deck(runtime_state_path, deck_order, ordered, output)
-            return {'status':'PASS', 'path':str(output), 'deck_order':deck_order, 'slides':len(deck_order), 'ooxml_relationships':'PASS', 'native_reopen':'PASS'}
+            return {'status':'PASS', 'path':str(output), 'deck_order':deck_order, 'slides':len(deck_order), 'ooxml_relationships':'PASS', 'native_reopen':'PASS', **native}
         except Exception as exc:
-            return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':[str(exc)]}
+            return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':[str(exc)], **native}
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('job_json')
     parser.add_argument('--runtime-state', required=True)
+    parser.add_argument('--office-host', choices=OFFICE_HOSTS, default='auto')
     args = parser.parse_args()
     job = json.loads(Path(args.job_json).read_text(encoding='utf-8'))
-    result = merge(job['inputs'], job['deck_order'], job['output'], args.runtime_state)
+    result = merge(job['inputs'], job['deck_order'], job['output'], args.runtime_state, office_host=args.office_host)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     raise SystemExit(0 if result['status'] == 'PASS' else 1)
 

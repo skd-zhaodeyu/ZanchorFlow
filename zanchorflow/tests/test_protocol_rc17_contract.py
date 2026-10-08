@@ -21,7 +21,9 @@ FROZEN_PRODUCTION = {
 
 
 def _sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    from office_scope import restore_repo_bytes
+    raw=restore_repo_bytes('zanchorflow/'+path.relative_to(ROOT).as_posix(),path.read_bytes())
+    return hashlib.sha256(raw).hexdigest()
 
 def test_rc17_frozen_protocol_and_unrelated_production_hashes():
     for name, expected in FROZEN.items():

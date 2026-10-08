@@ -1,7 +1,12 @@
-* text=auto
+* -text
 zanchorflow/** -text
 *.zip -text
 *.pptx -text
 *.pdf -text
 *.png -text
 *.sha256 -text
+# Preserve the six-file installer wrapper inputs across checkout.
+LICENSE -text
+tools/install.py -text
+docs/unified-install.md -text
+docs/slim-readme.md -text

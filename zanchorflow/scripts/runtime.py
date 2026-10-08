@@ -5,6 +5,7 @@ import os
 import tempfile
 import uuid
 from pathlib import Path
+import title_policy as titles
 
 
 GATE_NAMES = ('content_truth', 'semantic_fidelity', 'functional_editability', 'visual_fidelity')
@@ -112,7 +113,14 @@ def validate_stage3_text_plan(finalized_manifest, removal_inventory, final_truth
         if treatment not in allowed_treatments or role not in allowed_roles:
             raise ValueError('STAGE3_TEXT_PLAN_INVALID: treatment/representation_role invalid')
         content = element.get('content')
-        if not isinstance(content, str) or not content:
+        evidence = element.get('approved_graphic_evidence')
+        graphic_identity = (role == 'approved_graphic_asset' and isinstance(evidence, dict)
+                            and evidence.get('verification_kind') == 'graphic_identity')
+        # Graphic identity has no transcript duty; exact-copy roles keep the original checks.
+        if graphic_identity:
+            if 'content' in element and not isinstance(content, str):
+                raise ValueError('STAGE3_TEXT_PLAN_INVALID: graphic content must be string')
+        elif not isinstance(content, str) or not content:
             raise ValueError('STAGE3_TEXT_PLAN_INVALID: manifest content required')
         truth_source = element.get('truth_source')
         truth_ref = element.get('truth_ref')
@@ -136,7 +144,8 @@ def validate_stage3_text_plan(finalized_manifest, removal_inventory, final_truth
             if treatment != 'preserve_as_graphic' or truth_source != 'approved_graphic_asset':
                 raise ValueError('PRESERVED_GRAPHIC_CONTENT_INVALID')
             evidence = element.get('approved_graphic_evidence')
-            if (not isinstance(evidence, dict) or evidence.get('content_verified') is not True
+            if (not isinstance(evidence, dict)
+                    or (not graphic_identity and evidence.get('content_verified') is not True)
                     or not isinstance(evidence.get('approval_ref'), str) or not evidence['approval_ref'].strip()):
                 raise ValueError('PRESERVED_GRAPHIC_CONTENT_INVALID')
         by_id[element_id] = element
@@ -406,7 +415,7 @@ def _current_stage2_run(state, fingerprint=None):
     return run
 
 
-def start_stage2_run(runtime_state_path, restart=False):
+def start_stage2_run(runtime_state_path, restart=False, title_choice_required=False):
     """Start or resume the current Stage 2 run without silently clearing PASS state."""
     path = Path(runtime_state_path).resolve()
     fingerprint = require_stage2_entry(path)
@@ -440,6 +449,8 @@ def start_stage2_run(runtime_state_path, restart=False):
         'visual_approval_history': [],
         'text_reconciliation': {},
     }
+    if title_choice_required:
+        record['title_policy'] = titles.initial_policy(record)
     state['stage2_run'] = record
     _save_runtime_state(path, state)
     return record
@@ -482,6 +493,9 @@ def register_stage2_artifact(runtime_state_path, kind, artifact_path):
     artifact_path = Path(artifact_path).resolve()
     if not artifact_path.is_file():
         raise ValueError(f'STAGE2_ARTIFACT_MISSING: {artifact_path}')
+
+    if base_kind == 'finalized_manifest' and slide_id is not None:
+        titles.validate_manifest(state, slide_id, json.loads(artifact_path.read_text(encoding='utf-8')))
 
     if base_kind == 'final_content_truth':
         if slide_id is None:
@@ -537,7 +551,8 @@ def _latest_candidate_for_page(run, slide_id):
 
 
 def register_stage2_candidate(runtime_state_path, slide_id, artifact_path,
-                              generation_intent, user_requested_variant=False):
+                              generation_intent, user_requested_variant=False,
+                              title_contract_ref=None, title_override_message=None):
     """Register one generated image as a candidate, never as an Approved Render."""
     path = Path(runtime_state_path).resolve()
     fingerprint = require_stage2_entry(path)
@@ -559,6 +574,7 @@ def register_stage2_candidate(runtime_state_path, slide_id, artifact_path,
             and latest.get('generation_intent', '').strip() == intent):
         raise ValueError('STAGE2_UNCHANGED_RERUN: provide a new corrective delta before regenerating')
 
+    title_context = titles.candidate_context(state, slide_id, title_contract_ref, title_override_message)
     candidate_id = uuid.uuid4().hex
     run['candidate_seq'] = int(run.get('candidate_seq', 0)) + 1
     record = {
@@ -574,6 +590,8 @@ def register_stage2_candidate(runtime_state_path, slide_id, artifact_path,
         'run_id': run['run_id'],
         'approved_outline_fingerprint': fingerprint,
     }
+    if title_context is not None:
+        record['title_context'] = title_context
     run.setdefault('candidates', {})[candidate_id] = record
     _save_runtime_state(path, state)
     return record
@@ -640,6 +658,7 @@ def review_stage2_candidate(runtime_state_path, candidate_id, verdict,
         _save_runtime_state(path, state)
         return candidate
     slide_id = candidate['slide_id']
+    titles.check_promotion(state, slide_id, candidate)
     old = run.setdefault('current_approved', {}).get(slide_id)
     if isinstance(old, dict) and old.get('candidate_id') != candidate_id:
         old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))
@@ -658,6 +677,7 @@ def review_stage2_candidate(runtime_state_path, candidate_id, verdict,
         'approved_outline_fingerprint': fingerprint,
     }
     run['current_approved'][slide_id] = approved
+    titles.promote(state, slide_id, candidate, approved)
     pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]
     run['pending_visual_revisions'] = pending
     _invalidate_stage2_visual_approval(run, 'approved_render_changed')
@@ -750,6 +770,7 @@ def select_anchor_candidate(runtime_state_path, slide_id, candidate_id):
     if not isinstance(candidate, dict) or candidate.get('status') != 'qualified':
         raise ValueError('ANCHOR_CANDIDATE_NOT_QUALIFIED')
 
+    titles.check_promotion(state, slide_id, candidate)
     old = run.setdefault('current_approved', {}).get(slide_id)
     if isinstance(old, dict) and old.get('candidate_id') != candidate_id:
         old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))
@@ -768,6 +789,7 @@ def select_anchor_candidate(runtime_state_path, slide_id, candidate_id):
         'approved_outline_fingerprint': fingerprint,
     }
     run['current_approved'][slide_id] = approved
+    titles.promote(state, slide_id, candidate, approved)
     run.setdefault('anchor_candidate_displays', {}).pop(slide_id, None)
     pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]
     run['pending_visual_revisions'] = pending
@@ -842,7 +864,7 @@ def build_stage2_formal_display_set(runtime_state_path):
     fingerprint = require_stage2_entry(runtime_state_path)
     state = load_runtime_state(runtime_state_path)
     run = _current_stage2_run(state, fingerprint)
-    pending = set(run.get('pending_visual_revisions', []))
+    pending = set(run.get('pending_visual_revisions', [])) | set(titles.pending_pages(state))
     renders = []
     missing = []
     for slide_id in run.get('page_order', []):
@@ -971,7 +993,7 @@ def stage2_visual_status(runtime_state_path):
     fingerprint = require_stage2_entry(runtime_state_path)
     state = load_runtime_state(runtime_state_path)
     run = _current_stage2_run(state, fingerprint)
-    pending = set(run.get('pending_visual_revisions', []))
+    pending = set(run.get('pending_visual_revisions', [])) | set(titles.pending_pages(state))
     missing = [slide_id for slide_id in run.get('page_order', [])
                if current_stage2_approved_render(runtime_state_path, slide_id) is None
                or slide_id in pending]
@@ -1044,6 +1066,8 @@ def stage2_handoff_status(runtime_state_path):
 def expected_lineage_from_state(state, slide_id):
     """Recompute expected lineage from current approved upstream artifacts."""
     slide = state['slides'][slide_id]
+    if state.get('stage2_run', {}).get('title_policy', {}).get('mode') == 'uniform':
+        titles.validate_manifest(state, slide_id, json.loads(_state_path(state, slide['finalized_manifest']).read_text(encoding='utf-8')))
     def read_json(key):
         return json.loads(_state_path(state, slide[key]).read_text(encoding='utf-8'))
     return {
@@ -1364,9 +1388,10 @@ def main(argv=None):
         'stage2-candidate-register', 'stage2-candidate-review',
         'stage2-anchor-formal-display', 'stage2-anchor-select', 'stage2-approved-list', 'stage2-visual-status', 'stage2-formal-display',
         'stage2-visual-approve', 'stage2-visual-revise', 'stage2-text-reconciled',
-        'stage2-handoff-status', 'stage3-text-clean-display', 'resume'))
+        'stage2-handoff-status', 'stage3-text-clean-display', 'resume',
+        'stage2-title-policy', 'stage2-title-bind', 'stage2-title-context'))
     parser.add_argument('--state', required=True)
-    parser.add_argument('--outline')
+    parser.add_argument('--outline', help='Six-field slides JSON: page_task, title, core_expression, key_information, semantic_relation, acceptance_criteria; page IDs are runtime-managed.')
     parser.add_argument('--message')
     parser.add_argument('--decision', choices=('approve', 'revise', 'rework', 'unclear'))
     parser.add_argument('--edits-json')
@@ -1377,15 +1402,22 @@ def main(argv=None):
     parser.add_argument('--candidate-id')
     parser.add_argument('--verdict')
     parser.add_argument('--failed-hard-gate')
-    parser.add_argument('--evidence')
-    parser.add_argument('--correction')
-    parser.add_argument('--replan-evidence')
-    parser.add_argument('--review-notes-json')
+    parser.add_argument('--evidence', help='Observable hard-failure evidence for REVISE/REJECT; PASS observations use --review-notes-json.')
+    parser.add_argument('--correction', help='Targeted correction for REVISE/REJECT, not a PASS note.')
+    parser.add_argument('--replan-evidence', help='Actual replan evidence for REJECT, not a PASS note.')
+    parser.add_argument('--review-notes-json', help='JSON string or list of strings for PASS observations/residual differences; does not authorize retries.')
     parser.add_argument('--slide-ids-json')
     parser.add_argument('--generation-intent')
     parser.add_argument('--approval-mode', default='qualification_review')
     parser.add_argument('--user-requested-variant', action='store_true')
     parser.add_argument('--restart', action='store_true')
+    parser.add_argument('--title-choice-required', action='store_true')
+    parser.add_argument('--mode', choices=('pending', 'uniform', 'free'))
+    parser.add_argument('--page-roles-json')
+    parser.add_argument('--contract-json', help='Current Title Contract payload; max_lines=2 is a ceiling, not the observed line count.')
+    parser.add_argument('--scope', choices=('prototype', 'page_override', 'global_revision'), default='prototype')
+    parser.add_argument('--title-contract-ref')
+    parser.add_argument('--title-override-message')
     args = parser.parse_args(argv)
     try:
         if args.action == 'stage1-draft':
@@ -1400,13 +1432,14 @@ def main(argv=None):
         elif args.action == 'stage2-entry':
             result = {'status': 'PASS', 'approved_outline_fingerprint': require_stage2_entry(args.state)}
         elif args.action == 'stage2-run-start':
-            result = start_stage2_run(args.state, restart=args.restart)
+            result = start_stage2_run(args.state, restart=args.restart, title_choice_required=args.title_choice_required)
         elif args.action == 'stage2-artifact-register':
             result = register_stage2_artifact(args.state, args.kind, args.artifact)
         elif args.action == 'stage2-candidate-register':
             result = register_stage2_candidate(
                 args.state, args.slide_id, args.artifact, args.generation_intent,
-                user_requested_variant=args.user_requested_variant)
+                user_requested_variant=args.user_requested_variant,
+                title_contract_ref=args.title_contract_ref, title_override_message=args.title_override_message)
         elif args.action == 'stage2-candidate-review':
             notes = json.loads(Path(args.review_notes_json).read_text(encoding='utf-8')) if args.review_notes_json else None
             result = review_stage2_candidate(
@@ -1436,6 +1469,15 @@ def main(argv=None):
             result = request_stage2_visual_revision(args.state, slide_ids)
         elif args.action == 'stage2-text-reconciled':
             result = mark_stage2_text_reconciled(args.state, args.slide_id)
+        elif args.action == 'stage2-title-policy':
+            roles = json.loads(Path(args.page_roles_json).read_text(encoding='utf-8')) if args.page_roles_json else None
+            result = titles.set_policy(args.state, args.mode, roles, args.message or '')
+        elif args.action == 'stage2-title-bind':
+            payload = json.loads(Path(args.contract_json).read_text(encoding='utf-8'))
+            affected = json.loads(Path(args.slide_ids_json).read_text(encoding='utf-8')) if args.slide_ids_json else None
+            result = titles.bind(args.state, args.slide_id, payload, args.scope, args.message or '', affected)
+        elif args.action == 'stage2-title-context':
+            result = titles.context(args.state, args.slide_id)
         elif args.action == 'stage2-handoff-status':
             result = stage2_handoff_status(args.state)
         elif args.action == 'stage3-text-clean-display':

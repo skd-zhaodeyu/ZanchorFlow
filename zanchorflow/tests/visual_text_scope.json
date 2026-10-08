@@ -1,0 +1,428 @@
+{
+  "baseline_updated_at_utc": "2026-10-03T06:41:22Z",
+  "baseline_slim_sha256": "a5a868bb1121ce8e1659db20e5cb981ae64817fec20be7c58b260bdfcaecc7e2",
+  "baseline_full_sha256": "df906a1f7151f785446fc4da82e5dbd5ecbee0ed67ccb5aac632d8e17060aa94",
+  "baseline": {
+    ".gitattributes": "0402ec41d4c371be67db21ae4b8b6d486007e676caae0947746d280784de5158",
+    ".gitignore": "48a6cba1c61947416a9f1c701338d9674ad00498e30989254e1dc196fea35a82",
+    "LICENSE": "af5161bf518cc3630861a895692be5fae6cae92ed409f0da2546b3d10d72009d",
+    "README.md": "e74b0acb06d653cd82b80e9a3de794cfc67051edee9f9f975085d7d2ac71a485",
+    "requirements-dev.txt": "a790f14c61e621e31ee32e96d61f89fc57ecb122944e05dcbe12851200818a6c",
+    "dist/zanchorflow.zip": "a5a868bb1121ce8e1659db20e5cb981ae64817fec20be7c58b260bdfcaecc7e2",
+    "dist/zanchorflow.zip.sha256": "2e18009b58c74dfd42f6202f161600728252b1d91a5f4fd644a21ff6cb5d2d83",
+    "docs/development.md": "f90cde53e398ce1728aea9a5bd53d906dd1a4253554de73d54d0963a15bf8acb",
+    "docs/implementation-notes.md": "fa53130188ea82b278beb93b7dc601fd815a05981bd54752c5be913454baa982",
+    "tools/build.py": "85b7f7ebcb2fde8242ecbe911e292e7da6155f44e649d6c7b5a6ffa566f3355a",
+    "tools/check_public.py": "48733c82585e88bef3446184da6d845ed6673314be7fe6c065484e03cd751efd",
+    "zanchorflow/LICENSE": "4bfc6319be7f06e42c02098b6ed8f5fa60a690a45593d368d009ecebdf9ae38b",
+    "zanchorflow/manifest.yaml": "7c0f31ff36fee90f18d954b24f0e3570b48743572d5de56fa5c36e662eb4a655",
+    "zanchorflow/pytest.ini": "4a7949a4f55fc13bd9fbbaa5dc05880db1622278b4c34aebf528fa6826a43221",
+    "zanchorflow/requirements-base.txt": "6186da598b608294da612d6c3fedd0e8bb2578feb24c05118e327f709be315b8",
+    "zanchorflow/requirements-image.txt": "0002c329f2807a6e8d97f2121a85d7df0abaf8e282563fc6c9e2f49ab415d2b9",
+    "zanchorflow/requirements-office.txt": "d24bf860507e72d9c0d64ccca9c2eba37c914a5bc0f629356382511d7b994147",
+    "zanchorflow/SKILL.md": "870d1da1ac87b7e42f615e4ca5294d4121f2e201710b8978a0afdbab7a70a534",
+    "zanchorflow/docs/codex-canva-bridge.md": "74e207598f77bef9124fae58c85b22b9d8308e487c3844b10791cede6ed47beb",
+    "zanchorflow/docs/image-layer-backend.md": "0ca779f1c37eb3012becc93a7f45aea688b09841371172ab366154b37469e7d0",
+    "zanchorflow/docs/image-layer-box-selection.md": "51b653af8f9e8a5d9ebc091fc303ebb8ce1fcbb26914b7d6a5ccad85927d05e1",
+    "zanchorflow/docs/installation.md": "c4f85a8aab658f0e3f9a98f565fad693d7f8a9d81942d5b93126ac1661a10110",
+    "zanchorflow/references/01_PPT内容架构与大纲生成协议_v1.2.md": "95e5d412ffd7e6726c1aec9457e1f496e5e65beb69fd6607f8cd4fecb61edab5",
+    "zanchorflow/references/02_Stage1至Stage2语义接口协议_v1.0.md": "db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2",
+    "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md": "b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4",
+    "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md": "406e4dcdaf442e4139ae86c4743f0e1f69f48b10a26ffe0c467a0cb27e2da86b",
+    "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md": "dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb",
+    "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md": "34dd87b9f0a7255adb31ce7570292984d706628e65abb6c92ffba6139698e740",
+    "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md": "4df60f8c27bc817ed355bfd6b421108407b2492a4ee8046c248d447dd0c4bc11",
+    "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md": "5be85e005bdc79dd9bdb4a659b4861e7bd8ad1d9dcc044f0692dffb5053338a3",
+    "zanchorflow/scripts/acquisition_request.py": "5696a4c475ea7796c24b0db9c562ef5f54b4e44f679f86755b4d4d79fa5ac949",
+    "zanchorflow/scripts/assemble_deck.py": "0a4fe624175db640a595035489e2ef53849bb68e0dde08f4a6f9e2cb7f997892",
+    "zanchorflow/scripts/canva_bridge.py": "0f45a70d38fe942c605cf56f8de6d2742fbc5e3a132c9d2312a36e75414a364c",
+    "zanchorflow/scripts/canva_pptx_finalize.ps1": "c05cbcfb20a9b7144e5a0310e8e84eae5ec5ab2cccd946d198bc27a8ff808107",
+    "zanchorflow/scripts/host_acquisition.py": "a5374798c7e176f14be7cf132b345c1e9a03cd17e1b2025f37cd88173eb77a6f",
+    "zanchorflow/scripts/layer_bridge.py": "790c456d6364bb89f29fd5401106d72a349a32a2856aa1e745d867f141e1158f",
+    "zanchorflow/scripts/layer_build_pptx.py": "47668f8b423ec8d8f2215d6c0a48f588ffb11166deb6ee2a04e73f225c659132",
+    "zanchorflow/scripts/layer_geometry.py": "bca60be7be50e4d62b7c0dd571f928e29b42a11c8a088b0ef09c38a10501ae3d",
+    "zanchorflow/scripts/layer_geometry_verify.py": "8331242ca29dcbb4bc45d9bcfb25b439cec0c09b9a4b29f09f2d97e4d459c756",
+    "zanchorflow/scripts/layer_package.py": "26c0eb2d7f8116ce6ea39e6e2ee5e6d743b5c2411fb346abdcf1cc95af891b59",
+    "zanchorflow/scripts/layer_policy.py": "9a5f35e44de84147d9424d63d81352e1c11fd0661b66a1dcf4bd3a8366efc904",
+    "zanchorflow/scripts/layer_provider_360.py": "94e2283a6d1465a02381139d7d9cd1de8bcd4f93364e3aa37f9cf05d6beaa658",
+    "zanchorflow/scripts/layer_review_boxes.py": "55fb595e12f8634c944c1e0ed15d19500fafb7cb92fbe53eb1f7815abe3ab060",
+    "zanchorflow/scripts/layer_validate_bundle.py": "f17ac3a44b9ec39609108ba18e4704b107bacf47fcbc34821216f81c702bc9d7",
+    "zanchorflow/scripts/merge_pptx.py": "9e71bdf46ee873e9de85635496fb26574b955ff79366b8a816158385c075f493",
+    "zanchorflow/scripts/package_skill.py": "566aa5ee56dbaea0a69e78efcd9399d5afcf1c23262c7020706ff2bec785c037",
+    "zanchorflow/scripts/preflight.py": "2397ab6b487e9c3ccde55b78c5936f8e6dfb70931729b1aceb4e5a8a0e9f6b66",
+    "zanchorflow/scripts/reconstruction_router.py": "5f18ab507a373cb499909e53f08abb8bc59edb3f1a6feabedd1a309edef7e550",
+    "zanchorflow/scripts/runtime.py": "ac562839e924b94a82a778ce77dd9e17d875b80c900c42b89141a85e7ece9a77",
+    "zanchorflow/scripts/title_policy.py": "e4d216b717f6d5a2c4ca24bcb4b0f36acf75c55d88c74838c4369fedae0ed0d8",
+    "zanchorflow/tests/heading_refine_scope.json": "6d9e4f9ae0ec1c50c05ba448f2612bcf6b959018bb8a7713037a00f648cdd5f8",
+    "zanchorflow/tests/heading_refine_scope.py": "ec0d65e79acee93f41d8e304c80638e11441980a39f28041678c17b5e48c44b6",
+    "zanchorflow/tests/office_scope.json": "2f394f6b0be6dd723d4ff11382ba0edfd4386b5edb5ae8ee8a86641eb2b3c32e",
+    "zanchorflow/tests/office_scope.py": "fc3577c6947bf88315d1442c40576059392a1ba41b81126cca202189c6c0513c",
+    "zanchorflow/tests/publish_scope.json": "38fbd84bd9330fb92d34b4a7061f6037cb7c2d7ac9f73e145de7cb2c9edf310c",
+    "zanchorflow/tests/publish_scope.py": "270dd021d7ffe2e977ba1b39335e2620b7aaec62491fb3697ae88bdf6a245161",
+    "zanchorflow/tests/refinement_scope.py": "10624085d43aba3bb05159ddbc5c989f65dff153d47a43c5f3ed279c9fe39249",
+    "zanchorflow/tests/stage2_test_helpers.py": "f67dd8207ea30ad8adda8d2e087ea28256fa7b5a7f8e94b4dfa7288cb406e159",
+    "zanchorflow/tests/test_acquisition_request.py": "ead42a82a4e66035762b308cc3af4f838b19fdf00ee294b6f19270d5298d90e9",
+    "zanchorflow/tests/test_agent_contract.py": "690bc08d616c9a3c390113f6af249a7640051b19a870b79dbecc18d5836205b4",
+    "zanchorflow/tests/test_anchor_formal_candidates.py": "c529791855f00c98e75889bf3699cf82c8959663d46516e92b89f7a9f318466a",
+    "zanchorflow/tests/test_canvas_adaptation.py": "1669c2742d99b17c122e18c48efe41f244c9864ed78f754315f3471c45c3e868",
+    "zanchorflow/tests/test_deck_lineage.py": "5ca0085b863f19f599028b9d78cedf342def7b90cae9146bdf70749a171ef462",
+    "zanchorflow/tests/test_download_provenance.py": "2fbc89ff0695810e4baddb391fcb6a4c7413b31f3c558135e9d59d66b2f10c99",
+    "zanchorflow/tests/test_heading_refine.py": "7cbb4386f789e39d1ed35efc4ef8d2f2bfabfb22a72287dd90c4ddb722fe15eb",
+    "zanchorflow/tests/test_host_acquisition.py": "675501f9af508ff4d7c157b73193967f70135a42b5b86a7e18bcbf5d9639e27d",
+    "zanchorflow/tests/test_host_compact.py": "666d41b4f3636e362f0989d6921ba20fbe103002306f02fb07844eab2b38d3dc",
+    "zanchorflow/tests/test_host_strategy.py": "649c65df43060baaa47e2e34804385a93b383d346adc48dc44c80ac5a19863f5",
+    "zanchorflow/tests/test_image_layer_assembly.py": "fed8a0e83fb53e3f0d5f5e3c8f20ef5fb77f9d030eb2d172ac6d82c33cf9c80f",
+    "zanchorflow/tests/test_integrity.py": "9586854aa7895927c5bbbb8d145976be34c9126cd388cd48dd2ec7e02eec9b4e",
+    "zanchorflow/tests/test_layer_bridge.py": "640852931d871b20743ef536fd7c91d8e73333a9df74a28b1d579574f217265e",
+    "zanchorflow/tests/test_layer_bundle.py": "ce8156230926a4b237333e4f2de50b498437ef0598deb57312c22e1dc6f40cfa",
+    "zanchorflow/tests/test_layer_geometry.py": "07c07a1c2705887e8132585b8a081c4c909abc93e45ca495f7c1d1da3ba47d08",
+    "zanchorflow/tests/test_layer_plan.py": "39eb7742ac977b1d9411d6b65228cccac143763a32cf8fc78d5e287f8222e07f",
+    "zanchorflow/tests/test_layer_pptx.py": "8f032cc87b4361732462a0db3f2a377ceedc50773b76acde9c7a0c7ed1d3e0dd",
+    "zanchorflow/tests/test_layer_provider_360.py": "332763c1034712968eb123ca076ba5e01b65385facfe30e2c6c8baa5953e40f3",
+    "zanchorflow/tests/test_layer_revision.py": "ff28770d6a36dcc03c01888ed31102b7477bbf9394bf369d458e33e829d76168",
+    "zanchorflow/tests/test_lineage_contract.py": "10f4e439817b5ed3356d51d5d566747ac8f5eed7ff1d367f8daf352a958458c7",
+    "zanchorflow/tests/test_magic_layer_freeze.py": "35b8e686173f94bffd72b123a4867dbb557422244d9f3e8b96c37454cd29b530",
+    "zanchorflow/tests/test_merge.py": "edc4b05523079d7a8c5bb505567f19e06dbf04248791c043c139dae9b4adf95f",
+    "zanchorflow/tests/test_merge_oracle.py": "efb878857dd6e2e7d346aa5e503b156f437641c0b317660205335bbfa759d3de",
+    "zanchorflow/tests/test_native_merge.py": "25b8110ec437e9db50c61acb6f18f5fa1e6ca7a3f2789b4496ec264fb7b1f6fd",
+    "zanchorflow/tests/test_noncover_display_typography_contract.py": "2b24bf8a97e9124864a103edac039131a47139a16bfd0737789ee49337c98dc1",
+    "zanchorflow/tests/test_office_hosts.py": "b3f725e47b322d2d8c02f9b7955f0fb4435caf53dbc6b9b97bea09f7cfd7323e",
+    "zanchorflow/tests/test_package.py": "aba7e52274093c43bf3bab9fbcc38ef2da18625808ee199d5e8436baf6536861",
+    "zanchorflow/tests/test_post_merge_editability.py": "6492e99fd9fbb7983675fc12ea03d2659134f127b9c0c44263f5de9bc565b584",
+    "zanchorflow/tests/test_preflight_scope.py": "cc287a28e9d665f5017f951502d876aac79e123a8c914b98380aaf10b80533f4",
+    "zanchorflow/tests/test_protocol_rc17_contract.py": "49ca1e38514a8c5215f65a87c765f661fe0e59133e641fdcf43b8fb9220bd2c6",
+    "zanchorflow/tests/test_protocol_rc17_representation_contract.py": "ae65656c7be1e9f78970d0f6446632df5a4f89e122e855c0ea1a18d78ba623eb",
+    "zanchorflow/tests/test_publish_canvas.py": "7b8b503639f7e55b45bacf73798f90e72087e726b75e1543422798e704a8c8ba",
+    "zanchorflow/tests/test_rc17_pre_stage3_contract.py": "e648a620617e38b0d324ad1a1b25560f68d887063b00c09fbca570f0b2084d2b",
+    "zanchorflow/tests/test_rc18_change_contract.py": "d4cb68a61819a33bf3f6add7fe31949d1a0d9211dc23bb8befac12ef9157604d",
+    "zanchorflow/tests/test_reconstruction_backend_router.py": "c268b5e3c8c54d7c4ff5527482fd62a9d274a89c229f47982b0f51f68976808a",
+    "zanchorflow/tests/test_refinement.py": "d11c3b5bf2a26db203f085c19a719bfc6dfec9885ffa8b61b8b31d1e16f78b48",
+    "zanchorflow/tests/test_revision_identity.py": "f3ff92c4e6eda0b29147b436b8805ffdc0491cca387c65541f668f80fa1e9a8e",
+    "zanchorflow/tests/test_runtime.py": "cae97a795c4481d5d1f2027d2426a4b1d482c0a4ecec7d5ce8b9e2a266a1683d",
+    "zanchorflow/tests/test_stage1_review.py": "d9e9e1fb0b00dedf358169173da9158de107de94b637479dae8edaaa53903870",
+    "zanchorflow/tests/test_stage2_qualification.py": "be70e502e052913a46380b19f026af35ce1edf8a9e252e268cde0dba6962511f",
+    "zanchorflow/tests/test_stage2_visual_approval.py": "cd0ce5a03e8c2399388f1c4e03166eb7a4aebfb363044fd76b799befd3a54df1",
+    "zanchorflow/tests/test_stage3_graphic_typography.py": "91f37c90077bfdb46be8f9b961121a3cd0b12f5bf3edd14f5e4aa441498d835b",
+    "zanchorflow/tests/test_title_policy.py": "0d24900d826bc127b53bf032eeb2d1e7144a2d4c5d4561fd984148d44890de32",
+    "zanchorflow/tests/test_title_routes.py": "caab237bb551c2c211ba405f7464d243587ef1638ab96acb326c85a423b06d42",
+    "zanchorflow/tests/test_version_contract.py": "2a5f79c68a98e2730ec9987368abf670a1eb9ac3cd92bfd60d2aeebc0ba0a0c2",
+    "zanchorflow/tests/title_scope.json": "0e582ff347cc521d8f1e8c011427b3b9347064f2da9dc806935e05dfe2b76eec",
+    "zanchorflow/tests/title_scope.py": "3133de3ec2ecdf137b9e2b88f5a7ddd53083b5bf46f2073d42b6230d30921df6",
+    "zanchorflow/tests/evals/rc16_8_stage2_behavior_eval.md": "c44610a4802aa738030d34440208d9d786abc63afbba98b8713b9f6e37d98ab8",
+    "examples/image-layer/overview.png": "d1f7830c6591c466559081ded4a92297d732250e0f0dfd3bbe3be23a80192b09",
+    "examples/image-layer/presentation.pdf": "0ad7166e7f24dd53fc4b5c257a659fcfba20587067890204d4ebb4c83f2b8644",
+    "examples/image-layer/presentation.pptx": "4d4108607374aebecbc7d908ff58b2f3dee3aa3ea02bd445352dddaaefe2749d",
+    "examples/image-layer/README.md": "5bfdc9c93eba807de163b92f04ce7506ecb49038dc4c4ffbe820cd2473015c7e",
+    "examples/image-layer/representative.png": "47862d6ef2922b3f59def12f48d19202197a1b1feae025a839061120ec20eecb",
+    "examples/magic-layer/overview.png": "aabd3c1cb22b3caf7c81c4f78d43e03c1284385ca2ba6b37b064da36cbe37cb4",
+    "examples/magic-layer/presentation.pdf": "d1577e536c542316520482ec9a391d0c80a4a1ec380c51f024c43f115d946636",
+    "examples/magic-layer/presentation.pptx": "0e9d11911f6b36e1ed8ccb36e12556c8fd2d5ec3695aa8fac61caf10cb5c8da3",
+    "examples/magic-layer/README.md": "a3287133b6b0e6ec1be9f53cf122d8e820604e282c94022b3cc19a73cd5dddc7",
+    "examples/magic-layer/representative.png": "6ad2c74259fe8036b75f8d7206e6b18516f9fb8330baadeb689cdf87fa6482e0",
+    ".github/workflows/validate.yml": "af79dd79d9cd952c7226b88481784881390bd95f28aa407512b665a1d552fe22"
+  },
+  "baseline_revision_scope": [
+    "controlled_magic_canvas_mapping",
+    "host_dom_event_candidate_with_original_fallback",
+    "noncritical_glyph_local_handling",
+    "progressive_context_loading",
+    "david_z_attribution",
+    "approved_image_target_wiring",
+    "github_distribution",
+    "optional_ordinary_heading_consistency",
+    "normal_heading_seed_protection",
+    "dual_package_source_build",
+    "independent_native_title_postprocessing",
+    "title_residual_notes_without_auto_repair",
+    "flat_shadow_evidence_guidance",
+    "compact_interface_examples",
+    "wps_native_merge_fallback",
+    "agent_conditional_python_guidance"
+  ],
+  "added_revision_scope": [
+    "flat_illustration_primary_mechanism",
+    "graphic_identity_without_transcript"
+  ],
+  "patches": [
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "`FLAT_2D` 是默认模式。`ZERO_PERSPECTIVE_2D` 只能来自用户明确要求、任务明确规范或既有正式视觉规范；不得由 Anchor 恰好无透视、某一候选采用正视构图、或审核器个人偏好自行推导。",
+      "new": "`FLAT_2D` 是默认模式。`ZERO_PERSPECTIVE_2D` 只能来自用户明确要求、任务明确规范或既有正式视觉规范；不得由 Anchor 恰好无透视、某一候选采用正视构图、或审核器个人偏好自行推导。Agent 自行编写的更严格 Prompt（如 no thickness）是生成引导，不自动成为冻结的审核硬门；资格审核仍依据当前有效任务和渲染模式。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 不承担实体厚度塑造的轻微明暗与层次。",
+      "new": "- 为平面插画塑造轮廓、局部侧面或厚度暗示的色块、明暗与层次，只要实体体积模拟不是主要视觉机制。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "这些线索只能服务于二维插画表达，不能把主要对象或整页转换成 2.5D / Pseudo-3D / volumetric scene。",
+      "new": "这些线索可以服务于二维插画表达，包括前景和局部主体；不以小面积、低对比或背景位置为必要条件。按对象与画面的实际呈现机制区分平面插画和实体体积模拟，不以单个空间形状代替判断。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- Axonometric / 轴测结构；\n- 2.5D；\n- Pseudo-3D / 伪3D；\n- 3D-rendered scene；\n- 主要对象依靠可见顶面 + 侧面 + 厚度来建立实体体积；\n- 通过椭圆、连续侧壁、上下表面模拟圆柱体体积；\n- 挤出、浮雕、斜角（bevel）文字或图标；",
+      "new": "- Axonometric / 轴测结构作为主要空间机制；\n- 2.5D / Pseudo-3D / 3D-rendered scene；\n- 顶面、侧壁、厚度、材质或体积光影共同使主要对象被呈现为三维实体；\n- 以实体体积模拟为主要机制的圆柱、挤出、浮雕或斜角（bevel）字形/图标；"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 简化顶部或侧面的轮廓暗示，只要没有被系统性用于塑造实体厚度。",
+      "new": "- 局部顶部、侧面、连续轮廓或厚度暗示，仍以平面色块、线条和插画构成组织画面。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 依靠连续顶面、侧壁和阴影塑造体积的楼群；",
+      "new": "- 以连续顶面、侧壁、材质和体积光影构成三维实体模拟的楼群；"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 局部顶部/侧面轮廓暗示，但没有连续厚度、真实材质或体积光影。",
+      "new": "- 局部顶部、侧面、厚度暗示及连续轮廓，以二维色块、线条或插画关系呈现；是否连续本身不决定等级。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 主要对象依靠顶面、侧壁和厚度才能成立；",
+      "new": "- 顶面、侧壁、厚度与材质或体积光影等线索使主要对象以三维实体模拟成立；"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "| 圆柱体 | 正视符号、简化平面轮廓；不保留顶面与侧壁 |",
+      "new": "| 以实体体积模拟为主要机制的圆柱 | 用平面色块、轮廓或正视符号保留表达；正常插画中的局部顶部/侧面不因对象名称而删除 |"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "禁止：\n\n- 球体式中心高光；\n- 金属感渐变；\n- 圆柱体明暗；\n- 通过明暗让对象鼓起或凹陷；\n- 用渐变塑造实体体积。",
+      "new": "禁止以以下效果构成实体体积或拟真材质的主要机制：\n\n- 球体式中心高光、金属感渐变、圆柱体明暗；\n- 通过明暗让对象形成三维鼓起或凹陷。\n\n平面插画中的局部明暗或色差继续按 §3/§6 判断，不因渐变本身而否决。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "> Gradient may support hierarchy, but must not create volume.",
+      "new": "> Use gradient for graphic hierarchy and illustration; avoid making physical volume or realistic material the primary mechanism."
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 厚卡片；",
+      "new": "- 以实体厚度为主要机制的卡片；"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "Do not use isometric, axonometric, 2.5D, pseudo-3D,\nsystematic volumetric perspective, extruded thickness, cylindrical volume simulation,\n3D equipment, 3D buildings, spatial assembly scenes,\nor vector illustrations whose primary visual mechanism imitates 3D.\nDo not reject ordinary flat illustration merely because it contains a minor depth cue.",
+      "new": "Render the selected concept through flat color, line, graphic layering and illustration.\nLocal perspective, side faces and thickness cues may support that graphic expression.\nDo not make isometric/axonometric space, 2.5D, pseudo-3D, physical volume,\nrealistic material or volumetric lighting the primary visual mechanism.\nJudge the actual mechanism rather than forbidding an object because of its name or shape.\nIf ZERO_PERSPECTIVE_2D was explicitly frozen upstream, use front-view or planar symbols."
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "[ ] 主要对象不依赖系统性顶面 / 侧壁 / 厚度塑造实体体积",
+      "new": "[ ] 主要对象以平面图形/插画表达，顶面 / 侧壁 / 厚度线索未形成主导的三维实体模拟"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "在默认 `FLAT_2D` 下，局部轻微透视、遮挡、远近或背景建筑的浅空间关系本身不是 H2。若以二维边界作为 H2 证据，`observable_evidence` 必须说明该现象为什么已经**实质跨越**为 Isometric / Axonometric / 2.5D / Pseudo-3D / volumetric scene，而不能只写“存在透视”“看到了侧面”。",
+      "new": "在默认 `FLAT_2D` 下，局部透视、遮挡、远近、侧面或厚度暗示本身不是 H2，也不以背景位置、小面积或低对比为许可前提。若以二维边界作为 H2 证据，沿用已有 `observable_evidence` 说明该现象为什么已经**实质跨越**为主导的三维实体/空间模拟，而不能只写“存在透视”“看到了侧面”“连续厚度”。没有充分失败证据时 PASS，可附 review_notes；不为 PASS 增加证明模板。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- **volumetric primary object**：主视觉对象依靠明显顶面 / 侧壁 / 厚度 / 体积阴影成立 → `FLAT_2D: H2`；定向修订只平面化违规对象。",
+      "new": "- **graphic spatial forms**：前景/局部主体含侧面、厚度暗示或连续轮廓，但仍以平面色块和插画关系呈现 → `FLAT_2D: PASS`。\n- **volumetric primary object**：顶面 / 侧壁 / 厚度与材质、体积光影等共同使主视觉以三维实体模拟成立 → `FLAT_2D: H2`；定向修订只处理违规机制。"
+    },
+    {
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "H2: 局部主对象出现明显实体厚度",
+      "new": "H2: 局部主对象已证实以三维实体模拟为主要呈现机制"
+    },
+    {
+      "repo_path": "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md",
+      "old": "记录最终 Approved Slide 中应继续存在的全部有效文字，包括：",
+      "new": "记录最终 Approved Slide 中应以文字内容身份继续存在的全部有效文字，包括："
+    },
+    {
+      "repo_path": "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md",
+      "old": "若某个**可读文字/数字本身就是已批准页面的重要视觉构图**",
+      "new": "若某个**承担准确内容职责的文字/数字本身也是已批准页面的重要视觉构图**"
+    },
+    {
+      "repo_path": "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md",
+      "old": "严格例外：若某个 Logo / wordmark 已被明确批准为**不可拆的图形资产**且最终本来就不要求普通文字编辑，则其内部可见字形不因“看起来像文字”自动新增一个 `meaningful_text` occurrence；该资产由 Stage 3 的 `approved_graphic_asset / preserve_as_graphic` 例外显式管理。若相同字样在页面其他位置还需要作为可编辑文字存在，则那是独立 occurrence，仍必须进入 `meaningful_text`。",
+      "new": "图形资产：已批准的不可拆 Logo / wordmark，以及按设计上下文承担对象身份或艺术表达的字形、图标字符、文稿笔迹和字形纹理，由 Stage 3 的 `approved_graphic_asset / preserve_as_graphic` 管理，不因能读出字符而自动新增 `meaningful_text`。其中品牌字样或指定文字仍按准确内容核验；没有独立准确文案职责的图形按身份核验，见协议 07 §6.3.2。图形描述不冒充文字真值，整页批准不自动确认任意新文案。混合对象中的阅读文字单独进入 Truth；相同字样在其他位置承担文字职责时仍为独立 occurrence。"
+    },
+    {
+      "repo_path": "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md",
+      "old": "Final Text Reconciliation 还必须检查**大尺度、构图关键的可读字形**是否属于已批准设计。",
+      "new": "Final Text Reconciliation 还必须检查**承担准确内容职责、构图关键的字形**是否属于已批准设计。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "approved_graphic_asset\n    已明确批准的 Logo / wordmark / 字形图标等不可拆图形资产",
+      "new": "approved_graphic_asset\n    已批准的 Logo / wordmark，以及承担对象身份或艺术表达的字形、图标字符、文稿笔迹和字形纹理；按 §6.3.2 区分内容核验与图形身份核验"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "      approved_graphic_evidence:\n        content_verified:\n        approval_ref:",
+      "new": "      approved_graphic_evidence:\n        content_verified:  # 准确内容核验；未逐字核验时省略\n        approval_ref:\n        verification_kind:  # 可选；graphic_identity 才启用图形身份分支"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- `approved_graphic_asset`：只允许显式批准的 Logo / wordmark / 字形图标等不可拆图形资产；它不是新的文字真值源，也不得用于普通角标、品牌语或 slogan。其批准依据只能来自用户明确指定的品牌/图形资产、当前任务中已明确批准的设计资产，或可追溯的既有设计上下文。",
+      "new": "- `approved_graphic_asset`：已批准的不可拆字标资产，或由可追溯设计上下文确认承担图形身份/艺术表达的字形与笔迹；它不是新的文字真值源，不接管普通角标、品牌语或 slogan。批准依据沿用用户指定资产、已批准设计资产或既有设计上下文，不增加逐项用户确认。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "对于 `representation_role=approved_graphic_asset`：`truth_ref` 指向可追溯的批准资产/批准依据；`content` 若填写，只记录已经确认正确的可见 wordmark 字样用于审计，不参与 Native Text 恢复。若该对象只是纯图形且不存在 text-like glyph，则本来就不属于文字处理 Manifest。",
+      "new": "对于 `representation_role=approved_graphic_asset`：`truth_ref` 指向批准资产/批准依据，`approval_ref` 继续必填。准确内容分支沿用非空 `content` 和 `content_verified=true`；只有明确设置 `verification_kind=graphic_identity` 才允许 `content` 缺省或为空。若填写 `content`，只记录已确认的可见字形字符串用于审计；对象描述使用现有备注，不伪造逐字转录，也不进入 Native Text 恢复。纯图形且不存在 text-like glyph 的对象本来就不属于文字处理 Manifest。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "1. `representation_role=approved_graphic_asset`：显式批准的 Logo / wordmark / 字形图标、文字与图形不可拆分的品牌资产等；",
+      "new": "1. `representation_role=approved_graphic_asset`：已批准的不可拆字标资产，以及承担对象身份或艺术表达的字形、图标字符、文稿笔迹和字形纹理；依据 §6.3.2 按职责核验；"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- `composition_critical`：删除该区域会实质破坏页面视觉重心、平衡、空间张力或主构图；",
+      "new": "- `composition_critical`：删除该区域会实质破坏页面构图，或字形/局部艺术组合的造型、身份与表达；不要求它占据整页视觉重心。句子信息重要、字体特殊或轻微视觉变化不单独成立；结合字形轮廓与艺术组合的实质作用判断；"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Logo / wordmark 等已批准图形资产进入白名单前必须同时满足：\n\n```text\n可见内容 / 品牌字样已经被确认正确\nAND\n存在可追溯 approval_ref\n```\n\n若该对象含错字、乱码、错误品牌字样或未经批准内容，记录：\n\n```text\nPRESERVED_GRAPHIC_CONTENT_INVALID\n```\n\n不得因为“像 Logo”就保护它。",
+      "new": "按对象的表达职责使用既有批准依据与源区域，不建立第二份资产清单：\n\n- **准确内容核验（原分支）**：Logo / wordmark 的品牌字样、指定文案等仍要求内容正确、非空 `content`、`content_verified=true` 和可追溯 `approval_ref`。错字、错误品牌字样或未确认文案继续使用 `PRESERVED_GRAPHIC_CONTENT_INVALID`，先纠正对应资产。\n- **图形身份核验**：没有独立准确文案职责、字形本身构成已批准对象或艺术表达时，明确设置 `approved_graphic_evidence.verification_kind=graphic_identity`。沿用 `approval_ref`、可见源区域和清单关联，确认其与已批准设计对象对应；`content` 可省略/为空，未逐字核验时省略 `content_verified`，不把它填成 true 来表示图形身份。未设置此取值的旧记录沿用原分支，无须迁移。\n\n在现有 Full-page Text Discovery 中，结合设计上下文与构图作用识别图标内字符、表现文稿的笔迹、字母构成的对象及非语义字形纹理。字符可读与否不是分支依据，也不依赖纸片等载体、尺寸或位置。承担标题、说明、事实、品牌或指定文案职责的文字，即使有艺术造型，仍按原内容规则；满足四条件时可作为 `graphic_typography`。普通 TextBox 替代损失只是辅助依据，结合字形是否构成对象身份或艺术表达判断。\n\n混合对象中的阅读文字分别记录；非阅读图形标记可按自然组合记录，无须逐笔拆分。组合记录不合并承担内容职责的 occurrence，同字符串分别出现时仍各自保留。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "检测策略允许偏向“不漏字”，但不能把普通图形当文字删除。",
+      "new": "检测策略允许偏向“不漏字”；发现字符后按 §6/§8 的表达职责分类，字形图形、图标字符和文稿纹理同样进入已有保护判断，不以检测到字符直接决定删除。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "对每个检测区域先确认内容归属，再确认表现形式；不得仅凭“像文字/像艺术字”直接决定删除或保护。",
+      "new": "对每个检测区域结合设计上下文确认表达职责，再确定内容归属和表现形式。准确阅读文字保留原内容要求；图形身份按 §6.3.2 处理。混合区域分出阅读子项，不因整个对象像图形就免除其内容核验。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Q0. 是否存在明确 approved_graphic_asset 批准依据？\n    ├─ YES 且内容正确 → preserve_as_graphic\n    ├─ YES 但内容错误/未确认 → PRESERVED_GRAPHIC_CONTENT_INVALID\n    └─ NO → Q1",
+      "new": "Q0. 是否按 §6.3.2 属于具有可追溯批准依据的 approved_graphic_asset？\n    ├─ 准确内容分支且内容正确 → preserve_as_graphic\n    ├─ 图形身份分支且对应已批准对象 → preserve_as_graphic（graphic_identity）\n    ├─ 对应分支的内容/批准依据不成立 → PRESERVED_GRAPHIC_CONTENT_INVALID\n    └─ 非该类资产 → Q1"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Q5. 删除该非 Truth text-like region 是否会实质破坏主构图？",
+      "new": "Q5. 删除该非 Truth text-like region 是否会实质破坏页面构图或局部艺术对象？"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- preserve_as_graphic 白名单\n- 所有非文字视觉结构",
+      "new": "- preserve_as_graphic 白名单中的实际字形、笔迹和结构\n- 所有非文字视觉结构"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "只重建原文字遮挡的局部背景或图形。",
+      "new": "按现有 Removal Inventory 分别说明删除区域与保护区域；保护对象保留原有字形、笔迹和结构，不仅是另画一个同类对象。只重建应删除文字遮挡的局部背景或图形。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "> 页面不应继续存在可见文字或 text-like glyph。",
+      "new": "> 页面不应继续存在清单中应删除的可见文字或 text-like glyph；已按职责授权保留的字形、文稿笔迹和字形纹理不算残留。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "> 视觉和结构保持，不要求逐像素一致。",
+      "new": "> 视觉和结构保持，不要求逐像素一致；同时对照保护清单确认实际字形、笔迹、对象身份与局部艺术结构仍在。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "若 `preserve_as_graphic` 白名单为空，则同时满足真正的 Text-Free Render 定义；若存在批准的 Graphic Typography，则 Formal Text-Clean Render 可以继续包含这些字形，它们是已授权图形对象而非待恢复普通文字。",
+      "new": "若 `preserve_as_graphic` 白名单为空，则同时满足真正的 Text-Free Render 定义；存在已授权的 Graphic Typography 或图形身份资产时，Formal Text-Clean Render 可以包含其字形/笔迹，它们是保留图形而非待恢复普通文字。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- `preserve_as_graphic` 只允许 approved graphic asset 或通过严格四条件的 Graphic Typography；",
+      "new": "- `preserve_as_graphic` 只允许按 §6.3.2 核验的 approved graphic asset 或通过四条件的 Graphic Typography；图形身份不要求虚构文字内容；"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "R1. Text Manifest 只包含 remove_and_restore 或极少数 preserve_as_graphic；remove_and_drop 不得进入 Manifest。",
+      "new": "R1. Text Manifest 只包含 remove_and_restore 或按职责确认的 preserve_as_graphic；remove_and_drop 不得进入 Manifest。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "R9. preserve_as_graphic 永远不重复生成普通 TextBox，且可见内容必须已确认正确；graphic_typography 必须同时满足四项证据门。",
+      "new": "R9. preserve_as_graphic 永远不重复生成普通 TextBox；准确内容分支仍核验文字正确性，graphic_identity 分支核验已批准对象身份；graphic_typography 必须同时满足四项证据门。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "R14. Text-Clean Render 除显式且内容正确的 approved graphic asset / Graphic Typography 外不得有文字残留。",
+      "new": "R14. Text-Clean Render 仅保留当前清单授权的图形字形/笔迹；准确内容按原规则核验，图形身份按 §6.3.2 核验，其余待删除文字应清除。"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Wrong text, hallucinated text and pseudo-text belong only in the Removal Inventory.",
+      "new": "Wrong or hallucinated reading text belongs only in the Removal Inventory.\nText-like strokes and pseudo-text that depict an approved graphic object follow the graphic-identity rule;\nreadability alone does not decide treatment."
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Preserve-as-graphic is a strict exception.",
+      "new": "Preserve-as-graphic follows approved object identity or the four Graphic Typography conditions.\nUse existing design context and source regions; do not invent transcripts for graphic marks."
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Ordinary editable text remains `remove_and_restore`; wrong/unapproved text remains `remove_and_drop`; `preserve_as_graphic` is limited to approved graphic assets and strictly evidenced `graphic_typography`.",
+      "new": "Ordinary editable text remains `remove_and_restore`; wrong/unapproved reading text remains `remove_and_drop`; `preserve_as_graphic` covers approved graphic assets under §6.3.2 and four-condition `graphic_typography`. Use `verification_kind=graphic_identity` only for glyphs/marks serving object identity or artistic expression without independent exact-copy duty; preserve them using existing design context, approval_ref and source regions without invented content_verified/transcripts. Mixed reading components retain content verification and occurrence completeness."
+    },
+    {
+      "repo_path": "zanchorflow/SKILL.md",
+      "old": "Before destructive cleanup, register and validate Text Manifest + Removal Inventory.",
+      "new": "Before destructive cleanup, classify text-like regions by their reading or graphic-expression role under 07 §6, then register and validate Text Manifest + Removal Inventory."
+    },
+    {
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "        content = element.get('content')\n        if not isinstance(content, str) or not content:\n            raise ValueError('STAGE3_TEXT_PLAN_INVALID: manifest content required')\n        truth_source = element.get('truth_source')",
+      "new": "        content = element.get('content')\n        evidence = element.get('approved_graphic_evidence')\n        graphic_identity = (role == 'approved_graphic_asset' and isinstance(evidence, dict)\n                            and evidence.get('verification_kind') == 'graphic_identity')\n        # Graphic identity has no transcript duty; exact-copy roles keep the original checks.\n        if graphic_identity:\n            if content is not None and not isinstance(content, str):\n                raise ValueError('STAGE3_TEXT_PLAN_INVALID: graphic content must be string')\n        elif not isinstance(content, str) or not content:\n            raise ValueError('STAGE3_TEXT_PLAN_INVALID: manifest content required')\n        truth_source = element.get('truth_source')"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "            if (not isinstance(evidence, dict) or evidence.get('content_verified') is not True\n                    or not isinstance(evidence.get('approval_ref'), str) or not evidence['approval_ref'].strip()):",
+      "new": "            if (not isinstance(evidence, dict)\n                    or (not graphic_identity and evidence.get('content_verified') is not True)\n                    or not isinstance(evidence.get('approval_ref'), str) or not evidence['approval_ref'].strip()):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/office_scope.py",
+      "old": "def restore_repo_bytes(rel,raw):\r\n    text=raw.decode('utf-8'); d=data()",
+      "new": "def restore_repo_bytes(rel,raw):\r\n    from visual_text_scope import restore_repo_bytes as restore_visual\r\n    raw=restore_visual(rel,raw)\r\n    text=raw.decode('utf-8'); d=data()"
+    },
+    {
+      "repo_path": "zanchorflow/tests/office_scope.py",
+      "old": "def restore_repo_text(rel,text):\r\n    for item in reversed(data()['patches']):",
+      "new": "def restore_repo_text(rel,text):\r\n    from visual_text_scope import restore_repo_text as restore_visual\r\n    text=restore_visual(rel,text)\r\n    for item in reversed(data()['patches']):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/office_scope.py",
+      "old": "    m=copy.deepcopy(payload);d=data()",
+      "new": "    from visual_text_scope import normalize_manifest as normalize_visual\n    m=normalize_visual(payload);d=data()"
+    },
+    {
+      "repo_path": "zanchorflow/manifest.yaml",
+      "old": "schema_version: '1.0'\r\nskill_name: zanchorflow\r\nskill_version: 0.9.0-rc19-candidate\r\npackage_status: CANDIDATE_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED\r\nprotocol_baseline: RC17\r\nruntime_rule: verify hashes and load current-step chapters with mandatory prerequisites\r\n  from canonical references\r\ncanonical_protocols:\r\n- path: references/01_PPT内容架构与大纲生成协议_v1.2.md\r\n  version: v1.2\r\n  sha256: 95e5d412ffd7e6726c1aec9457e1f496e5e65beb69fd6607f8cd4fecb61edab5\r\n  classification: runtime\r\n  stage: 1\r\n- path: references/02_Stage1至Stage2语义接口协议_v1.0.md\r\n  version: v1.0\r\n  sha256: db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2\r\n  classification: runtime\r\n  stage: 2\r\n- path: references/03_PPT视觉探索与Anchor延续协议_v2.12.md\r\n  version: v2.12\r\n  sha256: b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4\r\n  classification: runtime\r\n  stage: 3\r\n- path: references/04_页面二维生成前置约束与渲染协议_v2.9.md\r\n  version: v2.9\r\n  sha256: 406e4dcdaf442e4139ae86c4743f0e1f69f48b10a26ffe0c467a0cb27e2da86b\r\n  classification: runtime\r\n  stage: 4\r\n- path: references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md\r\n  version: v1.4\r\n  sha256: dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb\r\n  classification: runtime\r\n  stage: 5\r\n- path: references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md\r\n  version: v2.4\r\n  sha256: 34dd87b9f0a7255adb31ce7570292984d706628e65abb6c92ffba6139698e740\r\n  classification: runtime\r\n  stage: 6\r\n- path: references/07_Stage3_文字处理_消字与复原规范_v1.5.md\r\n  version: v1.5\r\n  sha256: 4df60f8c27bc817ed355bfd6b421108407b2492a4ee8046c248d447dd0c4bc11\r\n  classification: runtime\r\n  stage: 7\r\n- path: references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md\r\n  version: v1.1\r\n  sha256: 5be85e005bdc79dd9bdb4a659b4861e7bd8ad1d9dcc044f0692dffb5053338a3\r\n  classification: runtime\r\n  stage: 8\r\nnon_runtime:\r\n- tests/\r\n- docs/\r\nnon_runtime_exceptions:\r\n- docs/codex-canva-bridge.md\r\nprogressive_loading:\r\n  stage1:\r\n  - 1\r\n  stage1_to_stage2:\r\n  - 2\r\n  stage2_exploration:\r\n  - 3\r\n  stage2_rendering:\r\n  - 4\r\n  stage3_text:\r\n  - 7\r\n  stage2_to_stage3_magic_layer:\r\n  - 5\r\n  stage3_magic_layer:\r\n  - 6\r\n  stage3_image_layer:\r\n  - 8\r\nimplementation_dependencies:\r\n  python: required\r\n  python_pptx: required_for_codex_single_page_validation_and_native_merge\r\n  lxml: required_for_codex_single_page_validation_and_native_merge\r\n  pywin32: required_for_native_merge\r\n  Pillow: conditional_image_layer_geometry_and_tests\r\n  pytest: required_for_tests\r\n  openpyxl: required_for_tests\r\n  PowerPoint_COM: preferred_capability_preflight_required\r\n  canva_magic_layers: external\r\n  canva_web_pptx_acquisition: codex_host_browser_and_local_finalizer_or_external_adapter\r\n  360_reveal_layer: external\r\n  numpy: conditional_image_layer_geometry_only\r\n  WPS_COM: conditional_KWPP_Application_capability_preflight_required\r\nimplementation_status:\r\n  local_pptx_merge: verified_on_local_windows_fixture\r\n  stage2_qualification_runtime: implemented_and_locally_tested\r\n  canva_web_pptx_acquisition: HOST_CONTRACT_LOCAL_SELF_CHECKED_LIVE_REVALIDATION_REQUIRED\r\n  codex_magic_layers_wiring: DEFINED_LIVE_UNVERIFIED\r\n  codex_provenance_bridge: LOCAL_CONTRACT_CHECKS_PASS_LIVE_REVALIDATION_REQUIRED\r\n  deck_assembly_entry: OFFLINE_CONTRACT_CHECKS_PASS_LIVE_UNVERIFIED\r\n  stage3_graphic_typography_guard: implemented_and_locally_tested\r\n  stage3_text_plan_gate: implemented_and_locally_tested\r\n  stage2_formal_display_contract: implemented_and_locally_tested\r\n  stage2_human_visual_approval_gate: implemented_and_locally_tested\r\n  stage3_formal_display_contract: implemented_and_locally_tested\r\n  stage1_contextual_decision_contract: implemented_and_pre_stage3_tested\r\n  anchor_formal_candidate_set: implemented_and_locally_tested\r\n  opaque_full_slide_default: protocol_enforced_requires_real_imagegen_e2e\r\n  image_layer_backend: IMPLEMENTED_OFFLINE_LIVE_UNVERIFIED\r\n  image_layer_revision: OFFLINE_REGRESSION_PASS_389_TESTS_ZERO_NEW_MODEL_CALLS\r\n  controlled_magic_canvas_mapping: LOCAL_GEOMETRY_AND_SEAL_CONTRACT_VERIFIED_FULL_LIVE_TEXT_RESTORE_UNVERIFIED\r\n  host_dom_event_candidate: STANDALONE_LIVE_SUCCESS_FORMAL_WIRING_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED\r\n  approved_image_target_wiring: LOCAL_POSITIVE_AND_LINEAGE_FIXTURES_VERIFIED_NO_NEW_REMOTE_CALLS\r\n  wps_native_merge_fallback: LOCAL_KWPP_NATIVE_IMPORT_REOPEN_EDIT_AND_FORMAL_ASSEMBLY_FIXTURES_VERIFIED_OTHER_HOSTS_UNVERIFIED\r\ntests:\r\n  command: python -m pytest tests -q\r\n  rc13_skill_regression: run previous Skill 0.9.0-rc13 regression, preserving known\r\n    platform/rc9 execution limitations\r\n  protocol_rc16_validation: 'RC16: 03 v2.12 / 04 v2.9 add narrow poster/promotional\r\n    Typography applicability; 07 v1.5 clarifies native-text visual-fit tolerance;\r\n    06 v2.4 receives pointer-only updates to 07 v1.5; Runtime adds a RESTORE_TEXT-only\r\n    post-download rebuild guard; Host acquisition adds fail-closed same-record recovery-link\r\n    provenance; live Codex/Canva validation remains separate.'\r\n  protocol_rc17_validation: RC17 adds optional Image Layer backend via Reference 08\r\n    while Reference 05/06 remain Magic-specific; live 360/Image Layer validation remains\r\n    separate.\r\n  protocol_rc19_validation: Bundle v3 geometry evidence, limitations inheritance,\r\n    bounded severe quality retry, plan readiness; zero new model calls.\r\n  rc19_offline_results:\r\n    passed: 389\r\n    failed: 0\r\n    network_attempts: 0\r\n    new_model_calls: 0\r\n    existing_result_pages_replayed: 5\r\n  canvas_download_revision_offline_results:\r\n    passed: 440\r\n    failed: 0\r\n    network_attempts: 0\r\n    new_model_calls: 0\r\n    actual_export_pages_geometry_checked: 3\r\n    live_recovery_branches: UNVERIFIED\r\n    full_live_native_text_restore: UNVERIFIED\r\n  github_publication_results:\r\n    local_full_passed: 499\r\n    failed: 0\r\n    skipped: 0\r\n    office_integration_passed: 2\r\n    remote_model_calls_added: 0\r\n    live_recovery_branches: UNVERIFIED\r\n    live_glyph_misclassification: UNVERIFIED\r\n    controlled_model_context_replay: UNVERIFIED\r\nimage_layer_protocol_revision: v1.1\r\nupdated_at_utc: '2026-10-03T06:41:22Z'\r\nrevision_scope:\r\n- controlled_magic_canvas_mapping\r\n- host_dom_event_candidate_with_original_fallback\r\n- noncritical_glyph_local_handling\r\n- progressive_context_loading\r\n- david_z_attribution\r\n- approved_image_target_wiring\r\n- github_distribution\r\n- optional_ordinary_heading_consistency\r\n- normal_heading_seed_protection\r\n- dual_package_source_build\r\n- independent_native_title_postprocessing\r\n- title_residual_notes_without_auto_repair\r\n- flat_shadow_evidence_guidance\r\n- compact_interface_examples\r\n- wps_native_merge_fallback\r\n- agent_conditional_python_guidance\r\nsource_baseline_note: Existing skill_version and protocol_baseline are retained source\r\n  compatibility identifiers; updated_at_utc and ZIP SHA-256 distinguish this revision.\r\ntitle_consistency_validation:\r\n  full_local_passed: 549\r\n  failed: 0\r\n  skipped: 0\r\n  office_exercising_tests: 4\r\n  new_remote_calls: 0\r\n  ordinary_heading_protection: OFFLINE_CONTEXT_AND_SOURCE_BINDING_VERIFIED\r\n  both_backend_three_page_replay: OFFLINE_PROGRAM_AND_NATIVE_OFFICE_MERGE_VERIFIED\r\n  live_online_heading_generation: UNVERIFIED\r\n  live_remote_recovery: UNVERIFIED\r\n  agent_aesthetic_heading_classification: LIVE_UNVERIFIED\r\ntitle_refine_validation:\r\n  source_updated_at_utc: '2026-10-02T17:27:14Z'\r\n  full_local_passed: 591\r\n  failed: 0\r\n  skipped: 0\r\n  new_behavior_tests: 42\r\n  office_exercising_tests: 5\r\n  new_remote_calls: 0\r\n  postprocessing_example: EXECUTED_SAVED_REOPENED_AND_NATIVE_OFFICE_CHECKED\r\n  both_backend_final_seals: FINAL_BYTES_AND_STALE_REVIEW_FIXTURES_VERIFIED\r\n  independent_oracles: WRONG_NATIVE_SIZE_AND_CANVAS_FAULTS_DETECTED\r\n  flat_shadow_review: CURRENT_CONTROLLER_POSITIVE_AND_NEGATIVE_VISUAL_REVIEW_NOT_AUTOMATED_CLASSIFIER\r\n  baseline_identity_assertion: PREEXISTING_SCOPE_MISMATCH_REPRODUCED_AND_EXACT_SCOPE_NORMALIZATION_APPLIED\r\n  office_diagnostics: COM_0x80010108_DIAGNOSTIC_EMITTED_TESTS_COMPLETED\r\n  live_online_heading_generation: UNVERIFIED\r\n  live_remote_recovery: UNVERIFIED\r\n  live_glyph_misclassification: UNVERIFIED\r\n  controlled_model_context_replay: UNVERIFIED\r\nwps_adapt_validation:\r\n  source_updated_at_utc: '2026-10-03T04:41:34Z'\r\n  full_local_unique_passed: 623\r\n  failed: 0\r\n  skipped: 0\r\n  without_office_passed: 614\r\n  office_exercising_tests: 9\r\n  new_behavior_tests: 32\r\n  new_remote_calls: 0\r\n  native_application_selection: OFFLINE_SELECTION_AND_ERROR_FIXTURES_VERIFIED\r\n  wps_formal_assembly: BOTH_BACKENDS_CURRENT_SEAL_FIXTURES_MERGED_AND_PUBLISHED\r\n  same_application_visual_comparisons_passed: 6\r\n  font_alias_observation: LOCALIZED_FAMILY_NAME_VERIFIED_USING_INSTALLED_FONT_NAME_TABLE\r\n  office_diagnostics: COM_RPC_DIAGNOSTICS_EMITTED_OPERATIONS_AND_TESTS_COMPLETED\r\n  python_guidance: STATIC_GUIDANCE_AND_CURRENT_STEP_DEPENDENCY_DIAGNOSTICS_VERIFIED_AGENT_MISSING_ENVIRONMENT_BEHAVIOR_UNVERIFIED\r\n  other_wps_versions_complex_objects: UNVERIFIED\r\n  full_live_upstream: UNVERIFIED\r\n  live_remote_recovery: UNVERIFIED\r\n  live_glyph_misclassification: UNVERIFIED\r\n",
+      "new": "schema_version: '1.0'\nskill_name: zanchorflow\nskill_version: 0.9.0-rc19-candidate\npackage_status: CANDIDATE_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED\nprotocol_baseline: RC17\nruntime_rule: verify hashes and load current-step chapters with mandatory prerequisites\n  from canonical references\ncanonical_protocols:\n- path: references/01_PPT内容架构与大纲生成协议_v1.2.md\n  version: v1.2\n  sha256: 95e5d412ffd7e6726c1aec9457e1f496e5e65beb69fd6607f8cd4fecb61edab5\n  classification: runtime\n  stage: 1\n- path: references/02_Stage1至Stage2语义接口协议_v1.0.md\n  version: v1.0\n  sha256: db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2\n  classification: runtime\n  stage: 2\n- path: references/03_PPT视觉探索与Anchor延续协议_v2.12.md\n  version: v2.12\n  sha256: b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4\n  classification: runtime\n  stage: 3\n- path: references/04_页面二维生成前置约束与渲染协议_v2.9.md\n  version: v2.9\n  sha256: 22c19a522c5989b6227aa1165799344e00657f73ea4351370adfddeb5c2a7b48\n  classification: runtime\n  stage: 4\n- path: references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md\n  version: v1.4\n  sha256: 50c0404a0b2ea0bea3b045d1043dcfcd91f08659efd808af2b34c15665820e24\n  classification: runtime\n  stage: 5\n- path: references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md\n  version: v2.4\n  sha256: 34dd87b9f0a7255adb31ce7570292984d706628e65abb6c92ffba6139698e740\n  classification: runtime\n  stage: 6\n- path: references/07_Stage3_文字处理_消字与复原规范_v1.5.md\n  version: v1.5\n  sha256: 6fa18ff6e740cea9ac7576bfbac4aeb5931d08b3ed526cd6a740fa638d65d0d1\n  classification: runtime\n  stage: 7\n- path: references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md\n  version: v1.1\n  sha256: 5be85e005bdc79dd9bdb4a659b4861e7bd8ad1d9dcc044f0692dffb5053338a3\n  classification: runtime\n  stage: 8\nnon_runtime:\n- tests/\n- docs/\nnon_runtime_exceptions:\n- docs/codex-canva-bridge.md\nprogressive_loading:\n  stage1:\n  - 1\n  stage1_to_stage2:\n  - 2\n  stage2_exploration:\n  - 3\n  stage2_rendering:\n  - 4\n  stage3_text:\n  - 7\n  stage2_to_stage3_magic_layer:\n  - 5\n  stage3_magic_layer:\n  - 6\n  stage3_image_layer:\n  - 8\nimplementation_dependencies:\n  python: required\n  python_pptx: required_for_codex_single_page_validation_and_native_merge\n  lxml: required_for_codex_single_page_validation_and_native_merge\n  pywin32: required_for_native_merge\n  Pillow: conditional_image_layer_geometry_and_tests\n  pytest: required_for_tests\n  openpyxl: required_for_tests\n  PowerPoint_COM: preferred_capability_preflight_required\n  canva_magic_layers: external\n  canva_web_pptx_acquisition: codex_host_browser_and_local_finalizer_or_external_adapter\n  360_reveal_layer: external\n  numpy: conditional_image_layer_geometry_only\n  WPS_COM: conditional_KWPP_Application_capability_preflight_required\nimplementation_status:\n  local_pptx_merge: verified_on_local_windows_fixture\n  stage2_qualification_runtime: implemented_and_locally_tested\n  canva_web_pptx_acquisition: HOST_CONTRACT_LOCAL_SELF_CHECKED_LIVE_REVALIDATION_REQUIRED\n  codex_magic_layers_wiring: DEFINED_LIVE_UNVERIFIED\n  codex_provenance_bridge: LOCAL_CONTRACT_CHECKS_PASS_LIVE_REVALIDATION_REQUIRED\n  deck_assembly_entry: OFFLINE_CONTRACT_CHECKS_PASS_LIVE_UNVERIFIED\n  stage3_graphic_typography_guard: implemented_and_locally_tested\n  stage3_text_plan_gate: implemented_and_locally_tested\n  stage2_formal_display_contract: implemented_and_locally_tested\n  stage2_human_visual_approval_gate: implemented_and_locally_tested\n  stage3_formal_display_contract: implemented_and_locally_tested\n  stage1_contextual_decision_contract: implemented_and_pre_stage3_tested\n  anchor_formal_candidate_set: implemented_and_locally_tested\n  opaque_full_slide_default: protocol_enforced_requires_real_imagegen_e2e\n  image_layer_backend: IMPLEMENTED_OFFLINE_LIVE_UNVERIFIED\n  image_layer_revision: OFFLINE_REGRESSION_PASS_389_TESTS_ZERO_NEW_MODEL_CALLS\n  controlled_magic_canvas_mapping: LOCAL_GEOMETRY_AND_SEAL_CONTRACT_VERIFIED_FULL_LIVE_TEXT_RESTORE_UNVERIFIED\n  host_dom_event_candidate: STANDALONE_LIVE_SUCCESS_FORMAL_WIRING_OFFLINE_VERIFIED_LIVE_RECOVERY_UNVERIFIED\n  approved_image_target_wiring: LOCAL_POSITIVE_AND_LINEAGE_FIXTURES_VERIFIED_NO_NEW_REMOTE_CALLS\n  wps_native_merge_fallback: LOCAL_KWPP_NATIVE_IMPORT_REOPEN_EDIT_AND_FORMAL_ASSEMBLY_FIXTURES_VERIFIED_OTHER_HOSTS_UNVERIFIED\ntests:\n  command: python -m pytest tests -q\n  rc13_skill_regression: run previous Skill 0.9.0-rc13 regression, preserving known\n    platform/rc9 execution limitations\n  protocol_rc16_validation: 'RC16: 03 v2.12 / 04 v2.9 add narrow poster/promotional\n    Typography applicability; 07 v1.5 clarifies native-text visual-fit tolerance;\n    06 v2.4 receives pointer-only updates to 07 v1.5; Runtime adds a RESTORE_TEXT-only\n    post-download rebuild guard; Host acquisition adds fail-closed same-record recovery-link\n    provenance; live Codex/Canva validation remains separate.'\n  protocol_rc17_validation: RC17 adds optional Image Layer backend via Reference 08\n    while Reference 05/06 remain Magic-specific; live 360/Image Layer validation remains\n    separate.\n  protocol_rc19_validation: Bundle v3 geometry evidence, limitations inheritance,\n    bounded severe quality retry, plan readiness; zero new model calls.\n  rc19_offline_results:\n    passed: 389\n    failed: 0\n    network_attempts: 0\n    new_model_calls: 0\n    existing_result_pages_replayed: 5\n  canvas_download_revision_offline_results:\n    passed: 440\n    failed: 0\n    network_attempts: 0\n    new_model_calls: 0\n    actual_export_pages_geometry_checked: 3\n    live_recovery_branches: UNVERIFIED\n    full_live_native_text_restore: UNVERIFIED\n  github_publication_results:\n    local_full_passed: 499\n    failed: 0\n    skipped: 0\n    office_integration_passed: 2\n    remote_model_calls_added: 0\n    live_recovery_branches: UNVERIFIED\n    live_glyph_misclassification: UNVERIFIED\n    controlled_model_context_replay: UNVERIFIED\nimage_layer_protocol_revision: v1.1\nupdated_at_utc: '2026-10-03T13:04:22Z'\nrevision_scope:\n- controlled_magic_canvas_mapping\n- host_dom_event_candidate_with_original_fallback\n- noncritical_glyph_local_handling\n- progressive_context_loading\n- david_z_attribution\n- approved_image_target_wiring\n- github_distribution\n- optional_ordinary_heading_consistency\n- normal_heading_seed_protection\n- dual_package_source_build\n- independent_native_title_postprocessing\n- title_residual_notes_without_auto_repair\n- flat_shadow_evidence_guidance\n- compact_interface_examples\n- wps_native_merge_fallback\n- agent_conditional_python_guidance\n- flat_illustration_primary_mechanism\n- graphic_identity_without_transcript\nsource_baseline_note: Existing skill_version and protocol_baseline are retained source\n  compatibility identifiers; updated_at_utc and ZIP SHA-256 distinguish this revision.\ntitle_consistency_validation:\n  full_local_passed: 549\n  failed: 0\n  skipped: 0\n  office_exercising_tests: 4\n  new_remote_calls: 0\n  ordinary_heading_protection: OFFLINE_CONTEXT_AND_SOURCE_BINDING_VERIFIED\n  both_backend_three_page_replay: OFFLINE_PROGRAM_AND_NATIVE_OFFICE_MERGE_VERIFIED\n  live_online_heading_generation: UNVERIFIED\n  live_remote_recovery: UNVERIFIED\n  agent_aesthetic_heading_classification: LIVE_UNVERIFIED\ntitle_refine_validation:\n  source_updated_at_utc: '2026-10-02T17:27:14Z'\n  full_local_passed: 591\n  failed: 0\n  skipped: 0\n  new_behavior_tests: 42\n  office_exercising_tests: 5\n  new_remote_calls: 0\n  postprocessing_example: EXECUTED_SAVED_REOPENED_AND_NATIVE_OFFICE_CHECKED\n  both_backend_final_seals: FINAL_BYTES_AND_STALE_REVIEW_FIXTURES_VERIFIED\n  independent_oracles: WRONG_NATIVE_SIZE_AND_CANVAS_FAULTS_DETECTED\n  flat_shadow_review: CURRENT_CONTROLLER_POSITIVE_AND_NEGATIVE_VISUAL_REVIEW_NOT_AUTOMATED_CLASSIFIER\n  baseline_identity_assertion: PREEXISTING_SCOPE_MISMATCH_REPRODUCED_AND_EXACT_SCOPE_NORMALIZATION_APPLIED\n  office_diagnostics: COM_0x80010108_DIAGNOSTIC_EMITTED_TESTS_COMPLETED\n  live_online_heading_generation: UNVERIFIED\n  live_remote_recovery: UNVERIFIED\n  live_glyph_misclassification: UNVERIFIED\n  controlled_model_context_replay: UNVERIFIED\nwps_adapt_validation:\n  source_updated_at_utc: '2026-10-03T04:41:34Z'\n  full_local_unique_passed: 623\n  failed: 0\n  skipped: 0\n  without_office_passed: 614\n  office_exercising_tests: 9\n  new_behavior_tests: 32\n  new_remote_calls: 0\n  native_application_selection: OFFLINE_SELECTION_AND_ERROR_FIXTURES_VERIFIED\n  wps_formal_assembly: BOTH_BACKENDS_CURRENT_SEAL_FIXTURES_MERGED_AND_PUBLISHED\n  same_application_visual_comparisons_passed: 6\n  font_alias_observation: LOCALIZED_FAMILY_NAME_VERIFIED_USING_INSTALLED_FONT_NAME_TABLE\n  office_diagnostics: COM_RPC_DIAGNOSTICS_EMITTED_OPERATIONS_AND_TESTS_COMPLETED\n  python_guidance: STATIC_GUIDANCE_AND_CURRENT_STEP_DEPENDENCY_DIAGNOSTICS_VERIFIED_AGENT_MISSING_ENVIRONMENT_BEHAVIOR_UNVERIFIED\n  other_wps_versions_complex_objects: UNVERIFIED\n  full_live_upstream: UNVERIFIED\n  live_remote_recovery: UNVERIFIED\n  live_glyph_misclassification: UNVERIFIED\nvisual_text_validation:\n  source_updated_at_utc: '2026-10-03T06:41:22Z'\n  full_local_unique_passed: 653\n  without_office_passed: 644\n  office_unique_passed: 9\n  new_behavior_tests: 30\n  final_unresolved_test_failures: 0\n  first_office_run_failed: 1\n  wps_failed_case_isolated_rerun: PASS_WITH_ORIGINAL_ASSERTIONS_NO_PRODUCT_FIX\n  office_diagnostics: COM_RPC_DIAGNOSTICS_RETAINED_NOT_ALL_HOST_STABILITY_PROVEN\n  independent_context_recognition: TWO_SCENES_BASELINE_AND_CANDIDATE_PLUS_FIVE_BOUNDARY_SCENARIOS\n  actual_imagegen_cleanup_calls: 2\n  actual_imagegen_cleanup_results: TWO_SINGLE_PASS_VISUAL_CHECKS_PASS_NOT_PIXEL_IDENTITY\n  additional_canva_magic_paid_layer_calls: 0\n  full_live_upstream_and_recovery: UNVERIFIED\n  misdeletion_probability: NOT_ESTIMATED\n  new_runtime_stages_or_human_gates: 0\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "            if content is not None and not isinstance(content, str):",
+      "new": "            if 'content' in element and not isinstance(content, str):"
+    },
+    {
+      "repo_path": "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md",
+      "old": "应保留 → 写入 meaningful_text\n不应保留 / 错字 / 乱码 / 幻觉文字 → 不写入 Content Truth",
+      "new": "应以准确文字身份保留 → 写入 meaningful_text\n应按已批准图形身份保留 → 沿用设计资产依据，由 Stage 3 现有清单管理\n不应保留的阅读文字 / 错字 / 乱码 / 幻觉文案 → 不写入 Content Truth"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "错误、乱码和幻觉文字永久丢弃；最终应存在的语义文字和合法装饰文字",
+      "new": "错误、乱码和幻觉阅读文字永久丢弃；图形身份字形/笔迹按 §6 保留；最终应存在的语义文字和合法装饰文字"
+    },
+    {
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- 无意义伪文字；",
+      "new": "- 未经批准且不承担图形身份/艺术表达的无意义伪文字；"
+    },
+    {
+      "repo_path": "docs/development.md",
+      "old": "# 开发与验证\r\n\r\n源码仓库保留 zanchorflow/tests 及其相对路径；安装 ZIP 采用白名单分发，不包含开发测试。源码和分发包的运行内容逐文件一致。\r\n\r\n## 环境与测试\r\n~~~powershell\r\npython -m pip install -r requirements-dev.txt\r\npython -B -m pytest zanchorflow/tests -q -m \"not integration\" --ignore=zanchorflow/tests/test_native_merge.py --basetemp <project-work/pytest> -o cache_dir=<project-work/cache>\r\n~~~\r\n此命令不调用 Office 或远程服务，与 Windows CI 一致。使用独立 work 目录设置 TEMP/TMP 、PYTHONDONTWRITEBYTECODE=1 和 PYTHONUTF8=1；后者确保 PowerShell 输出解码不随本机 GBK/UTF-8 语言设置变化。\r\n\r\n本地安装 Microsoft PowerPoint/Excel 后，运行原有完整 tests；新增 WPS integration 测试另需本机 WPS 演示与 KWPP.Application，CI 不安装 WPS。原生合并模块实际调用 PowerPoint COM，现有 integration 测试实际编辑文字、图形、图表和 OLE，保存并重新打开。离线表示不依赖网络/API，不表示无需 Office。跳过、未验证与通过分开记录，不能用规则检查代替真实模型/浏览器行为。\r\n\r\n原保护基准保留。publication scope 仅允许三个运行文件中明确登记的函数和额度文案变化；其余原函数及另外 16 个运行文件仍受基准约束。文档迁移检查只逆转声明的精确修改，再核对原始载荷哈希。\r\n\r\n## 构建与验收\r\n~~~powershell\r\npython tools/build.py --work <project-work/package> --output <project-outputs/zanchorflow.zip>\r\npython tools/build.py --check dist/zanchorflow.zip\r\n~~~\r\n先完成测试，再更新受影响规范哈希和 revision_scope，冻结 UTC 更新时间，随后构建。包内发生任何修改后必须重新冻结并构建。源码、ZIP、校验文件、Git 索引和重新检出字节必须一致；不要按操作系统自动改写 skill 换行。\r\n\r\n案例属于有日期的真实使用展示；修订后的程序验证、真实模型行为和历史成果分别记录。CI 不提交私人夹具、密钥、原始运行状态或诊断历史。\r\n\r\nMIT 适用于本项目拥有权利的代码与文档；不捆绑第三方字体或模型源码，第三方内容遵守原许可。\r\n\r\n## 正文标题一致性修订\r\n\r\n新任务在现有启动命令加 `--title-choice-required`，保存待选择状态；先依据当前大纲分类，再选择统一／自由。全为封面、目录、过渡或纯致谢等不适用页时，用 `stage2-title-policy --mode pending --page-roles-json <roles.json>` 自动跳过提问，不伪造作者决定。旧调用与旧状态保持自由标题。\r\n\r\n正常执行只通过三个短入口：`stage2-title-policy`、`stage2-title-context`、`stage2-title-bind`。生成前读取当前页上下文并携带 `--title-contract-ref` 登记候选；初次基准由系统在既有检查 PASS 后登记。具体规则在协议 03/04/07，不能只读取命令而漏掉前置审批、身份、内容真值和锁约束。\r\n\r\n新增测试保留以前的运行基准，先精确逆转登记的标题修改，再运行原函数和文档断言；独立新增模块另有固定校验。未声明修改不能借新功能改变已有 Gate、下载、画布或合并逻辑。两条路线的三页回放使用合成外部结果和合成页面评估；另有 `integration` 测试使用真实 PowerPoint 原生合并，不将前者称为在线生成验证。\r\n\r\n精简包验收后，将同一 ZIP 和 SHA-256 放入 `dist`，再构建完整源码包：\r\n~~~powershell\r\npython tools/build.py --source --work <project-work/source> --output <project-outputs/github-source.zip>\r\npython tools/build.py --source --check <project-outputs/github-source.zip>\r\n~~~\r\n完整包顶层为 `ZanchorFlow/`，包含全部测试、CI、公开案例及 `dist`；输出和临时打包目录必须位于仓库之外。构建使用白名单，不收集 `.git`、运行状态、缓存、凭据或本次报告。\r\n\r\n## 标题后处理、阴影与接口修订验证\r\n\r\n本轮按协议 07 中可执行示例验证真实 PPTX 属性、保留对象、输入输出哈希和复用；示例的 adjusted 仅代表参数已应用，视觉结果另行观察。新增错误样本包括映射/内容不一致、受保护对象、分组不明、来源或参数变化、非标题变化和旧验收证据。模型阴影判断与自然换行不能用填写 PASS 的 JSON 代替。\r\n\r\n本轮修改通过 heading_refine_scope 的精确差异还原先回到 2026-10-02T17:27:14Z 源码，再进入原 title_scope 保护链；不替换历史基准哈希。旧自由模式、审批、下载、画布、付费和合并行为保持原断言。报告首表反映当前结果，事件历史独立保留。\n\n## WPS 备用与 Python 条件提醒验证\n新增 office_scope 精确差异还原先回到本轮来源基线，再进入 heading_refine_scope/title_scope；旧基线及行为断言保留。普通测试模拟两种应用，不启动真实 Office。WPS integration 使用合成输入进行原生合并、重开、编辑保存、错误页序与图片负例；仅操作本次文档。跨应用字体差异另记，其他 WPS 版本和复杂对象不据此声明兼容。Python 指引的静态检查、程序依赖诊断和实际 agent 行为分开记录。\n",
+      "new": "# 开发与验证\r\n\r\n源码仓库保留 zanchorflow/tests 及其相对路径；安装 ZIP 采用白名单分发，不包含开发测试。源码和分发包的运行内容逐文件一致。\r\n\r\n## 环境与测试\r\n~~~powershell\r\npython -m pip install -r requirements-dev.txt\r\npython -B -m pytest zanchorflow/tests -q -m \"not integration\" --ignore=zanchorflow/tests/test_native_merge.py --basetemp <project-work/pytest> -o cache_dir=<project-work/cache>\r\n~~~\r\n此命令不调用 Office 或远程服务，与 Windows CI 一致。使用独立 work 目录设置 TEMP/TMP 、PYTHONDONTWRITEBYTECODE=1 和 PYTHONUTF8=1；后者确保 PowerShell 输出解码不随本机 GBK/UTF-8 语言设置变化。\r\n\r\n本地安装 Microsoft PowerPoint/Excel 后，运行原有完整 tests；新增 WPS integration 测试另需本机 WPS 演示与 KWPP.Application，CI 不安装 WPS。原生合并模块实际调用 PowerPoint COM，现有 integration 测试实际编辑文字、图形、图表和 OLE，保存并重新打开。离线表示不依赖网络/API，不表示无需 Office。跳过、未验证与通过分开记录，不能用规则检查代替真实模型/浏览器行为。\r\n\r\n原保护基准保留。publication scope 仅允许三个运行文件中明确登记的函数和额度文案变化；其余原函数及另外 16 个运行文件仍受基准约束。文档迁移检查只逆转声明的精确修改，再核对原始载荷哈希。\r\n\r\n## 构建与验收\r\n~~~powershell\r\npython tools/build.py --work <project-work/package> --output <project-outputs/zanchorflow.zip>\r\npython tools/build.py --check dist/zanchorflow.zip\r\n~~~\r\n先完成测试，再更新受影响规范哈希和 revision_scope，冻结 UTC 更新时间，随后构建。包内发生任何修改后必须重新冻结并构建。源码、ZIP、校验文件、Git 索引和重新检出字节必须一致；不要按操作系统自动改写 skill 换行。\r\n\r\n案例属于有日期的真实使用展示；修订后的程序验证、真实模型行为和历史成果分别记录。CI 不提交私人夹具、密钥、原始运行状态或诊断历史。\r\n\r\nMIT 适用于本项目拥有权利的代码与文档；不捆绑第三方字体或模型源码，第三方内容遵守原许可。\r\n\r\n## 正文标题一致性修订\r\n\r\n新任务在现有启动命令加 `--title-choice-required`，保存待选择状态；先依据当前大纲分类，再选择统一／自由。全为封面、目录、过渡或纯致谢等不适用页时，用 `stage2-title-policy --mode pending --page-roles-json <roles.json>` 自动跳过提问，不伪造作者决定。旧调用与旧状态保持自由标题。\r\n\r\n正常执行只通过三个短入口：`stage2-title-policy`、`stage2-title-context`、`stage2-title-bind`。生成前读取当前页上下文并携带 `--title-contract-ref` 登记候选；初次基准由系统在既有检查 PASS 后登记。具体规则在协议 03/04/07，不能只读取命令而漏掉前置审批、身份、内容真值和锁约束。\r\n\r\n新增测试保留以前的运行基准，先精确逆转登记的标题修改，再运行原函数和文档断言；独立新增模块另有固定校验。未声明修改不能借新功能改变已有 Gate、下载、画布或合并逻辑。两条路线的三页回放使用合成外部结果和合成页面评估；另有 `integration` 测试使用真实 PowerPoint 原生合并，不将前者称为在线生成验证。\r\n\r\n精简包验收后，将同一 ZIP 和 SHA-256 放入 `dist`，再构建完整源码包：\r\n~~~powershell\r\npython tools/build.py --source --work <project-work/source> --output <project-outputs/github-source.zip>\r\npython tools/build.py --source --check <project-outputs/github-source.zip>\r\n~~~\r\n完整包顶层为 `ZanchorFlow/`，包含全部测试、CI、公开案例及 `dist`；输出和临时打包目录必须位于仓库之外。构建使用白名单，不收集 `.git`、运行状态、缓存、凭据或本次报告。\r\n\r\n## 标题后处理、阴影与接口修订验证\r\n\r\n本轮按协议 07 中可执行示例验证真实 PPTX 属性、保留对象、输入输出哈希和复用；示例的 adjusted 仅代表参数已应用，视觉结果另行观察。新增错误样本包括映射/内容不一致、受保护对象、分组不明、来源或参数变化、非标题变化和旧验收证据。模型阴影判断与自然换行不能用填写 PASS 的 JSON 代替。\r\n\r\n本轮修改通过 heading_refine_scope 的精确差异还原先回到 2026-10-02T17:27:14Z 源码，再进入原 title_scope 保护链；不替换历史基准哈希。旧自由模式、审批、下载、画布、付费和合并行为保持原断言。报告首表反映当前结果，事件历史独立保留。\n\n## WPS 备用与 Python 条件提醒验证\n新增 office_scope 精确差异还原先回到本轮来源基线，再进入 heading_refine_scope/title_scope；旧基线及行为断言保留。普通测试模拟两种应用，不启动真实 Office。WPS integration 使用合成输入进行原生合并、重开、编辑保存、错误页序与图片负例；仅操作本次文档。跨应用字体差异另记，其他 WPS 版本和复杂对象不据此声明兼容。Python 指引的静态检查、程序依赖诊断和实际 agent 行为分开记录。\n\n## 二维与图形身份修订验证\nvisual_text_scope 精确还原本次差异后进入原 office_scope / heading_refine_scope / title_scope / publication 保护链；旧哈希与行为断言保留。仅共享文字计划验证器增加可选 graphic_identity 分支，准确内容角色继续走原校验。独立识别与最多两张图的实际消字是此次开发验收，原始图片、提示词、模型输出和失败日志保存在项目 work，不进入运行包；不增加 skill 的运行阶段、审批或常规材料。\n"
+    }
+  ]
+}

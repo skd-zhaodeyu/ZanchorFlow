@@ -45,6 +45,8 @@ def remove_once(text,fragment):
     return text.replace(fragment,'',1)
 
 def inherited_doc(rel,text):
+    from title_scope import normalize_doc as normalize_title_doc
+    text=normalize_title_doc(rel,text)
     from publish_scope import normalize_doc
     text=normalize_doc(rel,text)
     if rel.startswith('references/03_'):

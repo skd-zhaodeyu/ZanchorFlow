@@ -1,0 +1,358 @@
+{
+  "source_updated_at_utc": "2026-10-02T17:27:14Z",
+  "baseline": {
+    ".gitattributes": "0402ec41d4c371be67db21ae4b8b6d486007e676caae0947746d280784de5158",
+    ".gitignore": "48a6cba1c61947416a9f1c701338d9674ad00498e30989254e1dc196fea35a82",
+    "LICENSE": "af5161bf518cc3630861a895692be5fae6cae92ed409f0da2546b3d10d72009d",
+    "README.md": "199aca697e9edae68ea12a62204e23fcf7371b6d3648bf72de29fb8743915ef2",
+    "requirements-dev.txt": "a790f14c61e621e31ee32e96d61f89fc57ecb122944e05dcbe12851200818a6c",
+    "dist/zanchorflow.zip": "a945a6d53d9ecfdeba7f91bb475faa534668908cdfc8d2b4a8f35de4a7ab7b8c",
+    "dist/zanchorflow.zip.sha256": "c2e0ae6eaea9c8ee81b2482a261b739c356918db94e7209975645e14fce6598a",
+    "docs/development.md": "02d8e417511a4613de2cdb25a183e7d51f900c81c5727ce25a8f1b859c8ba49d",
+    "docs/implementation-notes.md": "fa53130188ea82b278beb93b7dc601fd815a05981bd54752c5be913454baa982",
+    "tools/build.py": "85b7f7ebcb2fde8242ecbe911e292e7da6155f44e649d6c7b5a6ffa566f3355a",
+    "tools/check_public.py": "48733c82585e88bef3446184da6d845ed6673314be7fe6c065484e03cd751efd",
+    "zanchorflow/LICENSE": "4bfc6319be7f06e42c02098b6ed8f5fa60a690a45593d368d009ecebdf9ae38b",
+    "zanchorflow/manifest.yaml": "faf80614195d6134f383da7300095abcac60692f6aa5d900d3701b49bf083dd7",
+    "zanchorflow/pytest.ini": "ac9a0ba54716b2a3a0113be66719419bf081daa58f405a8defebc7897cc5d0da",
+    "zanchorflow/requirements-base.txt": "6186da598b608294da612d6c3fedd0e8bb2578feb24c05118e327f709be315b8",
+    "zanchorflow/requirements-image.txt": "0002c329f2807a6e8d97f2121a85d7df0abaf8e282563fc6c9e2f49ab415d2b9",
+    "zanchorflow/requirements-office.txt": "d24bf860507e72d9c0d64ccca9c2eba37c914a5bc0f629356382511d7b994147",
+    "zanchorflow/SKILL.md": "43591e7adc12f773dab3e3bb7b20d9c2b4b344c287387a0140c14989303ac480",
+    "zanchorflow/docs/codex-canva-bridge.md": "721912ce526ff251c8b12361e5bf8fbed98872ddaa8f589e6ef68138c5a90f4e",
+    "zanchorflow/docs/image-layer-backend.md": "0ca779f1c37eb3012becc93a7f45aea688b09841371172ab366154b37469e7d0",
+    "zanchorflow/docs/image-layer-box-selection.md": "51b653af8f9e8a5d9ebc091fc303ebb8ce1fcbb26914b7d6a5ccad85927d05e1",
+    "zanchorflow/docs/installation.md": "2058a0691d9a4963d4edfffbf0dfd4e6d174121ca9a390b646bd1a6ed763fe1a",
+    "zanchorflow/references/01_PPT内容架构与大纲生成协议_v1.2.md": "cb09da079639b35730308dcc35399da0fa022adfb15c5596ab93e48dd014e9f0",
+    "zanchorflow/references/02_Stage1至Stage2语义接口协议_v1.0.md": "db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2",
+    "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md": "a6bff438b6a60d846097c07492d88163af5c3a905454feecb56f116ee8c5871a",
+    "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md": "71eaed27c1f0ddb9cfa8cdbdc36538448997437b87cfcc00ad6b429e58fd70d2",
+    "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md": "dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb",
+    "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md": "3e9e26e88ce838fda5c8ee3957379d6a97656fb0183b16c3599c1c171d83d5cc",
+    "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md": "80e769ac836684d4c2a0fe65e8487b23ae7a30eb5392dcda499ef4ce061e8c54",
+    "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md": "1008d15901c7999aacf105d184fea398f2d8be7afac9666765ce46262ca0a588",
+    "zanchorflow/scripts/acquisition_request.py": "5696a4c475ea7796c24b0db9c562ef5f54b4e44f679f86755b4d4d79fa5ac949",
+    "zanchorflow/scripts/assemble_deck.py": "9d557fe6f6e862d4bfe0459182f4bec627f1e3e1c16c20253cdd37a51023e994",
+    "zanchorflow/scripts/canva_bridge.py": "0f45a70d38fe942c605cf56f8de6d2742fbc5e3a132c9d2312a36e75414a364c",
+    "zanchorflow/scripts/canva_pptx_finalize.ps1": "c05cbcfb20a9b7144e5a0310e8e84eae5ec5ab2cccd946d198bc27a8ff808107",
+    "zanchorflow/scripts/host_acquisition.py": "a5374798c7e176f14be7cf132b345c1e9a03cd17e1b2025f37cd88173eb77a6f",
+    "zanchorflow/scripts/layer_bridge.py": "790c456d6364bb89f29fd5401106d72a349a32a2856aa1e745d867f141e1158f",
+    "zanchorflow/scripts/layer_build_pptx.py": "47668f8b423ec8d8f2215d6c0a48f588ffb11166deb6ee2a04e73f225c659132",
+    "zanchorflow/scripts/layer_geometry.py": "bca60be7be50e4d62b7c0dd571f928e29b42a11c8a088b0ef09c38a10501ae3d",
+    "zanchorflow/scripts/layer_geometry_verify.py": "8331242ca29dcbb4bc45d9bcfb25b439cec0c09b9a4b29f09f2d97e4d459c756",
+    "zanchorflow/scripts/layer_package.py": "26c0eb2d7f8116ce6ea39e6e2ee5e6d743b5c2411fb346abdcf1cc95af891b59",
+    "zanchorflow/scripts/layer_policy.py": "9a5f35e44de84147d9424d63d81352e1c11fd0661b66a1dcf4bd3a8366efc904",
+    "zanchorflow/scripts/layer_provider_360.py": "94e2283a6d1465a02381139d7d9cd1de8bcd4f93364e3aa37f9cf05d6beaa658",
+    "zanchorflow/scripts/layer_review_boxes.py": "55fb595e12f8634c944c1e0ed15d19500fafb7cb92fbe53eb1f7815abe3ab060",
+    "zanchorflow/scripts/layer_validate_bundle.py": "f17ac3a44b9ec39609108ba18e4704b107bacf47fcbc34821216f81c702bc9d7",
+    "zanchorflow/scripts/merge_pptx.py": "e20887218fd4791bbdee14e0dc4751bb23498f75ceacd062a369862bdc7e05e7",
+    "zanchorflow/scripts/package_skill.py": "566aa5ee56dbaea0a69e78efcd9399d5afcf1c23262c7020706ff2bec785c037",
+    "zanchorflow/scripts/preflight.py": "4fdebf04442adc6b8f0fca611b59ca24ef1a6d50a439eb109e5ff1a980741cc6",
+    "zanchorflow/scripts/reconstruction_router.py": "5f18ab507a373cb499909e53f08abb8bc59edb3f1a6feabedd1a309edef7e550",
+    "zanchorflow/scripts/runtime.py": "0a1958e14374cf1015628500f0baa2c4ec3db6a3dd94708b89568bc34bc84d2e",
+    "zanchorflow/scripts/title_policy.py": "e08b2ce08ae9ee36aa3759a09ea6d97585b29a08a8ad7d9bd42b3764df7c834f",
+    "zanchorflow/tests/publish_scope.json": "38fbd84bd9330fb92d34b4a7061f6037cb7c2d7ac9f73e145de7cb2c9edf310c",
+    "zanchorflow/tests/publish_scope.py": "270dd021d7ffe2e977ba1b39335e2620b7aaec62491fb3697ae88bdf6a245161",
+    "zanchorflow/tests/refinement_scope.py": "10624085d43aba3bb05159ddbc5c989f65dff153d47a43c5f3ed279c9fe39249",
+    "zanchorflow/tests/stage2_test_helpers.py": "f67dd8207ea30ad8adda8d2e087ea28256fa7b5a7f8e94b4dfa7288cb406e159",
+    "zanchorflow/tests/test_acquisition_request.py": "ead42a82a4e66035762b308cc3af4f838b19fdf00ee294b6f19270d5298d90e9",
+    "zanchorflow/tests/test_agent_contract.py": "690bc08d616c9a3c390113f6af249a7640051b19a870b79dbecc18d5836205b4",
+    "zanchorflow/tests/test_anchor_formal_candidates.py": "c529791855f00c98e75889bf3699cf82c8959663d46516e92b89f7a9f318466a",
+    "zanchorflow/tests/test_canvas_adaptation.py": "1669c2742d99b17c122e18c48efe41f244c9864ed78f754315f3471c45c3e868",
+    "zanchorflow/tests/test_deck_lineage.py": "a1597e5282724d4dbae4bdcc9d971bc1a03f266f4d7159233cd29e58a8d296f7",
+    "zanchorflow/tests/test_download_provenance.py": "2fbc89ff0695810e4baddb391fcb6a4c7413b31f3c558135e9d59d66b2f10c99",
+    "zanchorflow/tests/test_host_acquisition.py": "675501f9af508ff4d7c157b73193967f70135a42b5b86a7e18bcbf5d9639e27d",
+    "zanchorflow/tests/test_host_compact.py": "666d41b4f3636e362f0989d6921ba20fbe103002306f02fb07844eab2b38d3dc",
+    "zanchorflow/tests/test_host_strategy.py": "649c65df43060baaa47e2e34804385a93b383d346adc48dc44c80ac5a19863f5",
+    "zanchorflow/tests/test_image_layer_assembly.py": "f187749aa477dfb955ee158454926ddd40b7146c7ae48dc85d8e9fee167880c2",
+    "zanchorflow/tests/test_integrity.py": "9586854aa7895927c5bbbb8d145976be34c9126cd388cd48dd2ec7e02eec9b4e",
+    "zanchorflow/tests/test_layer_bridge.py": "33f98ca344c69f926fc816035b03c32ff99dd2ae3e47bb918573b141df84dbab",
+    "zanchorflow/tests/test_layer_bundle.py": "ce8156230926a4b237333e4f2de50b498437ef0598deb57312c22e1dc6f40cfa",
+    "zanchorflow/tests/test_layer_geometry.py": "07c07a1c2705887e8132585b8a081c4c909abc93e45ca495f7c1d1da3ba47d08",
+    "zanchorflow/tests/test_layer_plan.py": "39eb7742ac977b1d9411d6b65228cccac143763a32cf8fc78d5e287f8222e07f",
+    "zanchorflow/tests/test_layer_pptx.py": "8f032cc87b4361732462a0db3f2a377ceedc50773b76acde9c7a0c7ed1d3e0dd",
+    "zanchorflow/tests/test_layer_provider_360.py": "332763c1034712968eb123ca076ba5e01b65385facfe30e2c6c8baa5953e40f3",
+    "zanchorflow/tests/test_layer_revision.py": "9e9b5f89720d9fdbe7a6ce29192f83867146ac909e3c929151d07cb71d057d50",
+    "zanchorflow/tests/test_lineage_contract.py": "10f4e439817b5ed3356d51d5d566747ac8f5eed7ff1d367f8daf352a958458c7",
+    "zanchorflow/tests/test_magic_layer_freeze.py": "d941fc5ed87772ba4a6f37320bb83d99dac1d550a7c2fa0379a6154035abd27f",
+    "zanchorflow/tests/test_merge.py": "6841b4a12c06d5018046895cda7e1be98b4da62f44a996d9d94d117e3a3b1c75",
+    "zanchorflow/tests/test_merge_oracle.py": "efb878857dd6e2e7d346aa5e503b156f437641c0b317660205335bbfa759d3de",
+    "zanchorflow/tests/test_native_merge.py": "25b8110ec437e9db50c61acb6f18f5fa1e6ca7a3f2789b4496ec264fb7b1f6fd",
+    "zanchorflow/tests/test_noncover_display_typography_contract.py": "2b24bf8a97e9124864a103edac039131a47139a16bfd0737789ee49337c98dc1",
+    "zanchorflow/tests/test_package.py": "aba7e52274093c43bf3bab9fbcc38ef2da18625808ee199d5e8436baf6536861",
+    "zanchorflow/tests/test_post_merge_editability.py": "6492e99fd9fbb7983675fc12ea03d2659134f127b9c0c44263f5de9bc565b584",
+    "zanchorflow/tests/test_preflight_scope.py": "ee429a5f73b0c83258d3143f0e22a9e88a005b5eb5d12d8677ad15d988271212",
+    "zanchorflow/tests/test_protocol_rc17_contract.py": "baeb38fdbdaf95e19a9f3f69e27e2cfc435cbf885d297dcd346f48ab8a1b3026",
+    "zanchorflow/tests/test_protocol_rc17_representation_contract.py": "ae65656c7be1e9f78970d0f6446632df5a4f89e122e855c0ea1a18d78ba623eb",
+    "zanchorflow/tests/test_publish_canvas.py": "7b8b503639f7e55b45bacf73798f90e72087e726b75e1543422798e704a8c8ba",
+    "zanchorflow/tests/test_rc17_pre_stage3_contract.py": "e648a620617e38b0d324ad1a1b25560f68d887063b00c09fbca570f0b2084d2b",
+    "zanchorflow/tests/test_rc18_change_contract.py": "d4cb68a61819a33bf3f6add7fe31949d1a0d9211dc23bb8befac12ef9157604d",
+    "zanchorflow/tests/test_reconstruction_backend_router.py": "c268b5e3c8c54d7c4ff5527482fd62a9d274a89c229f47982b0f51f68976808a",
+    "zanchorflow/tests/test_refinement.py": "d11c3b5bf2a26db203f085c19a719bfc6dfec9885ffa8b61b8b31d1e16f78b48",
+    "zanchorflow/tests/test_revision_identity.py": "5f859fa513028ead7fae568d42d27cf3f5303d916eaa43d7f9651c3e2760a082",
+    "zanchorflow/tests/test_runtime.py": "cae97a795c4481d5d1f2027d2426a4b1d482c0a4ecec7d5ce8b9e2a266a1683d",
+    "zanchorflow/tests/test_stage1_review.py": "d9e9e1fb0b00dedf358169173da9158de107de94b637479dae8edaaa53903870",
+    "zanchorflow/tests/test_stage2_qualification.py": "be70e502e052913a46380b19f026af35ce1edf8a9e252e268cde0dba6962511f",
+    "zanchorflow/tests/test_stage2_visual_approval.py": "cd0ce5a03e8c2399388f1c4e03166eb7a4aebfb363044fd76b799befd3a54df1",
+    "zanchorflow/tests/test_stage3_graphic_typography.py": "91f37c90077bfdb46be8f9b961121a3cd0b12f5bf3edd14f5e4aa441498d835b",
+    "zanchorflow/tests/test_title_policy.py": "0d24900d826bc127b53bf032eeb2d1e7144a2d4c5d4561fd984148d44890de32",
+    "zanchorflow/tests/test_title_routes.py": "462f57e52f88822095403d09251fad390336146dd0449819f73944b081b437d2",
+    "zanchorflow/tests/test_version_contract.py": "2a5f79c68a98e2730ec9987368abf670a1eb9ac3cd92bfd60d2aeebc0ba0a0c2",
+    "zanchorflow/tests/title_scope.json": "0e582ff347cc521d8f1e8c011427b3b9347064f2da9dc806935e05dfe2b76eec",
+    "zanchorflow/tests/title_scope.py": "58fc18c9f616da95370b27ca11386f35362914710ff9981983a52337af2a7a52",
+    "zanchorflow/tests/evals/rc16_8_stage2_behavior_eval.md": "c44610a4802aa738030d34440208d9d786abc63afbba98b8713b9f6e37d98ab8",
+    "examples/image-layer/overview.png": "d1f7830c6591c466559081ded4a92297d732250e0f0dfd3bbe3be23a80192b09",
+    "examples/image-layer/presentation.pdf": "0ad7166e7f24dd53fc4b5c257a659fcfba20587067890204d4ebb4c83f2b8644",
+    "examples/image-layer/presentation.pptx": "4d4108607374aebecbc7d908ff58b2f3dee3aa3ea02bd445352dddaaefe2749d",
+    "examples/image-layer/README.md": "5bfdc9c93eba807de163b92f04ce7506ecb49038dc4c4ffbe820cd2473015c7e",
+    "examples/image-layer/representative.png": "47862d6ef2922b3f59def12f48d19202197a1b1feae025a839061120ec20eecb",
+    "examples/magic-layer/overview.png": "aabd3c1cb22b3caf7c81c4f78d43e03c1284385ca2ba6b37b064da36cbe37cb4",
+    "examples/magic-layer/presentation.pdf": "d1577e536c542316520482ec9a391d0c80a4a1ec380c51f024c43f115d946636",
+    "examples/magic-layer/presentation.pptx": "0e9d11911f6b36e1ed8ccb36e12556c8fd2d5ec3695aa8fac61caf10cb5c8da3",
+    "examples/magic-layer/README.md": "a3287133b6b0e6ec1be9f53cf122d8e820604e282c94022b3cc19a73cd5dddc7",
+    "examples/magic-layer/representative.png": "6ad2c74259fe8036b75f8d7206e6b18516f9fb8330baadeb689cdf87fa6482e0",
+    ".github/workflows/validate.yml": "af79dd79d9cd952c7226b88481784881390bd95f28aa407512b665a1d552fe22"
+  },
+  "patches": [
+    {
+      "path": "scripts/title_policy.py",
+      "repo_path": "zanchorflow/scripts/title_policy.py",
+      "old": "ROLES = {'cover', 'content', 'toc', 'section', 'thanks', 'display'}",
+      "new": "GENERATION_GUIDANCE = '生成时优先保持标题区域和对齐；同一区域内可安全恢复的字体、字号、字重及轻微位置差异记录后继续，在每页全部文字恢复后独立统一主标题。'\r\nROLES = {'cover', 'content', 'toc', 'section', 'thanks', 'display'}"
+    },
+    {
+      "path": "scripts/title_policy.py",
+      "repo_path": "zanchorflow/scripts/title_policy.py",
+      "old": "    result.update(heading_requirement=NORMAL_HEADING, applies=sid is not None and _eligible(policy, sid))",
+      "new": "    applies = sid is not None and _eligible(policy, sid)\r\n    result.update(heading_requirement=NORMAL_HEADING + (GENERATION_GUIDANCE if applies else ''), applies=applies)"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--outline')",
+      "new": "    parser.add_argument('--outline', help='Six-field slides JSON: page_task, title, core_expression, key_information, semantic_relation, acceptance_criteria; page IDs are runtime-managed.')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--evidence')",
+      "new": "    parser.add_argument('--evidence', help='Observable hard-failure evidence for REVISE/REJECT; PASS observations use --review-notes-json.')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--correction')",
+      "new": "    parser.add_argument('--correction', help='Targeted correction for REVISE/REJECT, not a PASS note.')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--replan-evidence')",
+      "new": "    parser.add_argument('--replan-evidence', help='Actual replan evidence for REJECT, not a PASS note.')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--review-notes-json')",
+      "new": "    parser.add_argument('--review-notes-json', help='JSON mapping of PASS observations/residual differences; does not authorize retries.')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "    parser.add_argument('--contract-json')",
+      "new": "    parser.add_argument('--contract-json', help='Current Title Contract payload; max_lines=2 is a ceiling, not the observed line count.')"
+    },
+    {
+      "path": "references/01_PPT内容架构与大纲生成协议_v1.2.md",
+      "repo_path": "zanchorflow/references/01_PPT内容架构与大纲生成协议_v1.2.md",
+      "old": "## Runtime dispatch: Outline review and reply\n",
+      "new": "## Runtime dispatch: Outline review and reply\n\n### Minimal six-field input and Windows encoding\n\nThe package manifest is manifest.yaml. Before these Python commands in a Windows session:\n~~~powershell\n$env:PYTHONUTF8='1'\n$env:PYTHONIOENCODING='utf-8'\n~~~\nA minimal valid JSON shape (expand content for the real task; do not add slide_id):\n~~~json\n{\"slides\":[{\"page_task\":\"说明工作流程\",\"title\":\"从内容到交付\",\"core_expression\":\"先明确内容，再生产页面\",\"key_information\":[\"确认内容与语义关系\",\"确定视觉方向\",\"逐页生产与验收\"],\"semantic_relation\":\"顺序流程\",\"acceptance_criteria\":[\"三个步骤完整且关系正确\"]}]}\n~~~\nRuntime manages page identity separately. Keep the actual author review and approval below.\n"
+    },
+    {
+      "path": "references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "repo_path": "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "old": "The numbers above are illustrative, not universal font/area limits. Measure the actual source and use coordinates normalized to the existing mapped content rectangle. title_region reserves up to two lines; visual_bbox_normalized remains each page's actual visible glyph envelope. Never convert raster pixels directly to points. Keep the shared intended glyph scale, line spacing and first-line alignment, with existing finite Native Text Visual Fit calibration. Long headings wrap to at most two lines; further overflow needs actual author shortening or local exception, never silent shrink/truncation/content alteration. Keep chosen/fallback heading families consistent before Manifest freeze; preserve original available-font and fit rules.",
+      "new": "The numbers above are illustrative, not universal font/area limits. Measure the source in the existing mapped content rectangle. max_lines=2 is a maximum, not the observed count or an instruction to enlarge a single-line region into occupied body space. title_region and each page's actual visual_bbox_normalized are separate evidence. Never treat raster pixels as PowerPoint points. Choose common available/fallback families before Manifest freeze. Restore all page text with the original Native Text Visual Fit first, then use Reference 07's independent primary-title postprocessing with calibrated common native parameters. Long headings keep the common point size and wrap within real available space to at most two lines; further overflow uses existing author shortening/local exception. The frozen Title Contract, Manifest and source bindings stay unchanged."
+    },
+    {
+      "path": "references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "repo_path": "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "old": "Qualification already decides normal heading versus evidenced H2 dominance: prominence or size alone is not failure.",
+      "new": "Qualification already decides normal heading versus evidenced H2 dominance: prominence or size alone is not failure. When inheriting a standard, preserve the approximate title area and alignment. A material left-to-center or top-left-to-top-center change calls for an existing targeted correction; safe font/size/weight or minor position differences in the same area are review notes and native postprocessing work, not a raster-similarity failure."
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 轻微渐变与极轻阴影，仅用于层级而非实体体积。",
+      "new": "- 图形化渐变、平面偏移衬底和层级阴影，用于信息层分离与边界辨识；不以实体体积或物理空间为主要机制。"
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "# 9. Shadow Guard\n\n允许极轻阴影，仅用于：\n\n- 平面信息层分离；\n- 浅背景下提高容器边界辨识；\n- 非物理性的轻微层级提示。\n\n禁止：\n\n- 明显落地阴影；\n- 强方向性投影；\n- 大面积模糊阴影；\n- 卡片明显悬浮；\n- 使用阴影表现物体厚度；\n- 使用阴影把设备塑造成实体；\n- 明显长阴影（long shadow）制造空间方向或实体感。\n\n原则：\n\n> Shadow may separate flat layers, but must not place objects in physical space.\n\n---\n\n",
+      "new": "# 9. Shadow Guard\n\n在默认 FLAT_2D 下，允许平面偏移衬底、色块投影、遮挡以及非物理性的图形层级。它们可以通过色块对比、轮廓和前后关系提高辨识，不要求因为一个暗色偏移形状而删除已成立的设计。\n\n审核依据是实际机制：只有投影与连续侧壁、厚度、体积光照或明确的物理落地/悬浮关系结合，实质形成原 §6 Level 2 的实体或空间模拟时，才按当前冻结规则判定。阴影长度、深浅、方向或单个偏移色块本身不构成 H2 证据。证据不足时写 review_notes，不把推测的“物理悬浮”写成确定事实。\n\n若作者明确禁用阴影或冻结了特殊渲染模式，仍遵循该当前要求。此说明不覆盖上游显式约束。\n\n确有体积违规时，正向修订为平面衬底、轮廓、色块对比或遮挡关系，保留语义、构图概念和其他合格对象，仅处理违规机制。\n\n> Use graphic backing and layer contrast to separate information; evaluate evidenced physical volume under the current frozen mode.\n\n---\n\n"
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- 极轻层级阴影；",
+      "new": "- 符合 §9 的平面衬底或图形层级阴影；"
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "Use gradients and shadows only very subtly for hierarchy;\nnever use them to create physical volume, depth, realistic materials\nor camera-like lighting.",
+      "new": "Use graphic color contrast, flat offset backing, overlap and layer separation for hierarchy.\nA flat shadow graphic can remain part of the selected 2D medium; judge the whole mechanism,\nnot its length or direction alone. Preserve explicit upstream no-shadow or special-mode requirements.\nFor evidenced volumetric violations, flatten that local mechanism while preserving meaning and layout."
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "- **volumetric primary object**：主视觉对象依靠明显顶面 / 侧壁 / 厚度 / 体积阴影成立 → `FLAT_2D: H2`；定向修订只平面化违规对象。",
+      "new": "- **flat offset backing**：偏移暗色色块作为平面衬底，整页没有实体厚度或体积机制 → `FLAT_2D: PASS`；可记录边界备注，不因阴影本身返工。\n- **volumetric primary object**：主视觉对象依靠明显顶面 / 侧壁 / 厚度 / 体积阴影成立 → `FLAT_2D: H2`；定向修订只平面化违规对象。\n- **explicit no-shadow**：当前上游明确禁用阴影 → 保持该约束；可用轮廓或色块对比达到层级目的。"
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "Existing H2 still handles an evidenced unauthorized title-primary composition before PASS.",
+      "new": "Keep the inherited title area/alignment during generation: material top-left to top-center or left to center changes use the existing targeted revision. In the same approximate area, readable font/point-size appearance/weight or minor position differences that do not obstruct or compress content are review_notes and later native postprocessing work; do not infer exact point-size percentages from different raster strings. Existing H2 still handles an evidenced unauthorized title-primary composition before PASS."
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "## Runtime dispatch: Candidate review, formal display and handoff\n",
+      "new": "## Runtime dispatch: Candidate review, formal display and handoff\n\nPASS observations and deferred title differences go in a JSON mapping via --review-notes-json. --evidence, --correction and --replan-evidence describe the corresponding REVISE/REJECT failure, not a PASS. Qualification is an observed page judgment; Runtime stores it and does not independently judge image aesthetics.\n"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "Measure visual_bbox_normalized from each actual Approved Render, independently of the shared reserved title_region. Normalize against the existing source/content rectangle and apply the original approved canvas mapping. Choose available matching and common fallback fonts before freeze; apply shared title targets only to listed native elements through the existing Native Text Visual Fit, with its existing bounded calibration. No PNG-pixel-to-point conversion, silent long-heading shrinking or frozen-plan rewriting.",
+      "new": "Measure visual_bbox_normalized from each actual Approved Render independently of the shared title_region. Use the existing approved source/content mapping. Choose available matching/common fallback fonts before freeze. First restore every page element using the original Native Text Visual Fit; then independently apply calibrated common title parameters only to listed restoration-created native elements, before the existing four Gates and seal. This sequence replaces applying two targets during restoration. No raster-pixel-to-point substitution or frozen-plan rewrite is needed."
+    },
+    {
+      "path": "references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "repo_path": "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "old": "Native Text Visual Fit 结束后才进入最终单页质量门。",
+      "new": "Native Text Visual Fit 结束后，若当前普通正文页启用统一标题，按协议 07 的独立标题后处理调整本页原生主标题，再进入最终单页质量门；其余页面保持原顺序。"
+    },
+    {
+      "path": "references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "repo_path": "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "old": "<!-- TITLE_POLICY_END -->",
+      "new": "The optional sequence is: all native text restored -> independent primary-title adjustment -> existing four Gates and seal -> final deck title notes. Intentional bound title formatting is reviewed against the common native target, while text truth/readability and non-title graphics retain their original checks. Bind reviews to final postprocessed bytes; do not rewrite frozen inputs or redo remote reconstruction. Final title residuals are disclosed without automatic page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->"
+    },
+    {
+      "path": "references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md",
+      "repo_path": "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md",
+      "old": "<!-- TITLE_POLICY_END -->",
+      "new": "The optional sequence is: all native text restored -> independent primary-title adjustment -> existing four Gates and seal -> final deck title notes. Intentional bound title formatting is reviewed against the common native target, while text truth/readability and non-title graphics retain their original checks. Bind reviews to final postprocessed bytes; do not rewrite frozen inputs or redo remote reconstruction. Final title residuals are disclosed without automatic page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "<!-- TITLE_POLICY_END -->",
+      "new": "\n### Independent primary-title postprocessing: priority, evidence and example\n\nEach page follows: all text restored -> primary-title adjustment -> original four Gates and seal. First restore content/actual glyph evidence normally. For deliberate font, point size, weight, alignment or position changes under the adopted Title Contract, judge the title against the common native parameters instead of rolling back to its raster appearance. Still inspect actual content, wrapping, visibility, clipping, overlap and nearby relationships. Non-title objects retain the original visual/retained-graphics checks; the entire title region is not excluded.\n\nFreeze one native parameter snapshot for a current run/contract, approved canvas and effective common font using the existing finite visual calibration. Record actual point size and calibrated first-line offset; do not independently recalibrate point size from every page's raster. Preserve the source image/Manifest and fallback bindings. Keep snapshots and page records in work and reference their paths/hashes in the existing visual_fidelity evidence. The added records are audit evidence, not a new Runtime stage or an automatic visual classifier.\n\nThe example below is executed on an already-restored single page. Before calling it, use current stage2-title-context and existing Manifest/currentness checks. request is a local work record, not a public Runtime API:\n- binding: run_id, slide_id, contract_ref, canvas_size_emu, effective_font, restored_input_sha256 and manifest_digest (canonical JSON SHA-256 of the frozen Manifest).\n- native_snapshot: identity contains run_id/contract_ref/canvas_size_emu/effective_font; max_lines is 2; style contains title_region, font_size_pt, bold, color, alignment, first_line_baseline, first_line_offset_emu and line_height_ratio. These are calibrated native parameters, not inferred raster point values.\n- native_snapshot_sha256, manifest and element_shapes: verified immutable snapshot digest, frozen Manifest, and actual element ID -> shape ID mapping saved during restoration.\n- created_native_shape_ids and protected_shape_ids: actual restoration-created TextBoxes and retained original objects; no matching by content strings.\n- content_rect_emu: the existing current mapping's [x,y,width,height]. Image Layer uses its already approved content rectangle, not backend resolution. For a full-canvas path use the current approved slide rectangle.\n\nSingle-box titles adopt the shared area/baseline. Multi-box titles need a reliable existing text_group_id/group_sequence: style is applied per box and the block is translated together, keeping order/relative geometry. Unsupported identity/grouping produces not_adjusted with an actionable note; retain the recovered editable page. The example does not decide author approval, font availability, aesthetic qualification or natural-wrapped line count. Inspect the rendered page for at most two lines and content obstruction using the existing checks. Further overflow follows existing author shortening/local exception; never auto-shrink text.\n\nUse new work output and record paths. The original recovery file remains untouched. Reuse requires current binding, request and output hashes. An adjusted result means parameters were applied, not that visual review passed. Four-Gate and applicable canvas_mapping records must contain the final output hash and actual observations; recompute the original retained-object verification, not just its hash field. Office save validation uses a copy and any changed candidate must be rechecked.\n\n~~~python\n# TITLE_POSTPROCESS_EXAMPLE_BEGIN\nimport hashlib, json, math, zipfile\nfrom pathlib import Path\nfrom lxml import etree\nfrom pptx import Presentation\nfrom pptx.enum.shapes import MSO_SHAPE_TYPE\nfrom pptx.enum.text import MSO_AUTO_SIZE, PP_ALIGN\nfrom pptx.dml.color import RGBColor\nfrom pptx.util import Pt\n\ndef _title_digest(value):\n    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,\n                                     separators=(\",\", \":\")).encode(\"utf-8\")).hexdigest()\n\ndef _title_file_sha(path):\n    return hashlib.sha256(Path(path).read_bytes()).hexdigest()\n\ndef _title_resources(path):\n    with zipfile.ZipFile(path) as z:\n        return {n: (hashlib.sha256(z.read(n)).hexdigest() if n.startswith(\"ppt/media/\")\n                    else sorted(tuple(sorted(e.attrib.items())) for e in etree.fromstring(z.read(n))))\n                for n in z.namelist() if n.startswith(\"ppt/media/\") or n.endswith(\".rels\")}\n\ndef adjust_primary_title(source, output, record_path, request):\n    \"\"\"Apply only calibrated native parameters; result is not a visual PASS.\"\"\"\n    source, output, record_path = map(Path, (source, output, record_path))\n    input_sha = _title_file_sha(source)\n    request_sha = _title_digest(request)\n    binding, native = request[\"binding\"], request[\"native_snapshot\"]\n    result = {\"binding\": binding, \"input_sha256\": input_sha, \"request_sha256\": request_sha,\n              \"native_snapshot_sha256\": _title_digest(native), \"visual_review\": \"pending\"}\n    def finish(status, reason, **extra):\n        note = dict(result, status=status, reason=reason, **extra)\n        if not record_path.exists():\n            record_path.parent.mkdir(parents=True, exist_ok=True)\n            with record_path.open(\"x\", encoding=\"utf-8\") as stream:\n                json.dump(note, stream, ensure_ascii=False, indent=2)\n        return note\n    if record_path.exists():\n        old = json.loads(record_path.read_text(encoding=\"utf-8\"))\n        if (old.get(\"status\") == \"adjusted\" and old.get(\"input_sha256\") == input_sha\n                and old.get(\"request_sha256\") == request_sha and old.get(\"binding\") == binding\n                and output.is_file() and old.get(\"output_sha256\") == _title_file_sha(output)):\n            return dict(old, reused=True)\n    if source.resolve() == output.resolve() or output.exists():\n        return finish(\"not_adjusted\", \"Use a new output/record path; preserve existing bytes.\")\n    if input_sha != binding[\"restored_input_sha256\"]:\n        return finish(\"not_adjusted\", \"Restored input no longer matches the saved binding.\")\n    if _title_digest(native) != request[\"native_snapshot_sha256\"]:\n        return finish(\"not_adjusted\", \"Reload the immutable native parameter snapshot.\")\n    shared_keys = (\"run_id\", \"contract_ref\", \"canvas_size_emu\", \"effective_font\")\n    if any(native[\"identity\"].get(k) != binding.get(k) for k in shared_keys):\n        return finish(\"not_adjusted\", \"Resolve current run/contract/canvas/font before reuse.\")\n    manifest = request[\"manifest\"]\n    if (_title_digest(manifest) != binding[\"manifest_digest\"]\n            or manifest.get(\"slide_id\") != binding[\"slide_id\"]\n            or manifest.get(\"title_contract_ref\") != binding[\"contract_ref\"]):\n        return finish(\"not_adjusted\", \"Reload the current frozen Manifest.\")\n    ids = manifest.get(\"title_element_ids\", [])\n    if not ids:\n        return finish(\"not_adjusted\", \"No native primary title; preserve the graphic/local exception.\")\n    elements = {e[\"id\"]: e for e in manifest[\"text_elements\"]}\n    mapping = request[\"element_shapes\"]\n    if len(ids) != len(set(ids)) or any(i not in elements or i not in mapping for i in ids):\n        return finish(\"not_adjusted\", \"Recover the occurrence-to-shape mapping from restoration.\")\n    shape_ids = [mapping[i] for i in ids]\n    if (len(shape_ids) != len(set(shape_ids))\n            or any(s not in request[\"created_native_shape_ids\"] for s in shape_ids)\n            or set(shape_ids) & set(request[\"protected_shape_ids\"])):\n        return finish(\"not_adjusted\", \"Only restoration-created primary TextBoxes may be adjusted.\")\n    prs = Presentation(source)\n    if len(prs.slides) != 1 or [prs.slide_width, prs.slide_height] != binding[\"canvas_size_emu\"]:\n        return finish(\"not_adjusted\", \"Use the current single-page approved canvas.\")\n    slide = prs.slides[0]\n    shapes = {s.shape_id: s for s in slide.shapes}\n    for i, sid in zip(ids, shape_ids):\n        e, s = elements[i], shapes.get(sid)\n        if (s is None or s.shape_type != MSO_SHAPE_TYPE.TEXT_BOX\n                or e.get(\"representation_role\") != \"native_text\"\n                or e.get(\"treatment\") != \"remove_and_restore\"\n                or s.text.replace(\"\\v\", \"\\n\") != e[\"content\"]):\n            return finish(\"not_adjusted\", \"Verify native title identity/content; preserve this file.\")\n    if len(ids) > 1:\n        group = elements[ids[0]].get(\"text_group_id\")\n        if (not group or any(elements[i].get(\"text_group_id\") != group for i in ids)\n                or any(not isinstance(elements[i].get(\"group_sequence\"), int) for i in ids)\n                or len({elements[i][\"group_sequence\"] for i in ids}) != len(ids)):\n            return finish(\"not_adjusted\", \"Use reliable title grouping or report manual positioning.\")\n        ids = sorted(ids, key=lambda i: elements[i][\"group_sequence\"])\n        shape_ids = [mapping[i] for i in ids]\n    if any(elements[i][\"content\"].count(\"\\n\") + 1 > 2 for i in ids):\n        return finish(\"not_adjusted\", \"Use the existing author shortening/local-exception route.\")\n    style = native[\"style\"]\n    cx, cy, cw, ch = request[\"content_rect_emu\"]  # from the existing approved mapping\n    rx, ry, rw, rh = style[\"title_region\"]\n    values = [cx, cy, cw, ch, rx, ry, rw, rh, style[\"font_size_pt\"],\n              style[\"first_line_baseline\"], style[\"first_line_offset_emu\"], style[\"line_height_ratio\"]]\n    if (any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) for v in values)\n            or min(cw, ch, rw, rh, style[\"font_size_pt\"], style[\"line_height_ratio\"]) <= 0\n            or rx < 0 or ry < 0 or rx + rw > 1 or ry + rh > 1 or native[\"max_lines\"] != 2):\n        return finish(\"not_adjusted\", \"Use calibrated parameters and the approved content rectangle.\")\n    x, y, w, h = [round(v) for v in (cx + rx*cw, cy + ry*ch, rw*cw, rh*ch)]\n    top = round(cy + style[\"first_line_baseline\"]*ch - style[\"first_line_offset_emu\"])\n    if len(shape_ids) == 1:\n        geometry = {shape_ids[0]: (x, top, w, y+h-top)}\n    else:\n        dx, dy = x-min(shapes[s].left for s in shape_ids), top-shapes[shape_ids[0]].top\n        geometry = {s: (shapes[s].left+dx, shapes[s].top+dy, shapes[s].width, shapes[s].height)\n                    for s in shape_ids}\n    if any(bw <= 0 or bh <= 0 or bx < x or by < y or bx+bw > x+w or by+bh > y+h\n           for bx, by, bw, bh in geometry.values()):\n        return finish(\"not_adjusted\", \"Keep the recovered file; use the existing local layout/exception route.\")\n    order = [s.shape_id for s in slide.shapes]\n    untouched = {s.shape_id: etree.tostring(s._element, method=\"c14n\")\n                 for s in slide.shapes if s.shape_id not in shape_ids}\n    all_text = {s.shape_id: s.text for s in slide.shapes if s.has_text_frame}\n    for sid in shape_ids:\n        s = shapes[sid]\n        s.left, s.top, s.width, s.height = geometry[sid]\n        tf = s.text_frame\n        tf.auto_size = MSO_AUTO_SIZE.NONE\n        tf.word_wrap = True\n        tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0\n        for p in tf.paragraphs:\n            p.alignment = {\"left\": PP_ALIGN.LEFT, \"center\": PP_ALIGN.CENTER, \"right\": PP_ALIGN.RIGHT}[style[\"alignment\"]]\n            p.line_spacing = float(style[\"line_height_ratio\"])\n            p.space_before = p.space_after = Pt(0)\n            for font in [p.font] + [r.font for r in p.runs]:\n                font.name = binding[\"effective_font\"]\n                font.size = Pt(style[\"font_size_pt\"])\n                font.bold = style[\"bold\"]\n                font.color.rgb = RGBColor.from_string(style[\"color\"].lstrip(\"#\"))\n    output.parent.mkdir(parents=True, exist_ok=True)\n    with output.open(\"xb\") as stream:\n        prs.save(stream)\n    saved = Presentation(output).slides[0]\n    if ([s.shape_id for s in saved.shapes] != order\n            or {s.shape_id: s.text for s in saved.shapes if s.has_text_frame} != all_text\n            or any(etree.tostring(s._element, method=\"c14n\") != untouched[s.shape_id]\n                   for s in saved.shapes if s.shape_id in untouched)\n            or _title_resources(source) != _title_resources(output)):\n        return finish(\"not_adjusted\", \"Do not use the changed copy; retain the recovered file.\",\n                      rejected_output_sha256=_title_file_sha(output))\n    return finish(\"adjusted\", \"Parameters applied; inspect wrapping, visibility and neighbors before sealing.\",\n                  output_sha256=_title_file_sha(output), title_shape_ids=shape_ids,\n                  applied_geometry_emu={str(k): list(v) for k, v in geometry.items()},\n                  applied_style=style, effective_font=binding[\"effective_font\"], reused=False)\n# TITLE_POSTPROCESS_EXAMPLE_END\n\n~~~\n\n### Final deck title notes\n\nInspect title hierarchy, font consistency and visual fidelity using the existing deck checks. Deliberate title normalization and minor readable title residuals may PASS with explicit evidence notes; record unified/partial/not_adjusted separately instead of claiming exact consistency. List page, difference and manual edit location once. This title check never modifies sealed pages, starts repairs or adds confirmation. Actual content/structure/visibility failures remain under original checks. Image-only delivery discloses unresolved raster differences and does not claim native normalization has occurred.\n\n<!-- TITLE_POLICY_END -->"
+    },
+    {
+      "path": "SKILL.md",
+      "repo_path": "zanchorflow/SKILL.md",
+      "old": "For restoration load 07's optional heading reference.",
+      "new": "For restoration and independent title postprocessing load 07's optional heading reference; final title differences are notes, not automatic repairs."
+    },
+    {
+      "path": "SKILL.md",
+      "repo_path": "zanchorflow/SKILL.md",
+      "old": "Initialize new state with",
+      "new": "The package metadata file is manifest.yaml. Initialize new state with"
+    },
+    {
+      "path": "docs/codex-canva-bridge.md",
+      "repo_path": "zanchorflow/docs/codex-canva-bridge.md",
+      "old": "Save restored output at a new path, perform the four existing Hard Gates, then `seal-page`.",
+      "new": "Save restored output at a new path; for applicable uniform headings complete Reference 07's independent native-title postprocessing, then perform the four existing Hard Gates and `seal-page` against the final bytes."
+    },
+    {
+      "path": "README.md",
+      "repo_path": "README.md",
+      "old": "统一时，从首个合格普通内容页自动建立标准并供后续页面继承；",
+      "new": "统一时，从首个合格普通内容页自动建立标准并供后续页面继承；安全的字号、字体差异先记录，在每页文字恢复后独立调整主标题，整套检查只提示残余差异，不自动返修；"
+    },
+    {
+      "path": "docs/development.md",
+      "repo_path": "docs/development.md",
+      "old": "# 开发与验证\r\n\r\n源码仓库保留 zanchorflow/tests 及其相对路径；安装 ZIP 采用白名单分发，不包含开发测试。源码和分发包的运行内容逐文件一致。\r\n\r\n## 环境与测试\r\n~~~powershell\r\npython -m pip install -r requirements-dev.txt\r\npython -B -m pytest zanchorflow/tests -q -m \"not integration\" --ignore=zanchorflow/tests/test_native_merge.py --basetemp <project-work/pytest> -o cache_dir=<project-work/cache>\r\n~~~\r\n此命令不调用 Office 或远程服务，与 Windows CI 一致。使用独立 work 目录设置 TEMP/TMP 、PYTHONDONTWRITEBYTECODE=1 和 PYTHONUTF8=1；后者确保 PowerShell 输出解码不随本机 GBK/UTF-8 语言设置变化。\r\n\r\n本地安装 Microsoft PowerPoint/Excel 后，运行完整 tests；原生合并模块实际调用 PowerPoint COM，现有 integration 测试实际编辑文字、图形、图表和 OLE，保存并重新打开。离线表示不依赖网络/API，不表示无需 Office。跳过、未验证与通过分开记录，不能用规则检查代替真实模型/浏览器行为。\r\n\r\n原保护基准保留。publication scope 仅允许三个运行文件中明确登记的函数和额度文案变化；其余原函数及另外 16 个运行文件仍受基准约束。文档迁移检查只逆转声明的精确修改，再核对原始载荷哈希。\r\n\r\n## 构建与验收\r\n~~~powershell\r\npython tools/build.py --work <project-work/package> --output <project-outputs/zanchorflow.zip>\r\npython tools/build.py --check dist/zanchorflow.zip\r\n~~~\r\n先完成测试，再更新受影响规范哈希和 revision_scope，冻结 UTC 更新时间，随后构建。包内发生任何修改后必须重新冻结并构建。源码、ZIP、校验文件、Git 索引和重新检出字节必须一致；不要按操作系统自动改写 skill 换行。\r\n\r\n案例属于有日期的真实使用展示；修订后的程序验证、真实模型行为和历史成果分别记录。CI 不提交私人夹具、密钥、原始运行状态或诊断历史。\r\n\r\nMIT 适用于本项目拥有权利的代码与文档；不捆绑第三方字体或模型源码，第三方内容遵守原许可。\r\n\r\n## 正文标题一致性修订\r\n\r\n新任务在现有启动命令加 `--title-choice-required`，保存待选择状态；先依据当前大纲分类，再选择统一／自由。全为封面、目录、过渡或纯致谢等不适用页时，用 `stage2-title-policy --mode pending --page-roles-json <roles.json>` 自动跳过提问，不伪造作者决定。旧调用与旧状态保持自由标题。\r\n\r\n正常执行只通过三个短入口：`stage2-title-policy`、`stage2-title-context`、`stage2-title-bind`。生成前读取当前页上下文并携带 `--title-contract-ref` 登记候选；初次基准由系统在既有检查 PASS 后登记。具体规则在协议 03/04/07，不能只读取命令而漏掉前置审批、身份、内容真值和锁约束。\r\n\r\n新增测试保留以前的运行基准，先精确逆转登记的标题修改，再运行原函数和文档断言；独立新增模块另有固定校验。未声明修改不能借新功能改变已有 Gate、下载、画布或合并逻辑。两条路线的三页回放使用合成外部结果和合成页面评估；另有 `integration` 测试使用真实 PowerPoint 原生合并，不将前者称为在线生成验证。\r\n\r\n精简包验收后，将同一 ZIP 和 SHA-256 放入 `dist`，再构建完整源码包：\r\n~~~powershell\r\npython tools/build.py --source --work <project-work/source> --output <project-outputs/github-source.zip>\r\npython tools/build.py --source --check <project-outputs/github-source.zip>\r\n~~~\r\n完整包顶层为 `ZanchorFlow/`，包含全部测试、CI、公开案例及 `dist`；输出和临时打包目录必须位于仓库之外。构建使用白名单，不收集 `.git`、运行状态、缓存、凭据或本次报告。\r\n",
+      "new": "# 开发与验证\r\n\r\n源码仓库保留 zanchorflow/tests 及其相对路径；安装 ZIP 采用白名单分发，不包含开发测试。源码和分发包的运行内容逐文件一致。\r\n\r\n## 环境与测试\r\n~~~powershell\r\npython -m pip install -r requirements-dev.txt\r\npython -B -m pytest zanchorflow/tests -q -m \"not integration\" --ignore=zanchorflow/tests/test_native_merge.py --basetemp <project-work/pytest> -o cache_dir=<project-work/cache>\r\n~~~\r\n此命令不调用 Office 或远程服务，与 Windows CI 一致。使用独立 work 目录设置 TEMP/TMP 、PYTHONDONTWRITEBYTECODE=1 和 PYTHONUTF8=1；后者确保 PowerShell 输出解码不随本机 GBK/UTF-8 语言设置变化。\r\n\r\n本地安装 Microsoft PowerPoint/Excel 后，运行完整 tests；原生合并模块实际调用 PowerPoint COM，现有 integration 测试实际编辑文字、图形、图表和 OLE，保存并重新打开。离线表示不依赖网络/API，不表示无需 Office。跳过、未验证与通过分开记录，不能用规则检查代替真实模型/浏览器行为。\r\n\r\n原保护基准保留。publication scope 仅允许三个运行文件中明确登记的函数和额度文案变化；其余原函数及另外 16 个运行文件仍受基准约束。文档迁移检查只逆转声明的精确修改，再核对原始载荷哈希。\r\n\r\n## 构建与验收\r\n~~~powershell\r\npython tools/build.py --work <project-work/package> --output <project-outputs/zanchorflow.zip>\r\npython tools/build.py --check dist/zanchorflow.zip\r\n~~~\r\n先完成测试，再更新受影响规范哈希和 revision_scope，冻结 UTC 更新时间，随后构建。包内发生任何修改后必须重新冻结并构建。源码、ZIP、校验文件、Git 索引和重新检出字节必须一致；不要按操作系统自动改写 skill 换行。\r\n\r\n案例属于有日期的真实使用展示；修订后的程序验证、真实模型行为和历史成果分别记录。CI 不提交私人夹具、密钥、原始运行状态或诊断历史。\r\n\r\nMIT 适用于本项目拥有权利的代码与文档；不捆绑第三方字体或模型源码，第三方内容遵守原许可。\r\n\r\n## 正文标题一致性修订\r\n\r\n新任务在现有启动命令加 `--title-choice-required`，保存待选择状态；先依据当前大纲分类，再选择统一／自由。全为封面、目录、过渡或纯致谢等不适用页时，用 `stage2-title-policy --mode pending --page-roles-json <roles.json>` 自动跳过提问，不伪造作者决定。旧调用与旧状态保持自由标题。\r\n\r\n正常执行只通过三个短入口：`stage2-title-policy`、`stage2-title-context`、`stage2-title-bind`。生成前读取当前页上下文并携带 `--title-contract-ref` 登记候选；初次基准由系统在既有检查 PASS 后登记。具体规则在协议 03/04/07，不能只读取命令而漏掉前置审批、身份、内容真值和锁约束。\r\n\r\n新增测试保留以前的运行基准，先精确逆转登记的标题修改，再运行原函数和文档断言；独立新增模块另有固定校验。未声明修改不能借新功能改变已有 Gate、下载、画布或合并逻辑。两条路线的三页回放使用合成外部结果和合成页面评估；另有 `integration` 测试使用真实 PowerPoint 原生合并，不将前者称为在线生成验证。\r\n\r\n精简包验收后，将同一 ZIP 和 SHA-256 放入 `dist`，再构建完整源码包：\r\n~~~powershell\r\npython tools/build.py --source --work <project-work/source> --output <project-outputs/github-source.zip>\r\npython tools/build.py --source --check <project-outputs/github-source.zip>\r\n~~~\r\n完整包顶层为 `ZanchorFlow/`，包含全部测试、CI、公开案例及 `dist`；输出和临时打包目录必须位于仓库之外。构建使用白名单，不收集 `.git`、运行状态、缓存、凭据或本次报告。\r\n\r\n## 标题后处理、阴影与接口修订验证\r\n\r\n本轮按协议 07 中可执行示例验证真实 PPTX 属性、保留对象、输入输出哈希和复用；示例的 adjusted 仅代表参数已应用，视觉结果另行观察。新增错误样本包括映射/内容不一致、受保护对象、分组不明、来源或参数变化、非标题变化和旧验收证据。模型阴影判断与自然换行不能用填写 PASS 的 JSON 代替。\r\n\r\n本轮修改通过 heading_refine_scope 的精确差异还原先回到 2026-10-02T17:27:14Z 源码，再进入原 title_scope 保护链；不替换历史基准哈希。旧自由模式、审批、下载、画布、付费和合并行为保持原断言。报告首表反映当前结果，事件历史独立保留。\r\n"
+    },
+    {
+      "path": "tests/title_scope.py",
+      "repo_path": "zanchorflow/tests/title_scope.py",
+      "old": "def normalize_runtime_bytes(rel,raw):\n    text=raw.decode('utf-8')",
+      "new": "def normalize_runtime_bytes(rel,raw):\n    from heading_refine_scope import restore_bytes\n    text=restore_bytes(rel,raw).decode('utf-8')"
+    },
+    {
+      "path": "tests/title_scope.py",
+      "repo_path": "zanchorflow/tests/title_scope.py",
+      "old": "def normalize_doc(rel,text):\n    for item",
+      "new": "def normalize_doc(rel,text):\n    from heading_refine_scope import restore_text\n    text=restore_text(rel,text)\n    for item"
+    },
+    {
+      "path": "tests/title_scope.py",
+      "repo_path": "zanchorflow/tests/title_scope.py",
+      "old": "        assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==digest",
+      "new": "        from heading_refine_scope import restore_bytes\n        assert hashlib.sha256(restore_bytes(rel,(ROOT/rel).read_bytes())).hexdigest()==digest"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "                or e.get(\"treatment\") != \"remove_and_restore\"\n                or s.text.replace(\"\\v\", \"\\n\") != e[\"content\"]):",
+      "new": "                or e.get(\"treatment\") != \"remove_and_restore\"\n                or s.text.replace(\"\\v\", \"\\n\") != e[\"content\"]\n                or hashlib.sha256(etree.tostring(s._element, method=\"c14n\")).hexdigest()\n                   != request[\"restored_shape_xml_sha256\"].get(i)):"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "- native_snapshot_sha256, manifest and element_shapes: verified immutable snapshot digest, frozen Manifest, and actual element ID -> shape ID mapping saved during restoration.",
+      "new": "- native_snapshot_sha256, manifest and element_shapes: verified immutable snapshot digest, frozen Manifest, and actual element ID -> shape ID mapping saved during restoration. Also save restored_shape_xml_sha256 per element from that original restored TextBox; verify it rather than trusting a substituted ID with the same text."
+    },
+    {
+      "path": "scripts/runtime.py",
+      "repo_path": "zanchorflow/scripts/runtime.py",
+      "old": "JSON mapping of PASS observations/residual differences; does not authorize retries.",
+      "new": "JSON string or list of strings for PASS observations/residual differences; does not authorize retries."
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "repo_path": "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "PASS observations and deferred title differences go in a JSON mapping via --review-notes-json.",
+      "new": "PASS observations and deferred title differences go in a JSON string or string array via --review-notes-json (not an object/dictionary). For example, a work file containing [\"同一标题区域内字号差异待原生后处理\"] is passed to stage2-candidate-review --verdict PASS --review-notes-json <work/notes.json>."
+    },
+    {
+      "path": "tests/test_revision_identity.py",
+      "repo_path": "zanchorflow/tests/test_revision_identity.py",
+      "old": "    m=yaml.safe_load((ROOT/'manifest.yaml').read_text(encoding='utf-8'))",
+      "new": "    from heading_refine_scope import identity_manifest\n    m=identity_manifest(ROOT)"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "repo_path": "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "            return dict(old, reused=True)\n    if source.resolve() == output.resolve() or output.exists():",
+      "new": "            return dict(old, reused=True)\n        return finish(\"not_adjusted\", \"No current verified cached output; recreate locally with fresh output and record paths.\")\n    if source.resolve() == output.resolve() or output.exists():"
+    }
+  ],
+  "baseline_revision_scope": [
+    "controlled_magic_canvas_mapping",
+    "host_dom_event_candidate_with_original_fallback",
+    "noncritical_glyph_local_handling",
+    "progressive_context_loading",
+    "david_z_attribution",
+    "approved_image_target_wiring",
+    "github_distribution",
+    "optional_ordinary_heading_consistency",
+    "normal_heading_seed_protection",
+    "dual_package_source_build"
+  ],
+  "added_revision_scope": [
+    "independent_native_title_postprocessing",
+    "title_residual_notes_without_auto_repair",
+    "flat_shadow_evidence_guidance",
+    "compact_interface_examples"
+  ]
+}

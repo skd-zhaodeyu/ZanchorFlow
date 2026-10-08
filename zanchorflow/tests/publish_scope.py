@@ -19,8 +19,11 @@ def node_key(node):
 def assert_approved_runtime(rel,path,baseline_digest):
     scope=json.loads((ROOT/'tests/publish_scope.json').read_text(encoding='utf-8'))[rel]
     assert scope['baseline_sha256']==baseline_digest
-    assert hashlib.sha256(path.read_bytes()).hexdigest()==scope['approved_sha256']
-    observed={node_key(n):hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest() for n in ast.parse(path.read_text(encoding='utf-8')).body}
+    from v1_scope import restore_bytes
+    from light_scope import restore_bytes as restore_light
+    approved=restore_bytes('zanchorflow/'+rel,restore_light('zanchorflow/'+rel,path.read_bytes()))
+    assert hashlib.sha256(approved).hexdigest()==scope['approved_sha256']
+    observed={node_key(n):hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest() for n in ast.parse(approved.decode('utf-8')).body}
     assert set(observed)==set(scope['baseline_nodes'])|set(scope['new_nodes'])
     for key,digest in scope['baseline_nodes'].items():
         if key not in scope['allowed_changed_nodes']: assert observed[key]==digest,(rel,key)

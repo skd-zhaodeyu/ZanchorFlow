@@ -137,7 +137,7 @@ def test_deck_resume_uses_trusted_state_without_single_slide_hint(tmp_path):
 
 
 
-def _fake_native_merge(inputs, order, target):
+def _fake_native_merge(inputs, order, target, *, office_host='auto', diagnostics=None):
     prs = Presentation()
     for _ in order:
         prs.slides.add_slide(prs.slide_layouts[6])

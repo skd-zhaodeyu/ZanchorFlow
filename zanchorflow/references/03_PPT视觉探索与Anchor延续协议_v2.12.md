@@ -859,3 +859,55 @@ During Anchor / cover exploration, review every viable option with `stage2-candi
 When the user selects an Anchor candidate as the **actual page/cover version**, the selected formally displayed qualified candidate becomes that page's current Approved Render with `approval_mode = user_selected_anchor_page`; that page is locked and must not be regenerated merely because batch production begins. A style-only Anchor or mockup supplies Style DNA only and does not approve a page.
 
 Before generating or reviewing Anchor images, read Reference 04 Runtime dispatch: Candidate review, formal display and handoff for the shared qualification contract.
+
+
+<!-- TITLE_POLICY_BEGIN -->
+## Optional ordinary-page Title Contract
+
+正文主标题默认承担导航和层级作用，由实质信息内容承担页面主视觉；统一标题规范只能从符合这一要求的普通内容页提取，单页获准的展示性大标题不得成为后续页面的统一基准。
+
+After Outline approval, a new task asks once: **是否统一普通内容页的主标题？A. 统一（推荐）／B. 自由。** An existing explicit instruction answers this choice without another question. Keep the existing cover/Anchor preview, preview batch size and complete-deck approval. There is no second-page sample, Title Contract display/reply gate or per-page human title approval. If there are no applicable pages, skip the choice and record free/no_applicable_pages. Existing states without title_policy stay on their original free flow.
+
+Classify existing page_task into cover/content/toc/section/thanks/display in work/page-roles.json; this metadata does not add Outline fields or change Content Truth. Ordinary content, including substantive summaries, participates. Cover, agenda, section transitions, pure thanks and explicitly display-oriented pages do not. Their exclusion does not exempt them from the existing NON_COVER rule. A source is usually page two; skip special pages and use the first current ordinary normal-heading PASS. An explicitly accepted actual ordinary-page Anchor can supply the same source without regenerating it.
+
+Before first source generation, compile the navigation-heading/content-primary requirement into the compact current-page prompt. Qualification already decides normal heading versus evidenced H2 dominance: prominence or size alone is not failure. When inheriting a standard, preserve the approximate title area and alignment. A material left-to-center or top-left-to-top-center change calls for an existing targeted correction; safe font/size/weight or minor position differences in the same area are review notes and native postprocessing work, not a raster-similarity failure. The bind function checks source hashes and the supplied existing visual assessment; it is not a new aesthetic classifier. An unauthorized typography-primary page follows the existing targeted H2 correction before PASS. A specifically authorized display heading remains local and cannot seed subsequent titles.
+
+Use the current task's genuine user reply with the structured choice; do not keyword-match. Actual page roles come from the approved semantic task. Do not relabel cover or invent promotional authorization. The title policy is separate from Style DNA: fixed heading coordinates/scale do not enter Style DNA; source scene, body arrangement and layout are never propagated.
+
+~~~powershell
+python scripts/canva_bridge.py start-run --state <state> --title-choice-required
+python scripts/runtime.py stage2-title-policy --state <state> --mode uniform --page-roles-json <work/page-roles.json> --message <actual-choice>
+python scripts/runtime.py stage2-title-context --state <state> --slide-id <id>
+~~~
+
+A context with next_action=bind_current_prototype means an automatic internal measurement/bind step, never a request for author confirmation. After the first normal Approved Render, save a work/title-contract.json with these exact fields. source_render_sha256 is the actual current approved image hash. heading_assessment is the existing page observation, not an invented result; font_family_basis records uncertainty.
+
+~~~json
+{
+  "source_render_sha256": "<current-approved-image-sha256>",
+  "heading_assessment": {
+    "role": "navigation", "content_is_primary": true, "display_exception": false,
+    "evidence": "<actual image observation: normal heading; substantive content is primary>"
+  },
+  "style": {
+    "font_family": "<chosen available matching family>", "fallback_font_family": "<available shared fallback>",
+    "font_family_basis": "estimated", "font_weight": "bold", "color": "#203040",
+    "title_region": [0.08, 0.04, 0.84, 0.17], "alignment": "left",
+    "first_line_baseline": 0.10, "visible_glyph_height": 0.045,
+    "line_height_ratio": 1.15, "max_lines": 2
+  }
+}
+~~~
+
+The numbers above are illustrative, not universal font/area limits. Measure the source in the existing mapped content rectangle. max_lines=2 is a maximum, not the observed count or an instruction to enlarge a single-line region into occupied body space. title_region and each page's actual visual_bbox_normalized are separate evidence. Never treat raster pixels as PowerPoint points. Choose common available/fallback families before Manifest freeze. Restore all page text with the original Native Text Visual Fit first, then use Reference 07's independent primary-title postprocessing with calibrated common native parameters. Long headings keep the common point size and wrap within real available space to at most two lines; further overflow uses existing author shortening/local exception. The frozen Title Contract, Manifest and source bindings stay unchanged.
+
+~~~powershell
+python scripts/runtime.py stage2-title-bind --state <state> --slide-id <source-id> --contract-json <work/title-contract.json>
+~~~
+
+The first bind has scope=prototype and origin=system_derived; user approval is the earlier uniform/free choice, not a synthetic standard approval. It snapshots source page/hash, run/Outline, style and observation. Repeating identical input is idempotent. Carry the returned ref into later candidates. Once frozen, editing the prototype page does not update the deck standard. Old snapshots remain valid historical sources; they need not match the prototype's latest image forever.
+
+For an actual local title edit, use the existing --user-requested-variant with --title-override-message <actual-page-request>; qualify the new image, then stage2-title-bind --scope page_override --message <actual-request>. A normal local override includes measured style. A display override has role=display/content_is_primary=false/display_exception=true with actual page authorization; style is unused. A whole-deck title instruction uses --scope global_revision --message <actual-request> and optional --slide-ids-json <affected-current-content-ids>. Preserve existing local exceptions unless the new instruction explicitly includes them. Existing affected PASS pages become pending_visual_revisions; use user-requested variants, retain old files until new PASS. Before complete deck display, do not call the full-display-only revision endpoint. Neither bind nor revision grants any ImageGen/Magic/download/paid retry permission or resets a lock/budget.
+No applicable ordinary pages: before asking, classify current page roles using `stage2-title-policy --mode pending --page-roles-json roles.json`. With no `content` page the policy records a system skip, requires no user message, and generation continues in free mode. Do not invent an author selection.
+
+<!-- TITLE_POLICY_END -->

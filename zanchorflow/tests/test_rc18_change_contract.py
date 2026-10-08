@@ -19,7 +19,7 @@ def test_zanchorflow_identity_and_rc18_protocol_baseline():
     assert '# ZAnchorFlow' in raw
     assert manifest['skill_name'] == 'zanchorflow'
     assert ROOT.name == 'zanchorflow'
-    assert manifest['skill_version'] == '0.9.0-rc19-candidate'
+    assert manifest['skill_version'] == '1.0'
     assert manifest['protocol_baseline'] == 'RC17'
     assert '03_PPT视觉探索与Anchor延续协议_v2.12.md' in raw
     assert '04_页面二维生成前置约束与渲染协议_v2.9.md' in raw
@@ -55,8 +55,8 @@ def test_operational_runtime_recovery_guidance_is_narrow_and_state_driven():
     assert '不会启动新的生成、重建、导出任务或其他新的昂贵远程工作' in skill
     assert 'single unknown / no-event / no-file' in doc
     assert 'same-operation recovery affordance' in doc
-    assert 'does not reset the existing post-click observation budget' in doc
-    assert 'does not create a new numbered acquisition' in doc
+    assert 'No fixed refusal budget' in doc
+    assert 'Identity/owned leases survive interruption' in doc
 
 
 def test_stage3_orchestration_points_only_to_current_text_protocol():

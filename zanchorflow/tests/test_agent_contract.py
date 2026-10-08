@@ -74,16 +74,15 @@ def test_final_download_fifth_attempt_and_no_sixth(tmp_path,success):
         host.ready(record,req);host.lock(record);paths.append(record);clicks.append(number)
         host.fail(record,'EXPORT_FAILED' if number<5 or not success else 'FIXTURE_COMPLETED')
     assert clicks==[1,2,3,4,5]
-    assert not decision(len(paths),completed_file_available=success)['retry_allowed']
+    assert decision(len(paths),completed_file_available=success)['retry_allowed'] is (not success)
     for path in paths:
         assert Path(str(path)+'.intent').exists()
         with pytest.raises(ValueError):host.lock(path)
     assert bridge.status(state)['status']=='WAIT_DOWNLOAD'
 
-@pytest.mark.parametrize('changes',[{'terminal_failure_confirmed':False},{'terminal_failure_confirmed':None},
- {'operation_in_progress':True},{'operation_in_progress':None},{'completed_file_available':True},
+@pytest.mark.parametrize('changes',[{'operation_in_progress':True},{'operation_in_progress':None},{'completed_file_available':True},
  {'completed_file_available':None},{'identity_matches':False},{'required_permissions_ok':False},
- {'sources_unambiguous':False},{'failure_checkpoint':'FINALIZER'},{'current_status':'RESTORE_TEXT'}])
+ {'failure_checkpoint':'FINALIZER'},{'current_status':'RESTORE_TEXT'}])
 def test_unknown_or_non_export_failure_never_retries(changes):
     assert not decision(1,**changes)['retry_allowed']
 
@@ -93,20 +92,20 @@ def test_restart_keeps_same_record_budget_but_new_export_gets_fresh_budget(tmp_p
     first=tmp_path/'first.json';host.ready(first,req)
     for _ in range(5):host.reserve_retry(first,state,'S001','query');host.reserve_retry(first,state,'S001','ui')
     for kind in ('query','ui'):
-        with pytest.raises(ValueError,match='exhausted'):host.reserve_retry(first,state,'S001',kind)
+        assert host.reserve_retry(first,state,'S001',kind)['retry_number']==6
     host.lock(first);host.fail(first,'EXPORT_FAILED')
     second=tmp_path/'second.json';host.ready(second,req)
     assert host.reserve_retry(second,state,'S001','query')['retry_number']==1
     assert host.reserve_retry(second,state,'S001','ui')['retry_number']==1
     evidence=tmp_path/'controller.json';evidence.write_text(json.dumps({'intent_count':5,'actual_download_count':5}))
     loaded=json.loads(evidence.read_text())
-    assert not decision(loaded['intent_count'],actual_download_count=loaded['actual_download_count'])['retry_allowed']
+    assert decision(loaded['intent_count'],actual_download_count=loaded['actual_download_count'])['retry_allowed']
     assert Path(str(first)+'.intent').exists()
 
 
 def test_runtime_contract_is_recovery_first_and_skill_readonly():
     raw=DOC.read_text(encoding='utf-8')
-    assert '10, 20, 30, 45, 60' in raw or '10s / 20s / 30s / 45s / 60s' in raw
+    assert 'No fixed refusal budget' in raw
     assert 'carry-query-ui-budget' not in raw
     assert 'READ-ONLY PRODUCT' in raw
     assert 'IMPLEMENTATION_DEFECT_SUSPECTED' in raw

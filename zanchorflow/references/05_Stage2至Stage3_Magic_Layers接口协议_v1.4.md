@@ -209,7 +209,7 @@ stage3_content_truth:
 
 ### `meaningful_text`
 
-记录最终 Approved Slide 中应继续存在的全部有效文字，包括：
+记录最终 Approved Slide 中应以文字内容身份继续存在的全部有效文字，包括：
 
 - 标题；
 - 正文；
@@ -227,7 +227,7 @@ stage3_content_truth:
 
 ### 图形化文字 occurrence
 
-若某个**可读文字/数字本身就是已批准页面的重要视觉构图**，例如超大纪念数字、定制字形、与圆环/插画/留白共同形成主视觉的 Graphic Typography，则它仍属于一个独立的 `meaningful_text` occurrence。即使相同内容已经在标题、正文或 `exact_facts` 中出现，也不得因为字符串重复而省略该可见 occurrence。
+若某个**承担准确内容职责的文字/数字本身也是已批准页面的重要视觉构图**，例如超大纪念数字、定制字形、与圆环/插画/留白共同形成主视觉的 Graphic Typography，则它仍属于一个独立的 `meaningful_text` occurrence。即使相同内容已经在标题、正文或 `exact_facts` 中出现，也不得因为字符串重复而省略该可见 occurrence。
 
 Stage 2 只负责确认：
 
@@ -235,7 +235,7 @@ Stage 2 只负责确认：
 
 Stage 2 不在 Content Truth 中决定其最终采用普通 TextBox 还是图形化字形表示；`native_text / graphic_typography / approved_graphic_asset` 属于 Stage 3 的 Representation Role。Content Truth 与 Representation Method 必须分离。
 
-严格例外：若某个 Logo / wordmark 已被明确批准为**不可拆的图形资产**且最终本来就不要求普通文字编辑，则其内部可见字形不因“看起来像文字”自动新增一个 `meaningful_text` occurrence；该资产由 Stage 3 的 `approved_graphic_asset / preserve_as_graphic` 例外显式管理。若相同字样在页面其他位置还需要作为可编辑文字存在，则那是独立 occurrence，仍必须进入 `meaningful_text`。
+图形资产：已批准的不可拆 Logo / wordmark，以及按设计上下文承担对象身份或艺术表达的字形、图标字符、文稿笔迹和字形纹理，由 Stage 3 的 `approved_graphic_asset / preserve_as_graphic` 管理，不因能读出字符而自动新增 `meaningful_text`。其中品牌字样或指定文字仍按准确内容核验；没有独立准确文案职责的图形按身份核验，见协议 07 §6.3.2。图形描述不冒充文字真值，整页批准不自动确认任意新文案。混合对象中的阅读文字单独进入 Truth；相同字样在其他位置承担文字职责时仍为独立 occurrence。
 
 ### `exact_facts`
 
@@ -291,13 +291,14 @@ Approved Slide Render 中发现候选文字
         ↓
 结合 Stage 2 已确认设计上下文判断
         ↓
-应保留 → 写入 meaningful_text
-不应保留 / 错字 / 乱码 / 幻觉文字 → 不写入 Content Truth
+应以准确文字身份保留 → 写入 meaningful_text
+应按已批准图形身份保留 → 沿用设计资产依据，由 Stage 3 现有清单管理
+不应保留的阅读文字 / 错字 / 乱码 / 幻觉文案 → 不写入 Content Truth
 ```
 
 OCR / vision 可以辅助发现候选位置和可见文字，但不得自动把其识别结果升级为 Content Truth。`Approved Slide Render` 被整体批准，也不等于其中每一条 imagegen 自发字符串都自动获得内容真值地位；候选装饰文字仍必须能由已确认的设计意图/上下文支持。
 
-Final Text Reconciliation 还必须检查**大尺度、构图关键的可读字形**是否属于已批准设计。若它的内容正确、设计意图明确且最终应继续存在，则应作为独立 `meaningful_text` occurrence 记录；不得因为它“像图形”而从 Content Truth 漏掉。反过来，若这种大尺度字形内容错误或未经批准，又已经成为主构图的一部分，则必须在 Stage 2 修正源视觉，不得把“删掉一个主视觉后留下巨大空洞”的责任推给 Stage 3。
+Final Text Reconciliation 还必须检查**承担准确内容职责、构图关键的字形**是否属于已批准设计。若它的内容正确、设计意图明确且最终应继续存在，则应作为独立 `meaningful_text` occurrence 记录；不得因为它“像图形”而从 Content Truth 漏掉。反过来，若这种大尺度字形内容错误或未经批准，又已经成为主构图的一部分，则必须在 Stage 2 修正源视觉，不得把“删掉一个主视觉后留下巨大空洞”的责任推给 Stage 3。
 
 反向同样成立：ImageGen 中出现局部错字、乱码、非核心收束文案或可局部清除的多余文字，**本身不应成为 Stage 2 反复重生整页的理由**。只要这些 Raster text 不构成核心语义主张、不改变页面关系、不成为删除后必然破坏构图的主体元素，允许当前视觉页面保持 Approved，并由 Stage 3 按 Content Truth 执行 `remove_and_restore / remove_and_drop`。
 

@@ -1,4 +1,6 @@
-# Codex Canva host bridge — RC17
+# Codex Canva host bridge — V1.0
+
+Historical protocol baseline RC17 is source/compatibility information, not the current product version.
 
 This file is the sole runtime exception under `docs/`. It connects existing Stage 3 operations to Codex tools; it does not redefine content, text treatment, structural assessment or any Hard Gate. The host uses its current tool schemas and supported browser controls. No standalone Python/PowerShell script can authenticate the Canva connector or click its web UI.
 
@@ -6,7 +8,7 @@ This file is the sole runtime exception under `docs/`. It connects existing Stag
 
 Run commands from the extracted Skill directory; no installation is necessary. Before `stage1-draft`, run `python scripts/canva_bridge.py init --state <project-work/state.json>`. New states contain `slides: {}` and the Codex route. Existing state is checked without modification; `--route external` applies only to a genuinely new external-adapter task, never as an escape from failed Codex provenance.
 
-Run `python scripts/canva_bridge.py status --state <state>` before resuming. It reads current evidence and never calls tools or modifies state. `PREPARE_DECK` selects assembly even when `deck_order` is absent; `DECK_VALIDATION` selects candidate review; `COMPLETE` returns the validated delivery. Earlier page statuses identify the first unresolved page. An existing lock means running/interrupted operation: diagnose it, never automatically delete it or replay the same remote operation. The limited, explicitly terminal export-failure rule below permits a distinct download acquisition; it never unlocks the old operation. Only one writer may operate on a task; generic runtime registrations must not run concurrently with bridge/assembly commands.
+Run `python scripts/canva_bridge.py status --state <state>` before resuming. It reads current evidence and never calls tools or modifies state. `PREPARE_DECK` selects assembly even when `deck_order` is absent; `DECK_VALIDATION` selects candidate review; `COMPLETE` returns the validated delivery. Earlier page statuses identify the first unresolved page. An existing lock means running/interrupted operation: diagnose it, never automatically delete it or replay the same remote operation. The download identity lock permits recovery GETs, fresh-link reads and browser recovery clicks in the same acquisition; it does not permit a new Magic call. Only one writer may operate on a task; generic runtime registrations must not run concurrently with bridge/assembly commands.
 
 Existing Codex tasks without bridge provenance are blocked, even if legacy seals say PASS. Do not reset state, relabel the route, attach a current design ID to old bytes, or reconstruct again solely to replace missing evidence. Preserve the task and diagnose its real historic records; no automatic migration is provided. Import requires a separately reviewed, evidence-backed migration. This release supplies the complete path for new tasks without guessing historic provenance.
 
@@ -24,7 +26,7 @@ After approving an Outline, require the original `runtime.py stage2-entry` check
 
 Consume only the canonical Formal Text-Clean Render after Stage 3 text-preparation checks pass. Original text-bearing Approved Renders are not the formal input.
 
-Use `image_to_design(image_file=<absolute formal text-clean PNG>, title=<slide_id plus short source revision>, user_intent=<reconstruct editable visual layers>)`. Use the actual host schema. Do not pass a local path as a public URL. One call takes one image and starts a new design; three pages require three independent calls. Do not promise a batch call or exact quota price.
+After `begin-attempt`, run `canva_bridge.py register-upload --state <state> --slide-id <id> --artifact <actual registered Text-Clean PNG>`. Pass its exact `image_path` and `requested_title` to `image_to_design(image_file=..., title=..., user_intent=<reconstruct editable visual layers>)`. Preserve the actual call/result. Before accept-attempt, save a raw capture JSON `{tool, call_args, result}` where result is the actual returned MCP content/structured object, and run `register-upload-result --state <state> --slide-id <id> --result <raw-capture>`. The helper checks actual image_file/title and independently extracts the one returned design_id from design_id or design.id fields, including JSON text content. Accepted design_id must equal this extracted return; unknown result shapes are diagnosed without guessing or another Magic call. Legacy attempts without an upload observation retain their original result identity route. After ACCEPT, capture readonly `get_design` for the returned design_id and run `register-design-observation --state <state> --slide-id <id> --evidence <lookup.json>`. Returned titles are optional trace metadata: do not rename or render solely for download acceptance. Use the actual host schema. Do not pass a local path as a public URL. One call takes one image and starts a new design; three pages require three independent calls. Do not promise a batch call or exact quota price.
 
 Before destructive cleanup, finalize the page's Text Manifest and Removal Inventory and register the current Stage 3 Text Plan:
 
@@ -79,177 +81,84 @@ python scripts/canva_bridge.py begin-attempt --state <state> --slide-id S001 --r
 
 The command creates one new PENDING attempt; it does not call Canva. Missing/mismatched repair evidence blocks. Unknown PENDING attempts still cannot be restarted. No automatic retry, credential collection or structural budget reset is added.
 
-## 3. Browser acquisition and local finalizer — single runtime truth
+## 3. Browser acquisition — file completion and design identity
 
-This route begins only from the current `WAIT_DOWNLOAD` ACCEPT identity. The browser UI remains a Codex Host action; local Python does not pretend to expose a browser API. `scripts/acquisition_request.py`, `scripts/host_acquisition.py`, the unchanged PowerShell finalizer and `canva_bridge.py` only validate identity, persist intent/evidence, locate the exact browser download and bind lineage.
+The installed Skill is a **READ-ONLY PRODUCT**. Controller runtime recovery never hot-edits production code. Acquisition requires current WAIT_DOWNLOAD and the existing ACCEPT seven-field identity. Browser actions belong to Host tools; Python only captures/checks local evidence. Stage 2, reconstruction quality, Text Manifest and four Hard Gates remain unchanged.
 
-The installed Skill is a **READ-ONLY PRODUCT** during execution. The Controller may repair a Browser session, reopen the same Design, re-observe UI, refresh readonly connector evidence, wait for files, or resume finalizer/bind on the same exact bytes. It must not edit `SKILL.md`, `references/`, production scripts, tests or manifest. If bounded recovery points to a product defect, preserve the checkpoint/evidence and report `IMPLEMENTATION_DEFECT_SUSPECTED`.
+### 3.1 Identity and acquisition preparation
 
-### 3.1 Preflight and trusted request
+Preserve actual registered upload bytes -> raw Magic return -> current design_id -> current export -> owned received file. The seven-field active identity is mandatory. Readonly get_design confirms ID and one page; title may be absent or generic. design_id does not attest that remote content never changed: known edits/task switches require re-observation. Never spend Magic quota to repair downloading.
 
-Obtain current readonly `get_design` evidence for the already accepted `design_id`, confirm one page, and create the existing acquisition request. The host report is intentionally download-stage only: it does **not** re-prove Magic Layers availability and does not preselect the browser's actual download directory.
+Run prepare with the current lookup, output directory and simple target filename. New records require transport_receipt; existing completed v1/v2 downloads retain their original checks. For interrupted legacy records preserve old evidence and prepare a new transport record only after verifying current identity; do not relabel old bytes. Register the current design observation before snapshot/direct. Reuse an already bound verified file.
 
-```json
-{
-  "schema_version": 1,
-  "route": "codex-canva",
-  "checked_at": "<actual ISO UTC time>",
-  "slide_id": "S001",
-  "attempt_id": "<current bridge attempt ID>",
-  "design_id": "<current accepted design ID>",
-  "source_fingerprint": "<current source digest>",
-  "text_clean_fingerprint": "<current clean digest>",
-  "checks": {
-    "connector_readonly": "PASS",
-    "browser_session": "PASS",
-    "pptx_option": "PASS"
-  },
-  "evidence": {
-    "connector_readonly": "<successful readonly response>",
-    "browser_session": "<observed current design, not a login page>",
-    "pptx_option": "<observed PowerPoint/PPTX option>"
-  }
-}
-```
+### 3.2 Public browser export sequence
 
-Run acquisition preflight against the current runtime state:
+Use the existing tab, semantic controls and current Host tools: 文件 (may appear as ···) -> menu 下载 -> file-type selector -> select/scroll to PPTX if necessary -> panel 下载. Check the actual state after each action. Do not stop at a menu with 下载 visible. Establish the actual directory baseline via snapshot before ordinary export, then lock once before dispatch. The lock preserves identity, not a permanent ban on recovery. Observe actual file progress; if ordinary export already yielded a reliably associated valid file, finish it without another transfer.
 
-```text
-python scripts/preflight.py --skill-dir . --output-dir <project-work/graphics-first> --scope acquisition --acquisition-route codex-canva --host-report <host.json> --runtime-state <state> --slide-id S001
-```
+A single unknown / no-event / no-file result is recoverable, not a permanent refusal. Events/History are optional. Export completion, file completion, source confirmation and DOWNLOAD_BOUND are distinct. Avoid fixed long event waits, repeated viewport resets and opening a new tab for every page.
 
-Stale/temporarily unavailable Browser or readonly evidence is recoverable: refresh it and resume. Missing authorization/login is `USER_ACTION_REQUIRED`. Identity, lineage or provenance mismatch is a Hard STOP. A simple public-page browser probe such as `example.com` is troubleshooting only when Browser Host initialization itself is suspect; it is not part of normal acquisition.
+### 3.3 Preferred direct transport
 
-Create/reuse the local acquisition record before UI work. Here `--download-target-dir` is the **finalizer output** directory; it is not a demand that the browser download there:
+Read the actual current recovery link 如果下载没有开始，请点击这里. Check current page design_id and actual HTTPS export-download.canva.com URL containing the exact ID. Do not invent URLs, use another page's href, log signed queries, extract cookies or use the official export API.
 
-```text
-python scripts/host_acquisition.py prepare --record <record.json> --state <state> --slide-id S001 --lookup <trusted-get-design.json> --download-target-dir <project-work/graphics-first> --target-filename <unique-single-page.pptx>
-```
+Feed the signed href through stdin into:
+python -B scripts/host_acquisition.py direct --record-detail compact --record <record> --state <state> --observed-url <current-edit-url> --work-dir <project-work> --network-timeout 30
 
-### 3.1a Candidate DOM/event strategy with original observation fallback
+The integrated action records a separate real GET, receives into a unique owned .part, checks response bytes/Content-Length when present, PPTX ZIP/required parts/page count and hash, closes it and atomically renames it. There is no post-stream stability sleep. It returns file_evidence on success or DIRECT_UNAVAILABLE plus browser fallback guidance on transport failure. URL read/validation or runtime capability failure also routes to browser; do not bypass permissions.
 
-Default to the candidate strategy only if current Host documentation exposes supported DOM locators and download events. Establish visible locator ground truth and validate unique/visible/enabled controls. Combine deterministic actions and fresh, preferably local state checks; do not blindly chain unobserved menus. The original complete AX/DOM observation, necessary screenshot, supported browser actions and bounded recovery route remains available.
+Standalone download_transport.py --design-id <id> --work-dir <work> --expected-pages <count> supports multiple pages, but its standalone receipt does not bind a formal reconstruction task. Formal acquisition/finalizer/bind still require one page. No fixed machine, browser object, IPC bridge or output drive is embedded. Scripts use standard library only.
 
-Select/audit through the existing prepare command using optional `--host-strategy dom_event` or `--host-strategy legacy_observation --fallback-reason <actual observed reason>`. Old calls without these options retain their behavior. Strategy changes do not change identity, intent, numbering or retry counters. Retry reservations and strategy auditing are separate prepare operations.
+### 3.4 Browser fallback and provenance
 
-Fallback timing:
-- Before lock: absent capability, or a locator still ambiguous after one fresh state check -> original UI observation/actions within the same UI budget.
-- After lock: listener failure, timeout, session reset, unavailable path or uncertain click -> original OBSERVATION AND RECOVERY ONLY. Never start another event/click sequence or unlock.
-- Exact bytes already exist: repair finalizer/bind on the same file; never export again.
-- Auth, identity and provenance problems cannot be bypassed by either strategy.
+When direct is unavailable and no completed associated ordinary file exists, click the current recovery link. 点击这里 is an effective same-operation recovery affordance. If a supported Host link-download method returns the actual saved path, use that method on the observed link and capture the returned path without waiting for an event. Capture the current operation through supported Host tools and preserve an actual operation JSON for observe --operation-capture. Required fields: source="canva_host.download", seven-field identity, acquisition_id, operation_id, observed_url, action=normal|recovery; include the actual returned path, or exclusive_directory with directory_owned_by_operation only when actually established. If export_source is present it is recovery_url's sanitized current link metadata, never a signed URL. Capture real tool outcomes; never infer a path from a filename. A same-operation event_path can be auxiliary but is not mandatory.
 
-Persist the original lock immediately before the final Host call. Within ONE `cua_repl` call, first subscribe, then issue the single Download click and await both. Do not leave an unfinished listener in a previous tool call: a real microtest encountered timeout/kernel reset. The current verified Host uses a 55-second event timeout inside a 60-second call; other Hosts require explicitly documented limits, with the event timeout strictly shorter than the tool limit. Never loop additional event waits. Example after a fresh, grounded Download locator has been established:
+Use snapshot --operation recovery --recovery-href - before recovery click, feeding href via stdin when readable; if the visible link cannot be read, the browser path/operation capture still works without href. observe --export-href - also accepts stdin. When export itself failed or a new current href needs regeneration and no file is progressing/complete, snapshot --operation export_retry records a fresh baseline for another ordinary panel Download within the same identity lock; capture action=normal. This is download recovery, not a new Magic reconstruction. Pass href in-memory to the function when available; do not expose signed links in shell arguments. observe polls actual file stats every 0.5s, requires three stable samples and validates/hashes only stable candidates. Old files, same names, duplicate suffixes, partials and multiple candidates are recorded. A skill lease coordinates its tasks; it cannot prevent unrelated downloads.
 
-```javascript
-const eventWait = tab.playwright.waitForEvent('download', {timeoutMs:55000});
-const result = await Promise.allSettled([eventWait, downloadControl.click()]);
-// Event success: obtain download.path(), then correlate original History/file proof.
-// Any unknown click or event timeout: same locked record, observation only.
-```
+An actual operation path may identify one candidate among several. An exclusively owned empty-baseline directory can associate exactly one file when supported. A shared directory's single new file, a generic name or visual similarity is insufficient. Return FILE_SOURCE_PENDING with retained candidates; recover by getting a fresh link, supported isolated directory or actual download object. If no way to resolve remains, ask the user. Do not call it "no download" or restore forced name/visual checks.
 
-The timeout value is a bounded first completion check, not a new retry budget. If a retry reservation was already consumed, its required wait is still honored; strategy switches never reset `.retries.json`. A completed event can proceed immediately to exact-file acquisition without an additional fixed sleep. On event timeout, inspect the existing operation and follow 3.3 recovery observations, not a new Download.
+### 3.5 Lightweight completion, finalization and recovery
 
-Canva's “completed” page message alone is NOT an actual Host file-download event. The original fallback must still obtain real Host download-event/notification evidence and exact History/file correspondence before `--event-confirmed`. A returned path alone cannot replace Design provenance, byte counts, one-page checks or SHA-256. Do not subscribe to an arbitrary next download after an uncertain click and treat it as this operation.
+Use finish with --file-evidence returned by direct/observe. Transport receipts, snapshot references, full identity, current design observation, file bytes/hash/one-page package and registered policy are verified before binding and downstream reuse. No mandatory name, core title, PowerPoint startup, preview or page_check on new receipt acquisitions. Preview remains an optional diagnostic; restoration's four existing Hard Gates remain unchanged.
 
-Validation status: one standalone real download confirmed this same-call strategy and unchanged finalizer. It did not exercise formal prepare/finish/bind wiring or every recovery branch; those require separate offline integration checks. No comparable speed baseline exists, so do not claim a speedup ratio.
+New records retain schema_version=2 and add transport_receipt; policy is pinned in acquisition/state/binding. Missing, invalid, unregistered or changed receipts never fall back to old evidence. Historical completed evidence keeps its old rules. The finalizer moves the same bytes and verifies them; finalizer/bind failure resumes the exact file, including interrupted completed moves, rather than redownloading.
 
-### 3.2 Bounded pre-download retry
+No fixed refusal budget. Snapshot/observation/probe calls do not count as actual GET/click attempts. For active progress, keep observing without duplicate transfer; for timeout/temporary network failure, short backoff and retry; for expired URL re-read current link; for damaged file re-acquire; for three repeated identical failures diagnose/change transport. If nothing progresses and no new recovery action exists, report retained files and ask. Do not loop blindly or spend new Magic quota. Existing legacy observation deadlines are per invocation, not permanent download bans. Identity/owned leases survive interruption; release all this acquisition's leases after bind or explicit termination, never another acquisition's leases. The explicit terminate action preserves files/evidence/intent, marks the acquisition terminated and releases owned leases. It is not an automatic reaction to failure; authorized restart prepares a new record, retaining the old policy in history.
 
-Query retry is only for transient readonly connector/network failure. UI retry is only for pre-final-Download page-not-ready/stale-locator/menu-not-ready conditions. Each reservation persists on the same record and survives a session restart.
-
-```text
-query: 2s -> 5s -> 10s -> 15s -> 20s
-ui:    2s -> 5s -> 10s -> 15s -> 20s
-```
-
-Use:
-
-```text
-python scripts/host_acquisition.py prepare --state <state> --slide-id S001 --record <record.json> --retry-kind query
-python scripts/host_acquisition.py prepare --state <state> --slide-id S001 --record <record.json> --retry-kind ui
-```
-
-Each successful reservation returns `wait_seconds`; the Controller must **actually wait** that interval before the corresponding re-query or UI re-observation. Do not consume several retry reservations back-to-back without the waits.
-
-Authentication denial, permission denial, invalid evidence and identity mismatch are not transient retries. Each UI-changing action must be followed by fresh observation; never reuse a stale node.
-
-### 3.3 Intent lock, one click, then observation
-
-After the PowerPoint/PPTX choice is visibly ready, persist the final action intent with `lock` immediately before the one final UI click for this record:
-
-```text
-python scripts/host_acquisition.py lock --record <record.json>
-```
-
-One record owns one final Download intent forever; `.intent` is never deleted to make the same record clickable again. After `lock` succeeds, perform the actual Canva **Download** click once through the current Host UI.
-
-After the final Download is issued, repeating the normal Download action and ordinary pre-download query/UI retry remain forbidden. If completion is not yet proven, reserve **observation only**:
-
-`POST_CLICK_OBSERVE_DELAYS = (10, 20, 30, 45, 60)` seconds.
-
-```text
-immediate check
--> 10s
--> 20s
--> 30s
--> 45s
--> 60s
-```
-
-```text
-python scripts/host_acquisition.py prepare --state <state> --slide-id S001 --record <record.json> --retry-kind observe
-```
-
-Use the returned `wait_seconds` and **actually wait** before the next Host/UI/file observation; the reservation itself is not an observation.
-
-Each round asks only: is the export still running, visibly complete, represented by the exact download event/History/file, or independently confirmed as terminal export failure? Unknown/no event/no file is not terminal failure. A **single unknown / no-event / no-file** observation is never a STOP or user-handoff condition while the existing bounded recovery contract remains available. Five observation rounds exhausted -> diagnose/repair the runtime; do not click the normal Download again merely because the result is still unknown.
-
-If a fresh Canva observation explicitly presents a **same-operation recovery affordance** for this already locked export (for example, a link equivalent to “if the download did not start, click here”), the Controller may use it when no matching download is running or completed, current identity/lineage/target are unchanged, and the action does not start a new export, reconstruction, authorization flow or other expensive remote task. This recovery action stays inside the current `INTENT_LOCKED` acquisition, **does not create a new numbered acquisition**, and **does not reset the existing post-click observation budget**. After every use, re-observe immediately. It may be used again only if a later scheduled fresh observation explicitly presents it again and no matching running/completed download exists; never rapid-click it or substitute the ordinary Download button.
-
-### 3.4 Exact file proof and downstream resume
-
-After an actual Host download event, determine the browser's **actual** profile and `Preferences.download.default_directory`, then correlate the same Design URL, intent time and Chromium History record. Only the exact `target_path` whose completed byte counts match is accepted. Normal downloads prove Design provenance by exact `tab_url == observed Design URL`. A same-operation recovery-link download may instead use the exact Chromium URL chain belonging to that same download record, but only when `tab_url` is blank/unavailable and a trusted HTTPS Canva URL in that chain unambiguously contains the current `design_id`; a nonblank mismatched `tab_url`, missing chain evidence, other-design evidence or ambiguity still fails closed. Never guess a conventional Downloads folder, newest timestamp or similar filename.
-
-The local helper may poll the already selected exact History record/file for file settling; this does not authorize a new export. Once the Host has produced a real download event and the browser has resolved the accepted Design to its actual `/design/<design_id>/...` URL, finish the same record:
-
-```text
-python scripts/host_acquisition.py finish --record <record.json> --state <state> --profile <actual-browser-profile> --observed-url <actual-resolved-design-url> --event-confirmed --python-executable <workflow-python>
-```
-
-`finish` locates the exact History/file evidence, calls the unchanged `canva_pptx_finalize.ps1`, retains its single-page validation and SHA-256, registers the trusted `/d/<token>` association from the captured connector lookup, and binds the same bytes to current lineage. `/d/<token>` is accepted only through independently captured trusted connector association; the download submitter cannot self-certify URL/Design identity.
-
-Finalizer or bind failure keeps the ACCEPT attempt and exact file. Repair the downstream condition and rerun `finish` on the **same record/file**. It never justifies another Download or reconstruction.
-
-### 3.5 Limited new export after terminal failure
-
-A different numbered acquisition is allowed only when all facts are independently confirmed: current state is `WAIT_DOWNLOAD`; ACCEPT identity matches; the previous failure checkpoint is `EXPORT_FAILED`; terminal export failure is real; permissions are valid; sources are unambiguous; no export is running/possibly running; and no completed reusable file exists. The round permits at most five real Download intents total.
+Download recovery decision example (counts are logs, not refusal limits):
 
 <!-- download-retry-gate -->
 ```python
-consumed_download_slots = max(intent_count, actual_download_count)
 retry_allowed = (
-    0 < consumed_download_slots < 5
-    and current_status == 'WAIT_DOWNLOAD'
+    current_status == 'WAIT_DOWNLOAD'
     and identity_matches is True
-    and terminal_failure_confirmed is True
     and required_permissions_ok is True
-    and sources_unambiguous is True
     and operation_in_progress is False
-    and completed_file_available is False
-    and failure_checkpoint == 'EXPORT_FAILED'
+    and completed_file_available is not None
+    and not (completed_file_available is True and sources_unambiguous is True)
+    and failure_checkpoint not in ('FINALIZER', 'BIND')
 )
-next_download_number = consumed_download_slots + 1 if retry_allowed else None
+next_download_number = actual_download_count + 1 if retry_allowed else None
 ```
 
-Records are `<attempt>.json`, then `-download-02.json` through `-download-05.json`. A new terminal-failure-authorized record receives a fresh local query/UI/observe budget; the previous record's retry counts are **not** carried into the new export. Within one record, consumed reservations remain consumed across restart. If completed bytes later appear for an older record, resume that original record rather than creating/continuing a new export.
+CLI preparation path:
+```text
+python -B scripts/preflight.py --skill-dir <skill> --scope acquisition --report <work/report.json>
+python -B scripts/host_acquisition.py prepare --record-detail compact --record <record> --state <state> --slide-id <id> --lookup <lookup> --download-target-dir <out> --target-filename <name.pptx>
+python -B scripts/host_acquisition.py snapshot --record-detail compact --record <record> --state <state> --download-dir <actual-dir> --observed-url <edit-url>
+python -B scripts/host_acquisition.py lock --record-detail compact --record <record>
+python -B scripts/host_acquisition.py finish --record-detail compact --record <record> --state <state> --observed-url <edit-url> --file-evidence <captured-proof>
+```
+An optional --event-confirmed reports a real event, never a requirement. wait_seconds bounds each observation call; actually wait only when current state warrants it. Ordinary execution treats the installed skill as a READ-ONLY PRODUCT; suspected product defects are IMPLEMENTATION_DEFECT_SUSPECTED, not permission to hot-edit.
 
-### 3.6 Failure classification
+### 3.6 Evidence and timing
 
-The Controller uses: `RECOVER -> WAIT/RETRY -> DIAGNOSE -> RUNTIME REPAIR -> RESUME`. `USER_ACTION_REQUIRED` is limited to actual login/2FA/permission/OS approval. Hard STOP is reserved for identity/lineage/provenance ambiguity, unsafe overwrite/pollution risk, unavailable authorization, bounded recovery exhaustion with possible duplicate side effect, or `IMPLEMENTATION_DEFECT_SUSPECTED`.
+Record real GET/normal click/recovery click separately; reserve_retry is diagnostic guidance, not a request counter or permission gate. Operation captures retain observed action/time and identity. Receipts preserve sanitized export source plus URL digest, actual path/bytes/hash/page count, request/operation identifiers, outcome and phase timings. Never persist full signed hrefs.
+
+Report FILE_IN_PROGRESS, FILE_SOURCE_PENDING, FILE_COMPLETE and DOWNLOAD_BOUND accurately. Keep failed partials and receipts. Time browser actions, export waiting, transfer, validation and tool round trips separately with consistent endpoints. Current tests establish local feasibility, not universal speedup or cross-machine support. Operator missed clicks are operator errors, not site unreliability.
 
 ### 3.7 Restore inputs and single-page sealing
 
-For the Codex route, register `text_clean` through the existing bridge and `graphics_first_pptx` through `bind-download`. Register current `canvas`, `finalized_manifest` and `font_fallback` artifacts through the existing runtime entries. Continue Graphics-first neutrality, canvas tolerance and canonical Native Text Visual Fit. Save restored output at a new path, perform the four existing Hard Gates, then `seal-page`. Acquisition adds no new visual quality gate and never rewrites Content Truth.
+For the Codex route, register `text_clean` through the existing bridge and `graphics_first_pptx` through `bind-download`. Register current `canvas`, `finalized_manifest` and `font_fallback` artifacts through the existing runtime entries. Continue Graphics-first neutrality, canvas tolerance and canonical Native Text Visual Fit. Save restored output at a new path; for applicable uniform headings complete Reference 07's independent native-title postprocessing, then perform the four existing Hard Gates and `seal-page` against the final bytes. Acquisition adds no new visual quality gate and never rewrites Content Truth.
 
 ### 3.8 Canvas during existing text restoration
 
@@ -279,9 +188,9 @@ Read 3.1-3.6 before acquisition; read 3.7-3.10 with 06 sections 9-12 and 07 sect
 | Existing call | Inputs and result contract |
 |---|---|
 | `bridge.active_identity(state, slide_id)` | Only current ACCEPT returns seven fields: attempt_id, slide_id, run_id, approved_outline_fingerprint, source_fingerprint, text_clean_fingerprint, design_id. Preserve all seven unchanged. |
-| `host.prepare(path, state_path, slide_id, lookup_path, target_dir, target_name, host_strategy=None, fallback_reason=None)` | Validates current WAIT_DOWNLOAD and readonly single-page lookup; target_dir is absolute and target_name a simple PPTX name. Existing record/intent and budgets survive resume/switch. Returns the current acquisition record; only observed READY plus successful lock permits the first normal click. |
+| `host.prepare(path, state_path, slide_id, lookup_path, target_dir, target_name, host_strategy=None, fallback_reason=None)` | Validates current WAIT_DOWNLOAD and readonly single-page lookup; target_dir is absolute and target_name a simple PPTX name. Existing record/intent and identity survive resume/switch; no refusal budget. Returns the current acquisition record; only observed READY plus successful lock permits the first normal click. |
 | `host.lock(path)` | Persist exclusive intent before dispatch. Never infer permission from a timeout or delete the intent marker. |
-| `host.finish(path, state_path, profile, observed_url, event_confirmed, python_executable=None, wait_seconds=120)` | Requires real Host evidence and matching History/file bytes; runs unchanged finalizer and bind. Failure reuses the same file and record, never exports again. Check the returned record/error rather than treating an event or Canva completion banner as a seal. |
+| `host.finish(path, state_path, profile, observed_url, event_confirmed, python_executable=None, wait_seconds=120)` | Accepts optional event or new sealed file_evidence; validates current design/full identity, actual file bytes and registered transport receipt before the shared finalizer/bind. No mandatory event or History on the file-first route. Finalizer/bind failure reuses the same file; transfer failure follows state recovery. Check the returned record/error rather than treating an event or Canva completion banner as a seal. |
 | `bridge.prepare_canvas_mapping(download_pptx, canvas, registration=None, cleanup=None)` | Returns in-memory deck and mapping report; never overwrites the original. cleanup binds download_sha256, removed_text_shape_ids and evidence; only validated text-only boxes may be removed. Uniform mapping additionally needs current framing/source proof. |
 | `bridge.map_native_text_geometry(element, plan)` | Returns bbox_emu and optional visible_glyph_height_pt; use both for existing Native Text Visual Fit. Does not change Manifest or fitting rules. |
 | `bridge.verify_canvas_mapping(download_pptx, restored_pptx, canvas, report, expected_clean_fingerprint=None)` | Recomputes cleanup/mapping from original bytes and verifies retained objects/resources, native-only additions and output hash. |
@@ -340,9 +249,11 @@ After every current restored page is sealed, run:
 python scripts/assemble_deck.py prepare --state <trusted-state.json> --work-dir <project-work/assembly-revision>
 ```
 
-The new entry validates current design/download/restored-page binding as well as current seals and uses the existing `deck_order`; if absent, it adopts the current approved Stage 2 `page_order`. An empty/invalid explicit order is not silently replaced. Stale, missing, duplicate or unknown pages block. Native merge preflight is run only here, not during connection checking. A unique work directory prevents replacing a previous candidate.
+The new entry validates current design/download/restored-page binding as well as current seals and uses the existing `deck_order`; if absent, it adopts the current approved Stage 2 `page_order`. An empty/invalid explicit order is not silently replaced. Stale, missing, duplicate or unknown pages block. Native merge preflight is run only here, not during connection checking. --office-host auto (default) probes PowerPoint first, then KWPP.Application when unavailable; explicit powerpoint/wps tests only that host. The chosen application is passed to merge without a second selection probe. Probe exceptions, including document/application cleanup, remain diagnostic evidence; a successful WPS probe removes the failed PowerPoint attempt as a blocker, never relabels it PASS. Results record office_host/office_progid and diagnostics; private paths/process details belong in work only.
 
-Prepare calls the unchanged native merge engine and returns `AWAITING_DECK_VALIDATION`, a candidate and a `deck-review.json` template. It does not declare final delivery or auto-fill visual PASS.
+Standalone merge_pptx.py also accepts --office-host auto|powerpoint|wps. Its auto fallback covers application creation only, before importing actual inputs; use scoped preflight for full capability checks. Formal import/save/reopen/integrity failure never retries another application within the operation. Common Python dependency errors are diagnosed separately. WPS closes only owned documents and releases/recreates its KWPP handle before reopen, without a global Quit or process kill. Keep original input files, state/locks/budgets and existing outcomes; normal temporary candidate cleanup remains unchanged. Recover an existing valid candidate through recover-review without rerunning native merge. A unique work directory prevents replacing a previous candidate.
+
+Prepare uses the existing native import/integrity pipeline with the application chosen by scoped preflight and returns `AWAITING_DECK_VALIDATION`, a candidate and a `deck-review.json` template. It does not declare final delivery or auto-fill visual PASS.
 
 If a registered valid candidate exists but its `deck-review.json` is missing after interruption, run:
 
@@ -376,3 +287,18 @@ RC17 is based on the validated RC16.8 lineage and still requires independent Cod
 For design/download/restored-page binding, use the bridge commands in `docs/codex-canva-bridge.md`; direct legacy single-page sealing cannot establish Codex provenance. For Canva installation/connection guidance, the plugin Magic Layers entry, browser PPTX acquisition and the host preflight report, read [Codex Canva bridge](docs/codex-canva-bridge.md). The adapter supplies implementation wiring only; all current canonical protocols remain authoritative. The legacy external acquisition route remains available when explicitly selected. Never use Magic Layers as an authentication probe.
 
 After all restored single pages have current four-gate seals, use `python scripts/assemble_deck.py prepare --state <trusted-state.json> --work-dir <project-work/assembly>`. This reads trusted page order and calls the existing native merge engine. Review the resulting candidate under canonical Deck-Level Validation, then use `python scripts/assemble_deck.py publish --state <trusted-state.json> --validation-report <deck-review.json> --output <project-outputs/deck.pptx>`. If a registered current candidate has lost its review template, run `python scripts/assemble_deck.py recover-review --state <state>`; this recreates only a PENDING template without merge or overwrite. Prepare is not final delivery; publish requires evidence-backed validation of the exact merged bytes.
+
+
+<!-- TITLE_POLICY_BEGIN -->
+### Short heading-policy calls
+
+New-task start-run accepts --title-choice-required; legacy calls stay unchanged. After approved Outline, use runtime.py stage2-title-policy --mode uniform|free --page-roles-json <work/roles.json> --message <actual-choice>. Use stage2-title-context --slide-id <id> before generation and carry its observed --title-contract-ref into candidate registration. Complete a normal-source stage2-title-bind automatically after PASS; no title review/reply endpoint exists. The authoritative payload is in Reference 03 Optional ordinary-page Title Contract, and native occurrence metadata in Reference 07. The adapter's status returns concise title_policy context only when this optional policy exists.
+<!-- TITLE_POLICY_END -->
+
+### Lightweight maintenance clarification
+
+New Host CLI examples use --record-detail compact; omitted flags retain full legacy result mirrors. Compact keeps status, source/proof references, candidate paths, errors, observed file progress and the last operation in the authority record. Raw upload/return observations and pre-submit intent remain preserved, never synthesized.
+
+Browser actions share one mapping: normal->normal, recovery->recovery, export_retry->normal. A valid complete candidate takes precedence over damaged candidates. Growing bytes/partial markers mean FILE_IN_PROGRESS; stable unreadable bytes without completion evidence mean FILE_UNVERIFIED. FILE_INVALID needs actual corresponding completion evidence. Stability alone is not EOF.
+
+PPTX parsing is deduplicated only inside one operation using freshly read byte digests, not size/mtime/path cache. Independent consumers read/hash current bytes; finalization/registration boundaries remain. No persistent validation token authorizes a PASS.

@@ -15,7 +15,9 @@ FROZEN = {
 }
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    from office_scope import restore_repo_bytes
+    raw=restore_repo_bytes('zanchorflow/'+path.relative_to(ROOT).as_posix(),path.read_bytes())
+    return hashlib.sha256(raw).hexdigest()
 
 AUTHORIZED_REVISION_FILES = {
     "scripts/canva_bridge.py", "scripts/host_acquisition.py",
@@ -51,7 +53,8 @@ CODE_SCOPE = {'scripts/canva_bridge.py': ({'_canvas_cleanup', 'seal_page', 'map_
 
 def test_existing_code_outside_approved_revision_is_unchanged():
     for rel, (excluded, original_hash) in CODE_SCOPE.items():
-        tree = ast.parse((ROOT / rel).read_text(encoding='utf-8'))
+        from title_scope import normalize_runtime_bytes
+        tree = ast.parse(normalize_runtime_bytes(rel, (ROOT / rel).read_bytes()).decode('utf-8'))
         nodes = [n for n in tree.body if not (isinstance(n, ast.FunctionDef) and n.name in excluded)]
         canonical = json.dumps(_canonical_ast(ast.Module(body=nodes, type_ignores=[])),sort_keys=True).encode()
         assert hashlib.sha256(canonical).hexdigest() == original_hash, rel

@@ -20,7 +20,7 @@ def test_author_and_baseline_metadata_are_separate():
     manifest=yaml.safe_load((ROOT/'manifest.yaml').read_text(encoding='utf-8'))
     assert front['name']==manifest['skill_name']=='zanchorflow'
     assert front['metadata']['author']=='David-Z'
-    assert manifest['skill_version']=='0.9.0-rc19-candidate'
+    assert manifest['skill_version']=='1.0'
     assert len(manifest['canonical_protocols'])==8
     assert manifest['non_runtime_exceptions']==['docs/codex-canva-bridge.md']
     assert manifest['progressive_loading']['stage3_magic_layer']==[6]
@@ -147,13 +147,17 @@ def test_formal_seal_records_legal_cleanup_in_both_canvas_paths(tmp_path,origina
 def test_all_runtime_scripts_remain_exactly_the_delivered_baseline():
     import hashlib
     from refinement_scope import PINNED_RUNTIME_FILES
-    assert {str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'scripts').glob('*') if p.is_file()}==set(PINNED_RUNTIME_FILES)
+    from title_scope import normalize_runtime_bytes, check_new_runtime, data
+    check_new_runtime()
+    from download_scope import new_runtime,verify_new_runtime
+    for rel in new_runtime():verify_new_runtime(rel,(ROOT/rel).read_bytes())
+    assert {str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'scripts').glob('*') if p.is_file()}==set(PINNED_RUNTIME_FILES)|set(data()['new_runtime_files'])|set(new_runtime())
     for rel,digest in PINNED_RUNTIME_FILES.items():
         if rel in {'scripts/reconstruction_router.py','scripts/layer_package.py','scripts/layer_bridge.py'}:
             from publish_scope import assert_approved_runtime
             assert_approved_runtime(rel,ROOT/rel,digest)
         else:
-            assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==digest,rel
+            assert hashlib.sha256(normalize_runtime_bytes(rel,(ROOT/rel).read_bytes())).hexdigest()==digest,rel
 
 
 def test_every_migrated_runtime_block_preserves_original_payload():

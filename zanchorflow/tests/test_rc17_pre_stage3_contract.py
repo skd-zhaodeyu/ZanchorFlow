@@ -115,7 +115,7 @@ def test_protocol_rc17_pre_stage3_behavior_is_explicit():
 
 def test_rc18_manifest_keeps_rc17_protocols_and_adds_image_layer_08():
     manifest = yaml.safe_load((ROOT / 'manifest.yaml').read_text(encoding='utf-8'))
-    assert manifest['skill_version'] == '0.9.0-rc19-candidate'
+    assert manifest['skill_version'] == '1.0'
     assert manifest['protocol_baseline'] == 'RC17'
     paths = {item['path'] for item in manifest['canonical_protocols']}
     assert 'references/01_PPT内容架构与大纲生成协议_v1.2.md' in paths

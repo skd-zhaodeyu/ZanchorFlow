@@ -42,12 +42,12 @@ def test_postlock_fallback_is_observation_only_and_does_not_reset_budget(tmp_pat
     h.fail(rec,'DOWNLOAD_UNKNOWN')
     result=prepare(tmp_path,state,rec,lp,'legacy_observation',failure)
     assert result['status']=='FAILED' and result['failure_checkpoint']=='DOWNLOAD_UNKNOWN'
-    assert result['host_strategy']['phase']=='observe_only'
+    assert result['host_strategy']['phase']=='recovery'
     assert Path(str(rec)+'.intent').read_bytes()==marker
     assert Path(str(rec)+'.retries.json').read_bytes()==budget
     with pytest.raises(ValueError):h.lock(rec)
-    with pytest.raises(ValueError,match='observe only'):prepare(tmp_path,state,rec,lp,'dom_event','try fast again')
-    with pytest.raises(ValueError):h.reserve_retry(rec,state,'S001','ui')
+    assert prepare(tmp_path,state,rec,lp,'dom_event','retry after diagnosis')['host_strategy']['strategy']=='dom_event'
+    assert h.reserve_retry(rec,state,'S001','ui')['retry_number']==1
     assert h.reserve_retry(rec,state,'S001','observe')['retry_number']==2
 
 

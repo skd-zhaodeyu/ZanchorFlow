@@ -65,14 +65,14 @@ def init(state_path, route='codex-canva'):
     return {'status':'INITIALIZED','route':route}
 
 
-def start_run(state_path):
+def start_run(state_path, title_choice_required=False):
     """Wrap the original start; archive old page state only on a real run change."""
     with transaction(state_path) as temp:
         before = r.load_runtime_state(temp)
         previous = before.get('stage2_run',{})
         if before.get('canva_bridge',{}).get('route') not in ('codex-canva','external'):
             raise ValueError('route missing; do not infer a legacy task route')
-        run = r.start_stage2_run(temp)
+        run = r.start_stage2_run(temp, title_choice_required=title_choice_required)
         if previous.get('run_id') != run['run_id']:
             state = r.load_runtime_state(temp)
             bridge = state['canva_bridge']
@@ -80,11 +80,11 @@ def start_run(state_path):
                 bridge.setdefault('run_history',[]).append({
                     'run_id':previous['run_id'],'slides':copy.deepcopy(before['slides']),
                     'bridge_records':{key:copy.deepcopy(before.get('canva_bridge',{}).get(key))
-                                      for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history')},
+                                      for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history','upload_observations','upload_results','design_observations','transport_requirements','observation_history')},
                     'deck_records':{key:copy.deepcopy(before.get(key))
                                     for key in ('deck_order','merged_deck','validated_deck')}})
             state['slides'] = {sid:{} for sid in run['page_order']}
-            for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history'):
+            for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history','upload_observations','upload_results','design_observations','transport_requirements','observation_history'):
                 bridge.pop(key,None)
             for key in ('deck_order','merged_deck','validated_deck'):
                 state.pop(key,None)
@@ -137,6 +137,7 @@ def _check_text_plan(state, slide_id):
     except (OSError, ValueError, KeyError, TypeError) as exc:
         raise ValueError('STAGE3_TEXT_PLAN_REQUIRED: current plan files unavailable') from exc
     r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)
+    r.titles.validate_manifest(state, slide_id, manifest)
     expected = {
         'slide_id': slide_id,
         'run_id': run['run_id'],
@@ -170,7 +171,7 @@ def _invalidate_after_text_plan_change(state, slide_id):
     if old_seal is not None:
         slide.setdefault('superseded_validated_single_pages', []).append(old_seal)
     bridge = _bridge(state)
-    for key in ('active','downloads','validated','text_preparation'):
+    for key in ('active','downloads','validated','text_preparation','upload_observations','upload_results','design_observations','transport_requirements'):
         section = bridge.get(key)
         if isinstance(section, dict):
             section.pop(slide_id, None)
@@ -199,6 +200,7 @@ def register_text_plan(state_path, slide_id, manifest_path, inventory_path):
             truth = json.loads(resolve(state, state['slides'][slide_id]['final_content_truth']).read_text(encoding='utf-8'))
         except (OSError, ValueError, KeyError, TypeError) as exc:
             raise ValueError('STAGE3_TEXT_PLAN_INVALID: JSON inputs required') from exc
+        r.titles.validate_manifest(state, slide_id, manifest)
         summary = r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)
         plan_fp = r.stage3_text_plan_fingerprint(manifest, inventory)
         sources = _text_plan_source_hashes(state, slide_id)
@@ -321,6 +323,143 @@ def active_identity(state, slide_id):
     return {k:active[k] for k in keys}
 
 
+def register_upload(state_path, slide_id, image_path):
+    import download_evidence as de
+    with transaction(state_path) as temp:
+        state=r.load_runtime_state(temp);active=_active(state,slide_id)
+        if active['status']!='PENDING':raise ValueError('upload registration requires current PENDING attempt')
+        image=Path(image_path).resolve()
+        expected=resolve(state,state['slides'][slide_id]['text_clean']).resolve()
+        if image!=expected or sha(image)!=active['text_clean_fingerprint']:
+            raise ValueError('actual upload must be the current registered Text-Clean bytes')
+        identity={k:active[k] for k in ('attempt_id','slide_id','run_id','approved_outline_fingerprint',
+                                      'source_fingerprint','text_clean_fingerprint')}
+        value={'status':'UPLOAD_REGISTERED','schema_version':2,'identity':identity,'image_path':str(image),'image_sha256':sha(image),
+               'requested_title':de.title_for(slide_id,active['attempt_id'],sha(image))}
+        existing=state['canva_bridge'].setdefault('upload_observations',{}).get(slide_id)
+        if existing and de.sealed(existing)==value:return value
+        path=Path(state_path).resolve().parent/('upload-'+active['attempt_id']+'.json')
+        ref=de.write_once(path,value)
+        state['canva_bridge']['upload_observations'][slide_id]=ref;r._save_runtime_state(temp,state)
+    return value
+
+
+def register_upload_result(state_path,slide_id,capture_path):
+    import download_evidence as de
+    with transaction(state_path) as temp:
+        state=r.load_runtime_state(temp);active=_active(state,slide_id)
+        if active['status']!='PENDING':raise ValueError('result capture requires the current PENDING upload')
+        upload_ref=state['canva_bridge'].get('upload_observations',{}).get(slide_id)
+        upload=de.sealed(upload_ref);capture_path=Path(capture_path).resolve();capture=de.read(capture_path)
+        tool=str(capture.get('tool',''))
+        if not tool.endswith('image_to_design'):raise ValueError('actual Magic tool capture required')
+        args=capture.get('call_args',{})
+        if (Path(args.get('image_file','')).resolve()!=Path(upload['image_path']).resolve()
+            or args.get('title')!=upload['requested_title'] or sha(upload['image_path'])!=upload['image_sha256']):
+            raise ValueError('actual tool arguments differ from registered image/title')
+        returned=de.returned_design_id(capture['result'])
+        value={'identity':upload['identity'],'upload':upload_ref,'returned_design_id':returned,
+               'capture':{'path':str(capture_path),'sha256':de.sha(capture_path)}}
+        path=Path(state_path).resolve().parent/('magic-return-'+active['attempt_id']+'.json')
+        ref={'path':str(path),'sha256':de.sha(path)} if path.exists() else de.write_once(path,value)
+        if de.sealed(ref)!=value:raise ValueError('original Magic result cannot be overwritten')
+        state['canva_bridge'].setdefault('upload_results',{})[slide_id]=ref;r._save_runtime_state(temp,state)
+    return {'status':'UPLOAD_RESULT_REGISTERED','design_id':returned}
+
+
+def register_design_observation(state_path, slide_id, lookup_path, title_observation=None):
+    import download_evidence as de
+    with transaction(state_path) as temp:
+        state=r.load_runtime_state(temp);identity=active_identity(state,slide_id)
+        lookup_path=Path(lookup_path).resolve();lookup=json.loads(lookup_path.read_text(encoding='utf-8-sig'))
+        _lookup_url(lookup,identity)
+        design=lookup['response']['design'];title=design.get('title')
+        for other_sid,other in state['canva_bridge'].get('active',{}).items():
+            if other_sid!=slide_id and other.get('status')=='ACCEPT' and other.get('design_id')==identity['design_id']:
+                raise ValueError('same design_id assigned to multiple current pages')
+        expected_title=de.title_for(slide_id,identity['attempt_id'],identity['text_clean_fingerprint'])
+        host_title_ref=None
+        if title is None and title_observation is not None:
+            hp=Path(title_observation).resolve();host=de.read(hp);de.check_identity(host['identity'],identity)
+            de.design_url(host['observed_url'],identity['design_id'])
+            if host.get('source')!='canva_host.readonly' or not isinstance(host.get('evidence'),str) or not host['evidence'].strip():
+                raise ValueError('actual readonly Host title evidence required')
+            capture=de.sealed(host['capture'])
+            if capture.get('observed_url')!=host['observed_url'] or capture.get('actual_title')!=host.get('actual_title'):
+                raise ValueError('Host title capture mismatch')
+            host_title_ref={'path':str(hp),'sha256':de.sha(hp)};title=host['actual_title']
+        if design.get('page_count')!=1:
+            raise ValueError('confirm one page on the current design_id; do not reconstruct')
+        upload_ref=state['canva_bridge'].get('upload_observations',{}).get(slide_id)
+        if upload_ref:
+            upload=de.sealed(upload_ref)
+            if any(upload['identity'].get(k)!=identity[k] for k in upload['identity']):raise ValueError('upload identity changed')
+            if upload['image_sha256']!=identity['text_clean_fingerprint']:
+                raise ValueError('upload bytes changed')
+        value={'schema_version':2,'identity':identity,'actual_title':title,
+               'lookup':{'path':str(lookup_path),'sha256':sha(lookup_path)},
+               'updated_at':design.get('updated_at'),'upload':upload_ref,
+               'legacy_attempt':upload_ref is None,'host_title':host_title_ref}
+        path=Path(state_path).resolve().parent/('design-'+identity['attempt_id']+'-'+sha(lookup_path)[:12]+'.json')
+        ref={'path':str(path),'sha256':de.sha(path)} if path.exists() else de.write_once(path,value)
+        if de.sealed(ref)!=value:raise ValueError('immutable design observation collision')
+        state['canva_bridge'].setdefault('design_observations',{})[slide_id]=ref;r._save_runtime_state(temp,state)
+    return {'status':'DESIGN_OBSERVATION_REGISTERED','identity':identity,'actual_title':title}
+
+
+def validate_completion_evidence(state, identity, payload, pptx, required_version=None):
+    import download_evidence as de
+    requirement=state.get('canva_bridge',{}).get('transport_requirements',{}).get(identity['slide_id'])
+    if requirement and requirement.get('identity')!=identity:requirement=None
+    if requirement and requirement.get('terminated'):raise ValueError('transport acquisition explicitly terminated')
+    parsed=payload
+    if isinstance(payload,str):
+        try:parsed=json.loads(payload)
+        except (ValueError,TypeError):parsed=None
+    if (isinstance(parsed,dict) and 'transport_receipt' in parsed) or requirement:
+        if not isinstance(parsed,dict) or not parsed.get('transport_receipt'):
+            raise ValueError('TRANSPORT_RECEIPT_REQUIRED: new acquisition cannot downgrade')
+        if not requirement or requirement.get('acquisition_id')!=parsed.get('acquisition_id'):
+            raise ValueError('transport acquisition not registered')
+        if parsed['transport_receipt'] not in requirement.get('receipts',[]):
+            raise ValueError('transport receipt not registered')
+        snap=de.validate_transport_proof(parsed,identity,pptx)
+        current=state['canva_bridge'].get('design_observations',{}).get(identity['slide_id'])
+        if current!=snap['context']['design_observation']:raise ValueError('current design observation changed')
+        body=dict(parsed);expected=body.pop('evidence_digest',None)
+        if expected!=__import__('hashlib').sha256(json.dumps(body,sort_keys=True,separators=(',',':')).encode()).hexdigest():
+            raise ValueError('completion evidence digest mismatch')
+        return
+    if isinstance(payload,str):
+        try:payload=json.loads(payload)
+        except (ValueError,TypeError):
+            if required_version==2:raise ValueError('v2 completion evidence cannot be downgraded')
+            return  # Existing v1 opaque evidence stays on the legacy route.
+    if isinstance(payload,dict) and payload.get('schema_version') not in (None,1,2):raise ValueError('unsupported completion evidence version')
+    if not isinstance(payload,dict) or payload.get('schema_version')!=2:
+        if required_version==2:raise ValueError('v2 completion evidence cannot be downgraded')
+        return
+    snap=de.validate_file_proof(payload,identity,pptx)
+    de.source_association(payload,identity,snap['context'],pptx)
+    # Observation must still be the one registered for this current attempt.
+    current=state.get('canva_bridge',{}).get('design_observations',{}).get(identity['slide_id'])
+    if current!=snap['context']['design_observation']:raise ValueError('current design observation changed')
+    if not payload.get('page_check'):raise ValueError('PAGE_CHECK_REQUIRED: downloaded file retained; event is optional')
+    review=de.sealed(payload['page_check']);de.check_identity(review['identity'],identity)
+    if review.get('assessment')!='MATCH' or review.get('file_sha256')!=payload['selected']['sha256'] or review.get('input_sha256')!=identity['text_clean_fingerprint']:
+        raise ValueError('page comparison identity mismatch')
+    preview=de.sealed(review['preview_receipt']);de.check_identity(preview['identity'],identity)
+    if preview['source_sha256']!=payload['selected']['sha256'] or de.sha(preview['preview_path'])!=preview['preview_sha256']:
+        raise ValueError('page preview changed')
+    input_ref=review['input_render']
+    if de.sha(input_ref['path'])!=identity['text_clean_fingerprint'] or input_ref['sha256']!=identity['text_clean_fingerprint']:
+        raise ValueError('page comparison source changed')
+    expected=payload.get('evidence_digest')
+    copy_payload=dict(payload);copy_payload.pop('evidence_digest',None)
+    actual=__import__('hashlib').sha256(json.dumps(copy_payload,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    if expected!=actual:raise ValueError('completion evidence digest mismatch')
+
+
 def begin_attempt(state_path, slide_id, rebuild=False, recovery_evidence=None):
     r.require_stage2_entry(state_path)
     if r.stage2_handoff_status(state_path)['status'] != 'COMPLETE':
@@ -359,6 +498,9 @@ def begin_attempt(state_path, slide_id, rebuild=False, recovery_evidence=None):
                   'approved_outline_fingerprint':run['approved_outline_fingerprint'],
                   'source_fingerprint':source_fp,'text_clean_fingerprint':clean_fp,'status':'PENDING'}
         bridge['active'][slide_id] = active
+        for section in ('upload_observations','upload_results','design_observations','transport_requirements'):
+            previous=bridge.get(section,{}).pop(slide_id,None)
+            if previous:bridge.setdefault('observation_history',[]).append({'identity':old,'kind':section,'ref':previous})
         # Old sources and seals remain history; provenance checks stop their delivery.
         r._save_runtime_state(temp,state)
     return active
@@ -376,6 +518,13 @@ def accept_attempt(state_path, slide_id, attempt_id, result_path):
         if any(result.get(k) != active[k] for k in required):
             raise ValueError('returned result identity mismatch')
         assessment = result.get('assessment')
+        if state['canva_bridge'].get('upload_observations',{}).get(slide_id) and assessment not in ('MAGIC_LAYERS_EXECUTION_FAILED','MAGIC_LAYERS_TOOL_UNAVAILABLE'):
+            import download_evidence as de
+            returned=de.sealed(state['canva_bridge'].get('upload_results',{}).get(slide_id))
+            if returned['upload']!=state['canva_bridge']['upload_observations'][slide_id]:raise ValueError('Magic result belongs to another upload')
+            captured=de.sealed(returned['capture'])
+            if result.get('design_id')!=de.returned_design_id(captured['result']) or result.get('design_id')!=returned['returned_design_id']:
+                raise ValueError('accepted design_id differs from the actual Magic return')
         if assessment in ('MAGIC_LAYERS_EXECUTION_FAILED','MAGIC_LAYERS_TOOL_UNAVAILABLE'):
             if (active['status'] != 'PENDING' or result.get('terminal_confirmed') is not True
                     or result.get('design_id') or not isinstance(result.get('evidence'),str)
@@ -536,6 +685,11 @@ def download_current(state, slide_id):
     if registered.get('sha256') != record['sha256'] or registered.get('run_id') != identity['run_id']:
         raise ValueError('download registration mismatch')
     single_page(path)
+    if record.get('require_transport_receipt'):
+        requirement=state.get('canva_bridge',{}).get('transport_requirements',{}).get(slide_id)
+        if not requirement or requirement.get('acquisition_id')!=record.get('acquisition_id'):
+            raise ValueError('bound transport requirement missing')
+    validate_completion_evidence(state,identity,record['evidence'].get('completion_evidence'),path,record.get('completion_schema'))
     return record
 
 
@@ -553,12 +707,19 @@ def bind_download(state_path, slide_id, pptx, evidence_path):
                for k in ('edit_url','download_entry','completion_evidence')):
             raise ValueError('observed browser download evidence required')
         _check_download_url(evidence,identity,state)
+        validate_completion_evidence(state,identity,evidence.get('completion_evidence'),path)
         if evidence.get('pptx_sha256') != sha(path):
             raise ValueError('download evidence hash mismatch')
         r.register_stage2_artifact(temp,'graphics_first_pptx:'+slide_id,path)
         state = r.load_runtime_state(temp)
         state['canva_bridge'].setdefault('downloads',{})[slide_id] = {
             'identity':identity,'path':str(path),'sha256':sha(path),'evidence':evidence}
+        try:completion_version=json.loads(evidence['completion_evidence']).get('schema_version',1)
+        except (ValueError,AttributeError):completion_version=1
+        state['canva_bridge']['downloads'][slide_id]['completion_schema']=completion_version
+        parsed=json.loads(evidence['completion_evidence']) if completion_version==2 else {}
+        if parsed.get('transport_receipt'):
+            state['canva_bridge']['downloads'][slide_id].update(require_transport_receipt=True,acquisition_id=parsed['acquisition_id'])
         r._save_runtime_state(temp,state)
     return {'status':'DOWNLOAD_BOUND','path':str(path)}
 
@@ -923,7 +1084,10 @@ def status(state_path):
         return {'status':'STAGE2_EXPLORATION'}
     visual = r.stage2_visual_status(state_path)
     if visual['status'] != 'COMPLETE':
-        return {'status':'STAGE2_PRODUCTION','missing':visual.get('missing',[])}
+        result = {'status':'STAGE2_PRODUCTION','missing':visual.get('missing',[])}
+        if state['stage2_run'].get('title_policy') is not None:
+            result['title_policy'] = r.titles.context_from_state(state)
+        return result
     try:
         r.require_stage2_visual_approval(state_path)
     except (KeyError,ValueError,OSError,TypeError):
@@ -990,23 +1154,28 @@ def status(state_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('action',choices=('init','status','start-run','register-text-plan','register-text-clean','begin-attempt','accept-attempt','register-design-url','bind-download','seal-page'))
+    parser.add_argument('action',choices=('init','status','start-run','register-text-plan','register-text-clean','begin-attempt','accept-attempt','register-design-url','bind-download','seal-page','register-upload','register-design-observation','register-upload-result'))
     parser.add_argument('--state',required=True)
     parser.add_argument('--route',choices=('codex-canva','external'),default='codex-canva')
     parser.add_argument('--slide-id');parser.add_argument('--attempt-id');parser.add_argument('--artifact');parser.add_argument('--manifest');parser.add_argument('--inventory')
     parser.add_argument('--lookup');parser.add_argument('--result');parser.add_argument('--pptx');parser.add_argument('--evidence');parser.add_argument('--gates')
     parser.add_argument('--rebuild',action='store_true')
     parser.add_argument('--recovery-evidence')
+    parser.add_argument('--title-choice-required',action='store_true')
+    parser.add_argument('--title-observation')
     args = parser.parse_args()
     try:
         if args.action == 'init': result = init(args.state,args.route)
         elif args.action == 'status': result = status(args.state)
-        elif args.action == 'start-run': result = {**start_run(args.state), 'status':'RUN_READY'}
+        elif args.action == 'start-run': result = {**start_run(args.state,args.title_choice_required), 'status':'RUN_READY'}
         elif args.action == 'register-text-plan': result = register_text_plan(args.state,args.slide_id,args.manifest,args.inventory)
         elif args.action == 'register-text-clean': result = register_text_clean(args.state,args.slide_id,args.artifact)
         elif args.action == 'begin-attempt': result = begin_attempt(args.state,args.slide_id,args.rebuild,args.recovery_evidence)
         elif args.action == 'accept-attempt': result = accept_attempt(args.state,args.slide_id,args.attempt_id,args.result)
         elif args.action == 'register-design-url': result = register_design_url(args.state,args.slide_id,args.lookup)
+        elif args.action == 'register-upload-result': result = register_upload_result(args.state,args.slide_id,args.result)
+        elif args.action == 'register-upload': result = register_upload(args.state,args.slide_id,args.artifact)
+        elif args.action == 'register-design-observation': result = register_design_observation(args.state,args.slide_id,args.evidence,args.title_observation)
         elif args.action == 'bind-download': result = bind_download(args.state,args.slide_id,args.pptx,args.evidence)
         else: result = seal_page(args.state,args.slide_id,args.pptx,args.gates)
     except (OSError,ValueError,KeyError,TypeError,zipfile.BadZipFile,ET.ParseError) as error:
@@ -1014,6 +1183,28 @@ def main():
     print(json.dumps(result,ensure_ascii=False,indent=2))
     return 1 if result['status']=='BLOCKED' else 0
 
+
+def register_transport_requirement(state_path,identity,acquisition_id,receipt_ref=None):
+    """Persist new-policy requirement before acquisition; old bound tasks stay untouched."""
+    import download_evidence as de
+    with transaction(state_path) as temp:
+        state=r.load_runtime_state(temp)
+        if active_identity(state,identity['slide_id'])!=identity:raise ValueError('transport identity changed')
+        registry=state['canva_bridge'].setdefault('transport_requirements',{})
+        existing=registry.get(identity['slide_id'])
+        if existing and existing['identity']==identity and existing['acquisition_id']!=acquisition_id and not existing.get('terminated'):
+            raise ValueError('current transport acquisition differs; resume original')
+        if existing and existing.get('terminated') and existing['acquisition_id']!=acquisition_id:
+            state['canva_bridge'].setdefault('observation_history',[]).append({'kind':'transport_requirements','record':copy.deepcopy(existing)})
+            existing=None
+        if existing and existing.get('terminated'):raise ValueError('transport acquisition explicitly terminated')
+        requirement=existing if existing and existing['identity']==identity else {
+            'identity':identity,'acquisition_id':acquisition_id,'receipts':[]}
+        if receipt_ref:
+            receipt=de.sealed(receipt_ref);de.check_identity(receipt['identity'],identity)
+            if receipt['acquisition_id']!=acquisition_id:raise ValueError('receipt acquisition mismatch')
+            if receipt_ref not in requirement['receipts']:requirement['receipts'].append(receipt_ref)
+        registry[identity['slide_id']]=requirement;r._save_runtime_state(temp,state)
 
 if __name__ == '__main__':
     raise SystemExit(main())

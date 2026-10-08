@@ -38,7 +38,7 @@ def request(state_path, slide_id, lookup_path, download_target_dir):
         raise ValueError('absolute finalizer target directory required')
     return {'status':'WAIT_DOWNLOAD','identity':identity,'edit_url':url,
             'download_target_dir':str(target),'lookup_path':str(Path(lookup_path).resolve()),
-            'lookup_sha256':bridge.sha(lookup_path),'page_count':1}
+            'lookup_sha256':bridge.sha(lookup_path),'page_count':1,'require_transport_receipt':True}
 
 
 def main():

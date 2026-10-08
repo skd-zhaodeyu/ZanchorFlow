@@ -1,3 +1,4 @@
+> **安装此包的Agent：** 用户请求“安装这个skill”时，先执行[统一安装说明](docs/unified-install.md)和`tools/install.py`。由当前执行上下文自动识别：仅明确千问/WorkBuddy生成Image Layer视图；Codex、其他或未知宿主安装原始完整版；冲突停止。无需用户指定宿主。不直接套用其他宿主配置，不临场改写skill。
 # ZAnchorFlow · by David-Z
 
 从材料、大纲和视觉样页，逐步制作风格统一、文字可修改的 PowerPoint 演示文稿。
@@ -91,23 +92,22 @@ Magic Layers 案例制作于 2026-10-01，Image Layer 竖向案例制作于 2026
 
 - 内容：明确页面任务、核心表达、关键信息与语义关系。
 - 视觉：由选定 Anchor 延续 Style DNA；已验收页面保持锁定。
+- 正文标题：可选择统一或自由。统一时，从首个合格普通内容页自动建立标准并供后续页面继承；安全的字号、字体差异先记录，在每页文字恢复后独立调整主标题，整套检查只提示残余差异，不自动返修；封面保持独立，不增加标题标准确认。正文标题承担导航与层级作用，实质内容承担主视觉，作者批准的展示性大标题仅影响该页。
 - 文字：使用内容真值、文字计划和 Native Text Visual Fit 恢复可修改文字。
 - 续作：根据当前状态及证据恢复，复用已经完成的设计、下载与模型结果。
 - 交付：保留页面顺序、资源、对象和来源绑定，合并后检查整套文件。
 
 ## 安装与依赖
 
-**推荐下载精简包：[zanchorflow.zip](dist/zanchorflow.zip) · [SHA-256](dist/zanchorflow.zip.sha256)**
+普通用户下载 [精简安装包 zanchorflow.zip](downloads/zanchorflow.zip) · [SHA-256](downloads/zanchorflow.zip.sha256)；开发者 [下载当前源码](https://github.com/skd-zhaodeyu/ZanchorFlow/archive/refs/heads/main.zip)。把解压后的任意一个包交给当前 Agent，直接请求“安装这个 skill”。安装者按[统一安装说明](docs/unified-install.md)运行 tools/install.py，不要求用户指定宿主。
 
-核对校验值后解压，将 zanchorflow 目录放入当前 Codex 的 skill 搜索目录。安装位置取决于你的 Codex 配置。详细步骤见 [安装说明](zanchorflow/docs/installation.md)。
-
-也可从本仓库安装 zanchorflow 文件夹；这种方式包含 tests。精简 ZIP 不含测试，运行材料一致；测试不会作为正常执行指令加载。
+`dist/zanchorflow.zip` 和其 SHA-256 是不可变的原始完整版基准。自动安装只从该基准生成；不要绕过统一入口，直接复制源码中的技能目录给千问或 WorkBuddy。两包内容和构建方式见[两包发布](docs/release-packages.md)。原有 Codex 依赖和技能使用说明仍见[安装说明](zanchorflow/docs/installation.md)。
 
 Python 基础依赖：
 ~~~powershell
 python -m pip install -r zanchorflow/requirements-base.txt
 ~~~
-Image Layer 另使用 requirements-image.txt。原生整套合并需要 Windows 桌面 PowerPoint 和 requirements-office.txt。已验证的版本组合、预检命令和独立试用方法见安装说明；不安装也可让 Codex 读取解压目录的 SKILL.md 开始测试。
+Image Layer 另使用 requirements-image.txt。原生整套合并需要 Windows 桌面 PowerPoint 或通过能力预检的 WPS 演示，以及 requirements-office.txt；默认优先 PowerPoint，WPS 为备用。执行 agent 仅在当前步骤实际缺少 Python 或必要依赖时说明准备工作，不固定开场提醒。已验证的版本组合、预检命令和独立试用方法见安装说明；不安装也可让 Codex 读取解压目录的 SKILL.md 开始测试。
 
 ## 第一次使用
 
@@ -147,9 +147,11 @@ Download the fixed-name installation ZIP, check its SHA-256, and follow the inst
 
 [MIT](LICENSE) · David-Z. Third-party services and materials retain their own terms. No third-party fonts or model source code are bundled.
 
+
+当前交付为 **V1.0**；包名和调用名不变，同版本更新以内部更新时间区分。Image Layer 按编辑价值选框，差结果如实记录且不自动重新分层。包内版本、安装版本和哈希可用安装器核对；历史 RC 信息只用于来源追溯。
+
 ### 支持作者
 
 如果 ZAnchorFlow 对你有帮助，欢迎自愿打赏。感谢支持。
 
 <a href="docs/assets/support-wechat.png"><img src="docs/assets/support-wechat.png" width="120" alt="David-Z 微信收款二维码"></a>
-

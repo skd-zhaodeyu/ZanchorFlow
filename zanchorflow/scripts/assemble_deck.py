@@ -80,7 +80,7 @@ def recover_review(state_path):
     return {'status':'AWAITING_DECK_VALIDATION','path':str(candidate),'validation_report':str(review_path)}
 
 
-def prepare(state_path, work_dir):
+def prepare(state_path, work_dir, *, office_host='auto'):
     state_path = Path(state_path).resolve()
     require_stage2_entry(state_path)
     if stage2_handoff_status(state_path)['status'] != 'COMPLETE':
@@ -96,7 +96,7 @@ def prepare(state_path, work_dir):
         raise ValueError('review exists; preserve it and use a new work directory')
     if candidate.exists():
         raise ValueError('candidate exists; use a new work directory')
-    report = preflight.check(Path(__file__).parent.parent, work_dir, scope='merge')
+    report = preflight.check(Path(__file__).parent.parent, work_dir, scope='merge', office_host=office_host)
     if preflight.exit_code(report):
         return {'status':'FAIL', 'code':'MERGE_PREFLIGHT_FAILED', 'preflight':report}
     candidate_created = False
@@ -110,7 +110,7 @@ def prepare(state_path, work_dir):
             if 'deck_order' not in current:
                 current['deck_order'] = list(order)
                 _save_runtime_state(temp,current)
-            result = merge(inputs,order,candidate,temp)
+            result = merge(inputs,order,candidate,temp,office_host=report['office_host'])
             candidate_created = candidate.exists()
             if result['status'] != 'PASS':
                 raise ValueError('native merge failed: '+str(result))
@@ -119,14 +119,16 @@ def prepare(state_path, work_dir):
             bridge.set_merged_provenance(current,pages,current['merged_deck']['merged_pptx_sha256'])
             _save_runtime_state(temp,current)
             review_created = True
-            review_path.write_text(json.dumps(_review_template(current,order),ensure_ascii=False,indent=2),encoding='utf-8')
+            review = _review_template(current,order)
+            review['native_merge'] = {key:result[key] for key in ('office_host','office_progid','office_attempts','cleanup_errors') if key in result}
+            review_path.write_text(json.dumps(review,ensure_ascii=False,indent=2),encoding='utf-8')
     except Exception:
         if candidate_created:
             candidate.unlink(missing_ok=True)
         if review_created:
             review_path.unlink(missing_ok=True)
         raise
-    return {**result, 'status':'AWAITING_DECK_VALIDATION', 'validation_report':str(review_path)}
+    return {**result, 'status':'AWAITING_DECK_VALIDATION', 'validation_report':str(review_path), 'preflight':report}
 
 
 def publish(state_path, validation_report, output):
@@ -206,6 +208,7 @@ def main():
     build = sub.add_parser('prepare')
     build.add_argument('--state',required=True)
     build.add_argument('--work-dir',required=True)
+    build.add_argument('--office-host',choices=('auto','powerpoint','wps'),default='auto')
     deliver = sub.add_parser('publish')
     deliver.add_argument('--state',required=True)
     deliver.add_argument('--validation-report',required=True)
@@ -215,7 +218,7 @@ def main():
     args = parser.parse_args()
     try:
         if args.action == 'prepare':
-            result = prepare(args.state,args.work_dir)
+            result = prepare(args.state,args.work_dir,office_host=args.office_host)
         elif args.action == 'recover-review':
             result = recover_review(args.state)
         else:

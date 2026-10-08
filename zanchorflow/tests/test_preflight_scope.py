@@ -20,6 +20,7 @@ def test_merge_scope_failed_com_is_nonzero(monkeypatch,tmp_path):
     monkeypatch.setattr(preflight.importlib.util,'find_spec',
                         lambda name: object() if name == 'win32com' else original(name))
     monkeypatch.setattr(preflight,'_probe_powerpoint',lambda _output_dir: (False,'synthetic unavailable'),raising=False)
+    monkeypatch.setattr(preflight,'_probe_wps',lambda _output_dir: (False,'synthetic WPS unavailable'))
     result=preflight.check(ROOT,tmp_path,scope='merge')
     assert any(x['code']=='POWERPOINT_NATIVE_IMPORT_UNAVAILABLE' for x in result['blockers'])
     assert preflight.exit_code(result)!=0

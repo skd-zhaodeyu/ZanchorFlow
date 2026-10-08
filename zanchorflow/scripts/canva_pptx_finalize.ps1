@@ -188,7 +188,7 @@ $stableFile = Wait-ForStableFile `
 $pythonCommand = Get-Command -Name $PythonExecutable -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($null -eq $pythonCommand) { throw 'PPTX_VALIDATION_INTERPRETER_UNAVAILABLE: specify the workflow Python executable.' }
 $validatorCode = 'import sys; sys.path.insert(0, sys.argv[1]); from canva_bridge import single_page; single_page(sys.argv[2])'
-$validatorResult = & $pythonCommand.Source -X utf8 -c $validatorCode $PSScriptRoot $sourcePath 2>&1
+$validatorResult = & $pythonCommand.Source -B -X utf8 -c $validatorCode $PSScriptRoot $sourcePath 2>&1
 if ($LASTEXITCODE -ne 0) { throw "PPTX shared validation failed: $(($validatorResult | Out-String).Trim())" }
 
 $package = Test-PptxPackage -Path $sourcePath

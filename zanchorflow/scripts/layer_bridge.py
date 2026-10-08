@@ -1,5 +1,7 @@
 """Image Layer backend runtime state machine. Remote work is explicit and lineage-bound."""
 import argparse
+import copy
+import uuid
 import hashlib
 import json
 import os
@@ -74,7 +76,8 @@ def _plan_current(state,slide_id):
 
 def _clear_downstream(bridge,slide_id):
     for key in ('readiness','requests','results','bundles','visual_qa','graphics_first','validated'):
-        bridge.setdefault(key,{}).pop(slide_id,None)
+        old=bridge.setdefault(key,{}).pop(slide_id,None)
+        if old is not None:bridge.setdefault('artifact_history',{}).setdefault(slide_id,[]).append({'kind':key,'record':copy.deepcopy(old)})
 
 
 def register_plan(state_path,slide_id,plan_path,overlay_path):
@@ -92,9 +95,12 @@ def register_plan(state_path,slide_id,plan_path,overlay_path):
         return previous # Re-registering the same input/plan cannot erase a consumed retry or current result.
     record={'status':'LAYER_PLAN_READY','slide_id':slide_id,'run_id':run_id,'text_clean_sha256':clean_sha,
             'source_canvas':source_canvas,'plan_path':str(plan_path),'plan_sha256':_sha(plan_path),
-            'overlay_path':str(overlay_path),'overlay_sha256':_sha(overlay_path),'approved':False}
+            'overlay_path':str(overlay_path),'overlay_sha256':_sha(overlay_path),'approved':False,'editing_review_required':True,'selection_policy':'editing_value'}
     with router.transaction(state_path) as temp:
-        current=r.load_runtime_state(temp); bridge=_ensure_bridge(current); bridge['plans'][slide_id]=record; _clear_downstream(bridge,slide_id); r._save_runtime_state(temp,current)
+        current=r.load_runtime_state(temp); bridge=_ensure_bridge(current)
+        prior=bridge['plans'].get(slide_id)
+        if prior:bridge.setdefault('plan_history',{}).setdefault(slide_id,[]).append(copy.deepcopy(prior))
+        bridge['plans'][slide_id]=record; _clear_downstream(bridge,slide_id); r._save_runtime_state(temp,current)
     return record
 
 
@@ -166,6 +172,7 @@ def authorize_quality_retry(state_path,slide_id,evidence_path,authorization_path
         or any(auth.get(k)!=v for k,v in {**{k:binding[k] for k in ('text_clean_sha256','plan_sha256')},
             'provider':identity['provider'],'model':identity['model']}.items())):
         raise ValueError('SEVERE_QUALITY_RETRY: current paid authorization required')
+    authorize_resubmit(state_path,slide_id,authorization_path,type('OriginalProvider',(),{'PROVIDER_ID':identity['provider'],'MODEL':identity['model'],'VERSION':identity['version'],'MODEL_PARAMETERS':{k:v for k,v in identity.items() if k not in ('provider','model','version')}}))
     rec={'retry_reason':'severe_quality_failure','quality_retry_count':0,'key':key,**binding,
          'provider_identity':identity,'original_result_id':result['task_id'],
          'severe_quality_evidence_file':str(ep),'severe_quality_evidence_sha':_sha(ep),
@@ -186,7 +193,77 @@ def _request_fp(plan_rec,provider_module):
     return hashlib.sha256(raw).hexdigest()
 
 
-def authorize_retry(state_path,slide_id,*,accept_duplicate_charge_risk=False):
+def _submission_count(state,slide_id):
+    """Across Plan/backend changes. Legacy live requests/results also count."""
+    bridge=state.get('layer_bridge',{});run_id=_current_run(state)['run_id']
+    events=[e for e in bridge.get('call_ledger',[]) if e.get('event')=='submit_reserved'
+            and e.get('slide_id')==slide_id and e.get('run_id',run_id)==run_id]
+    if events:return len(events)
+    for section in ('requests','results'):
+        record=bridge.get(section,{}).get(slide_id)
+        if isinstance(record,dict) and record.get('run_id',run_id)==run_id:return 1
+    for entry in bridge.get('artifact_history',{}).get(slide_id,[]):
+        record=entry.get('record',{})
+        if entry.get('kind') in ('requests','results') and record.get('run_id',run_id)==run_id:return 1
+    return 0
+
+def authorize_resubmit(state_path,slide_id,authorization_path,provider_module=layer_provider_360):
+    """Register one actual human-requested re-layer instruction. No remote work."""
+    state=r.load_runtime_state(state_path);plan=_plan_current(state,slide_id)
+    if plan is None:raise ValueError('current Plan required')
+    count=_submission_count(state,slide_id)
+    if not count:raise ValueError('no prior submission; use normal first-submit workflow')
+    path=Path(authorization_path).resolve();auth=json.loads(path.read_text(encoding='utf-8'))
+    identity=_provider_identity(provider_module)
+    expected={'page_id':slide_id,'run_id':plan['run_id'],'text_clean_sha256':plan['text_clean_sha256'],
+              'plan_sha256':plan['plan_sha256'],'provider_identity':identity}
+    if (auth.get('source')!='user' or auth.get('user_requested_relayer') is not True
+        or auth.get('authorized') is not True or auth.get('revoked',False)
+        or not layer_policy.text(auth.get('user_message_id')) or not layer_policy.text(auth.get('user_message'))
+        or not layer_policy.text(auth.get('authorization_id'))
+        or type(auth.get('remaining_image_calls')) is not int or auth['remaining_image_calls']<1
+        or any(auth.get(k)!=v for k,v in expected.items())):
+        raise ValueError('USER_INITIATED_RELAYER_REQUIRED: budget/key/risk flags are not a new user instruction')
+    # A changed Plan cannot erase an unresolved earlier call or its charge risk.
+    records=[state.get('layer_bridge',{}).get('requests',{}).get(slide_id,{})]
+    records += [x.get('record',{}) for x in state.get('layer_bridge',{}).get('artifact_history',{}).get(slide_id,[]) if x.get('kind')=='requests']
+    if any(x.get('status') in ('SUBMITTING','LAYER_REQUEST_PENDING','LAYER_REQUEST_UNCERTAIN') and x.get('run_id',plan['run_id'])==plan['run_id'] for x in records):
+        if auth.get('accept_duplicate_charge_risk') is not True:
+            raise ValueError('duplicate charge risk must be explicitly accepted in the user instruction')
+    record={**expected,'authorization_id':auth['authorization_id'],'user_message_id':auth['user_message_id'],
+            'authorization_file':str(path),'authorization_sha256':_sha(path),'prior_submission_count':count,'used':False}
+    with router.transaction(state_path) as temp:
+        current=r.load_runtime_state(temp);bridge=_ensure_bridge(current)
+        if _plan_current(current,slide_id)!=plan or _submission_count(current,slide_id)!=count:
+            raise ValueError('authorization scope changed')
+        history=bridge.setdefault('resubmit_authorization_history',[])
+        old=bridge.setdefault('resubmit_authorizations',{}).get(slide_id)
+        if old:
+            if old==record:return {'status':'USER_RESUBMIT_AUTHORIZED','slide_id':slide_id}
+            history.append(copy.deepcopy(old))
+        for prior in history+([old] if old else []):
+            if prior and prior.get('used') and prior.get('page_id')==slide_id and prior.get('run_id')==plan['run_id'] and prior.get('user_message_id')==record['user_message_id']:
+                raise ValueError('user instruction already consumed for this page')
+            if prior and prior.get('authorization_id')==record['authorization_id'] and prior.get('used'):
+                raise ValueError('user authorization already consumed')
+        bridge['resubmit_authorizations'][slide_id]=record;r._save_runtime_state(temp,current)
+    return {'status':'USER_RESUBMIT_AUTHORIZED','slide_id':slide_id}
+
+def _resubmit_current(state,slide_id,identity):
+    plan=_plan_current(state,slide_id);record=state.get('layer_bridge',{}).get('resubmit_authorizations',{}).get(slide_id)
+    if not isinstance(record,dict) or record.get('used') or plan is None:return None
+    expected={'page_id':slide_id,'run_id':plan['run_id'],'text_clean_sha256':plan['text_clean_sha256'],
+              'plan_sha256':plan['plan_sha256'],'provider_identity':identity}
+    if any(record.get(k)!=v for k,v in expected.items()) or record.get('prior_submission_count')!=_submission_count(state,slide_id):
+        return None
+    path=Path(record['authorization_file'])
+    if not path.is_file() or _sha(path)!=record['authorization_sha256']:return None
+    auth=json.loads(path.read_text(encoding='utf-8'))
+    if auth.get('revoked') or auth.get('user_requested_relayer') is not True:return None
+    return record
+
+
+def authorize_retry(state_path,slide_id,*,accept_duplicate_charge_risk=False,authorization_path=None):
     state=r.load_runtime_state(state_path); plan=_plan_current(state,slide_id)
     if plan is None: raise ValueError('LAYER_PLAN_FAILED: current plan required')
     request=state.get('layer_bridge',{}).get('requests',{}).get(slide_id)
@@ -195,51 +272,72 @@ def authorize_retry(state_path,slide_id,*,accept_duplicate_charge_risk=False):
     if request['status']=='LAYER_REQUEST_UNCERTAIN' and not accept_duplicate_charge_risk:
         raise ValueError('duplicate charge risk must be explicitly accepted')
     if request.get('retry_reason')=='severe_quality_failure': raise ValueError('SEVERE_QUALITY_RETRY_EXHAUSTED: no technical resubmit of quality attempt')
+    if authorization_path is None:raise ValueError('USER_INITIATED_RELAYER_REQUIRED')
+    identity=request.get('provider_identity',_provider_identity(layer_provider_360))
+    proxy=type('OriginalProvider',(),{'PROVIDER_ID':identity['provider'],'MODEL':identity['model'],'VERSION':identity['version'],'MODEL_PARAMETERS':{k:v for k,v in identity.items() if k not in ('provider','model','version')}})
+    authorize_resubmit(state_path,slide_id,authorization_path,proxy)
     auth={'retry_reason':'technical_failure','request_fingerprint':request['request_fingerprint'],'accept_duplicate_charge_risk':bool(accept_duplicate_charge_risk)}
     with router.transaction(state_path) as temp:
         current=r.load_runtime_state(temp); bridge=_ensure_bridge(current); bridge['requests'][slide_id]['retry_authorization']=auth; r._save_runtime_state(temp,current)
     return {'status':'RETRY_AUTHORIZED','slide_id':slide_id}
 
 
+def _check_quality_retry(state_path,state,slide_id,plan_rec,identity,quality,old):
+    if quality.get('quality_retry_count',0): raise ValueError('SEVERE_QUALITY_RETRY_EXHAUSTED')
+    result=result_current(state,slide_id)
+    if result is None or result['sha256']!=quality['result_sha256'] or result['task_id']!=quality['original_result_id']:
+        raise ValueError('SEVERE_QUALITY_RETRY: original result changed')
+    proof=json.loads(Path(quality['severe_quality_evidence_file']).read_text(encoding='utf-8'))
+    layer_policy.evidence_assets(proof.get('evidence'),Path(quality['severe_quality_evidence_file']).parent)
+    if identity!=quality['provider_identity'] or quality.get('key')!=_quality_key(plan_rec,identity):
+        raise ValueError('SEVERE_QUALITY_RETRY: input/plan/provider parameters changed')
+    for file_key,hash_key in [('authorization_file','authorization_sha256'),('severe_quality_evidence_file','severe_quality_evidence_sha')]:
+        if _sha(quality[file_key])!=quality[hash_key]: raise ValueError('SEVERE_QUALITY_RETRY: authorization/evidence changed')
+
 def submit(state_path,slide_id,work_dir,provider_module=layer_provider_360):
     if router.selected_backend(state_path)!=router.IMAGE_LAYER: raise ValueError('Image Layer backend not selected')
     state=r.load_runtime_state(state_path); plan_rec=_plan_current(state,slide_id)
     if plan_rec is None: raise ValueError('LAYER_PLAN_FAILED: current plan required')
     if not plan_rec.get('approved'): raise ValueError('LAYER_PLAN_NOT_APPROVED')
+    identity=_provider_identity(provider_module)
+    prior_count=_submission_count(state,slide_id)
+    manual=_resubmit_current(state,slide_id,identity) if prior_count else None
+    # A completed same-Plan result is reused unless the human requested another call.
+    existing=state.get('layer_bridge',{}).get('requests',{}).get(slide_id)
+    if prior_count and manual is None:
+        pending=state.get('layer_bridge',{}).get('resubmit_authorizations',{}).get(slide_id)
+        if not (pending and not pending.get('used')) and _result_assets_usable(result_current(state,slide_id)):
+            return {'status':'LAYER_RESULT_BOUND','slide_id':slide_id,'reused':True,'automatic_resubmit':False}
+        if existing and existing.get('status')=='DONE' and existing.get('plan_sha256')==plan_rec['plan_sha256'] and not (pending and not pending.get('used')):
+            return {'status':'LAYER_LOCAL_RESULT_RECOVERY_REQUIRED','slide_id':slide_id,'automatic_resubmit':False}
+        raise ValueError('USER_INITIATED_RELAYER_REQUIRED: query/download existing task; do not re-submit')
     api_key=os.environ.get(router.IMAGE_LAYER_API_KEY_ENV)
     if not api_key: return router.image_layer_onboarding()
     readiness=readiness_current(state,slide_id)
     if readiness is None or readiness['status']!='READY': raise ValueError('LAYER_PLAN_READINESS_REQUIRED')
     from layer_geometry_verify import dependencies
     dependencies()
-    identity=_provider_identity(provider_module)
     quality=None
     bridge=state.get('layer_bridge',{}); old=bridge.get('requests',{}).get(slide_id); fp=_request_fp(plan_rec,provider_module)
     if isinstance(old,dict):
         if old.get('status') in ('SUBMITTING','LAYER_REQUEST_PENDING'): raise ValueError('layer request already pending')
         if old.get('status') in ('LAYER_REQUEST_UNCERTAIN','LAYER_RETRY_APPROVAL_REQUIRED'):
             auth=old.get('retry_authorization')
-            if not isinstance(auth,dict) or auth.get('request_fingerprint')!=old.get('request_fingerprint'):
+            if not manual and (not isinstance(auth,dict) or auth.get('request_fingerprint')!=old.get('request_fingerprint')):
                 raise ValueError(old.get('status') if old.get('status')=='LAYER_REQUEST_UNCERTAIN' else 'retry authorization required')
         elif old.get('status')=='DONE':
             key=old.get('quality_retry_key'); quality=bridge.get('quality_retries',{}).get(key)
             if not isinstance(quality,dict) or not quality.get('authorized'):
-                return {'status':'LAYER_RESULT_BOUND','slide_id':slide_id}
-            if quality.get('quality_retry_count',0): raise ValueError('SEVERE_QUALITY_RETRY_EXHAUSTED')
-            result=result_current(state,slide_id)
-            if result is None or result['sha256']!=quality['result_sha256'] or result['task_id']!=quality['original_result_id']:
-                raise ValueError('SEVERE_QUALITY_RETRY: original result changed')
-            proof=json.loads(Path(quality['severe_quality_evidence_file']).read_text(encoding='utf-8'))
-            layer_policy.evidence_assets(proof.get('evidence'),Path(quality['severe_quality_evidence_file']).parent)
-            if identity!=quality['provider_identity'] or key!=_quality_key(plan_rec,identity):
-                raise ValueError('SEVERE_QUALITY_RETRY: input/plan/provider parameters changed')
-            for file_key,hash_key in [('authorization_file','authorization_sha256'),('severe_quality_evidence_file','severe_quality_evidence_sha')]:
-                if _sha(quality[file_key])!=quality[hash_key]: raise ValueError('SEVERE_QUALITY_RETRY: authorization/evidence changed')
+                quality=None
+            if quality is None:
+                pass
+            else:
+                _check_quality_retry(state_path,state,slide_id,plan_rec,identity,quality,old)
     router.require_image_target(state_path,state)
-    attempt=(old or {}).get('attempt_no',0)+1
+    attempt=prior_count+1
     reservation={'status':'SUBMITTING','slide_id':slide_id,'run_id':plan_rec['run_id'],'plan_sha256':plan_rec['plan_sha256'],
                  'text_clean_sha256':plan_rec['text_clean_sha256'],'request_fingerprint':fp,'attempt_no':attempt,'provider_identity':identity,
-                 'retry_reason':'severe_quality_failure' if quality else ('technical_failure' if old else 'initial_submit')}
+                 'retry_reason':'severe_quality_failure' if quality else ('user_requested_revision' if manual else 'initial_submit')}
     if quality: reservation['quality_retry_key']=quality['key']
     with router.transaction(state_path) as temp:
         current=r.load_runtime_state(temp); b=_ensure_bridge(current)
@@ -248,6 +346,11 @@ def submit(state_path,slide_id,work_dir,provider_module=layer_provider_360):
         current_plan=_plan_current(current,slide_id); current_ready=readiness_current(current,slide_id)
         if current_plan!=plan_rec or not current_ready or current_ready['status']!='READY':
             raise ValueError('layer plan/readiness changed before reservation')
+        if prior_count:
+            current_auth=_resubmit_current(current,slide_id,identity)
+            if current_auth!=manual:raise ValueError('USER_INITIATED_RELAYER_REQUIRED: instruction changed or consumed')
+            b['resubmit_authorizations'][slide_id]['used']=True
+            b['call_ledger'].append({'event':'user_instruction_consumed','slide_id':slide_id,'run_id':plan_rec['run_id'],'authorization_id':manual['authorization_id']})
         if quality:
             q=b['quality_retries'][quality['key']]
             if q.get('quality_retry_count',0) or not q.get('authorized'): raise ValueError('SEVERE_QUALITY_RETRY_EXHAUSTED')
@@ -256,6 +359,12 @@ def submit(state_path,slide_id,work_dir,provider_module=layer_provider_360):
             b.setdefault('request_history',{}).setdefault(slide_id,[]).append(old)
             for name in ('results','bundles','visual_qa','graphics_first','validated'): b.setdefault(name,{}).pop(slide_id,None)
             current.pop('merged_deck',None); current.pop('validated_deck',None); b.pop('merged',None)
+        if manual and not quality:
+            for name in ('results','bundles','visual_qa','graphics_first','validated'):
+                previous=b.setdefault(name,{}).pop(slide_id,None)
+                if previous:b.setdefault('artifact_history',{}).setdefault(slide_id,[]).append({'kind':name,'record':copy.deepcopy(previous)})
+            if old:b.setdefault('request_history',{}).setdefault(slide_id,[]).append(copy.deepcopy(old))
+            current.pop('merged_deck',None);current.pop('validated_deck',None);b.pop('merged',None)
         b['requests'][slide_id]=reservation
         b['call_ledger'].append({'slide_id':slide_id,'event':'submit_reserved',**reservation,
             **({'quality_retry_count':1,'original_result_id':quality['original_result_id'],
@@ -346,6 +455,13 @@ def bind_bundle(state_path,slide_id,bundle_dir):
 _VISUAL_QA_CHECKS=('layer_isolation','background_repair','recomposite_fidelity')
 
 
+def _target_actions(state,slide_id):
+    plan=_plan_current(state,slide_id)
+    if plan is None:return None
+    payload=json.loads(Path(plan['plan_path']).read_text(encoding='utf-8'))
+    return {x['id']:x.get('primary_edit_action',x.get('edit_action') if x.get('edit_action') in ('move','resize','hide','replace') else 'move') for x in payload['targets']}
+
+
 def _visual_qa_current(state,slide_id):
     rec=state.get('layer_bridge',{}).get('visual_qa',{}).get(slide_id)
     if not isinstance(rec,dict): return None
@@ -357,7 +473,7 @@ def _visual_qa_current(state,slide_id):
     try:
         report=json.loads(path.read_text(encoding='utf-8'))
         manifest=json.loads((Path(bundle['bundle_dir'])/'manifest.json').read_text(encoding='utf-8'))
-        status,limitations=layer_policy.validate_qa(report,{x['target_id'] for x in manifest['layers'][1:]},path.parent)
+        status,limitations=layer_policy.validate_qa(report,{x['target_id'] for x in manifest['layers'][1:]},path.parent,bool(rec.get('editing_review_required') or (_plan_current(state,slide_id) or {}).get('editing_review_required')),_target_actions(state,slide_id))
         if status!=rec['status'] or limitations!=rec.get('accepted_limitations',[]): return None
     except (ValueError,OSError,KeyError,TypeError): return None
     return rec
@@ -374,12 +490,14 @@ def register_visual_qa(state_path,slide_id,evidence_path):
         raise ValueError('LAYER_VISUAL_QA_FAILED: evidence lineage mismatch')
     manifest=json.loads((Path(bundle['bundle_dir'])/'manifest.json').read_text(encoding='utf-8'))
     targets={x['target_id'] for x in manifest['layers'][1:]}
-    qa_status,limitations=layer_policy.validate_qa(report,targets,path.parent)
+    review_required=bool((_plan_current(state,slide_id) or {}).get('editing_review_required'))
+    qa_status,limitations=layer_policy.validate_qa(report,targets,path.parent,review_required,_target_actions(state,slide_id))
     record={'status':qa_status,'slide_id':slide_id,'bundle_manifest_sha256':bundle['manifest_sha256'],
-            'path':str(path),'sha256':_sha(path),'checks':report['checks'],'accepted_limitations':limitations}
+            'path':str(path),'sha256':_sha(path),'checks':report['checks'],'accepted_limitations':limitations,'editing_review_required':review_required}
+    record.update(remote_result_received=True,quality_issue=qa_status=='LAYER_VISUAL_QA_FAILED',automatic_resubmit=False)
     with router.transaction(state_path) as temp:
         current=r.load_runtime_state(temp); bridge=_ensure_bridge(current); bridge['visual_qa'][slide_id]=record; bridge['graphics_first'].pop(slide_id,None); bridge['validated'].pop(slide_id,None); current.pop('merged_deck',None); current.pop('validated_deck',None); bridge.pop('merged',None); r._save_runtime_state(temp,current)
-    if qa_status=='LAYER_VISUAL_QA_FAILED': raise ValueError('LAYER_VISUAL_QA_FAILED: serious error; no automatic retry')
+    record.update(remote_result_received=True,quality_issue=qa_status=='LAYER_VISUAL_QA_FAILED',automatic_resubmit=False)
     return record
 
 def _canvas_residual_source_px(manifest,pptx_path):
@@ -505,18 +623,67 @@ def seal_page(state_path,slide_id,pptx,gates_path):
         r._save_runtime_state(temp,state)
     return {'status':'PAGE_SEALED','slide_id':slide_id,'path':str(page)}
 
+def _result_assets_usable(record):
+    if not isinstance(record,dict):return False
+    path=Path(record.get('path',''))
+    if not path.is_file() or _sha(path)!=record.get('sha256'):return False
+    try:
+        payload=json.loads(path.read_text(encoding='utf-8'))
+        files=[x['file'] for x in payload.get('layers',[])]
+        if payload.get('resized_image'):files.append(payload['resized_image'])
+        for rel in files:
+            item=Path(rel)
+            if item.is_absolute() or '..' in item.parts:return False
+            item=path.parent/item
+            if not item.is_file():return False
+            expected=record.get('asset_sha256',{}).get(rel)
+            if expected and _sha(item)!=expected:return False
+            with Image.open(item) as image:image.verify()
+        return True
+    except (ValueError,OSError,KeyError,TypeError):return False
+
+def _result_asset_hashes(result_path):
+    path=Path(result_path);payload=json.loads(path.read_text(encoding='utf-8'))
+    files=[x['file'] for x in payload.get('layers',[])]
+    if payload.get('resized_image'):files.append(payload['resized_image'])
+    result={}
+    for rel in files:
+        item=Path(rel)
+        if item.is_absolute() or '..' in item.parts:raise ValueError('result asset path escapes')
+        item=path.parent/item
+        with Image.open(item) as image:image.verify()
+        result[rel]=_sha(item)
+    return result
+
+
 def query(state_path,slide_id,work_dir,provider_module=layer_provider_360):
     state=r.load_runtime_state(state_path); plan_rec=_plan_current(state,slide_id)
     if plan_rec is None or not plan_rec.get('approved'): raise ValueError('LAYER_PLAN_NOT_APPROVED')
-    api_key=os.environ.get(router.IMAGE_LAYER_API_KEY_ENV)
-    if not api_key: return router.image_layer_onboarding()
     req=state.get('layer_bridge',{}).get('requests',{}).get(slide_id)
-    if not isinstance(req,dict) or req.get('status')!='LAYER_REQUEST_PENDING' or not req.get('task_id'):
-        raise ValueError('LAYER_REQUEST_PENDING required')
+    if not isinstance(req,dict) or req.get('status') not in ('LAYER_REQUEST_PENDING','DONE') or not req.get('task_id'):
+        raise ValueError('original pending or DONE task_id required')
+    recovering=req['status']=='DONE'
+    previous=state.get('layer_bridge',{}).get('results',{}).get(slide_id)
+    if recovering:
+        if req.get('run_id')!=plan_rec['run_id'] or req.get('plan_sha256')!=plan_rec['plan_sha256'] or req.get('text_clean_sha256')!=plan_rec['text_clean_sha256']:
+            raise ValueError('result recovery original lineage mismatch')
+        if previous and any(previous.get(key)!=req.get(key) for key in ('run_id','plan_sha256','text_clean_sha256','task_id')):
+            raise ValueError('LAYER_RESULT_INVALID: recovery result lineage mismatch')
+        if _result_assets_usable(result_current(state,slide_id)):return {'status':'LAYER_RESULT_BOUND','slide_id':slide_id,'reused':True}
+    api_key=os.environ.get(router.IMAGE_LAYER_API_KEY_ENV)
+    if not api_key:return router.image_layer_onboarding()
     if req.get('provider_identity') is not None and req['provider_identity']!=_provider_identity(provider_module):
         raise ValueError('LAYER_RESULT_INVALID: query provider/model parameters changed')
     response=provider_module.query_task(req['task_id'],api_key); normalized=response.get('normalized_status')
     if response.get('task_id') not in (None,req['task_id']): raise ValueError('LAYER_RESULT_INVALID: task identity mismatch')
+    if recovering and normalized!='DONE':
+        outcome='LAYER_RESULT_RECOVERY_PENDING' if normalized=='RUNNING' else 'LAYER_RESULT_RECOVERY_UNAVAILABLE'
+        with router.transaction(state_path) as temp:
+            current=r.load_runtime_state(temp)
+            if current['layer_bridge']['requests'].get(slide_id)!=req:raise ValueError('recovery task changed')
+            current['layer_bridge'].setdefault('result_recovery',{})[slide_id]={'status':outcome,'task_id':req['task_id'],'provider_status':normalized,'automatic_resubmit':False}
+            r._save_runtime_state(temp,current)
+        return {'status':outcome,'slide_id':slide_id,'task_id':req['task_id'],'automatic_resubmit':False}
     if normalized=='RUNNING': return {'status':'LAYER_REQUEST_PENDING','slide_id':slide_id,'task_id':req['task_id']}
     if normalized in ('FAILED','NOT_FOUND'):
         with router.transaction(state_path) as temp:
@@ -525,21 +692,28 @@ def query(state_path,slide_id,work_dir,provider_module=layer_provider_360):
         return {'status':'LAYER_RETRY_APPROVAL_REQUIRED','slide_id':slide_id}
     if normalized!='DONE': raise ValueError('LAYER_RESULT_INVALID: unknown normalized status')
     current=r.load_runtime_state(state_path); plan=json.loads(_resolve(current,plan_rec['plan_path']).read_text(encoding='utf-8'))
-    outdir=Path(work_dir).resolve()/slide_id/('provider-result-attempt-%02d'%req.get('attempt_no',1)); result_path=provider_module.normalize_done_result(response,plan,outdir)
+    outdir=Path(work_dir).resolve()/slide_id/(('provider-result-recovery-'+uuid.uuid4().hex) if recovering else ('provider-result-attempt-%02d'%req.get('attempt_no',1))); result_path=provider_module.normalize_done_result(response,plan,outdir)
+    payload=json.loads(Path(result_path).read_text(encoding='utf-8'))
+    if payload.get('page_id')!=slide_id or payload.get('request_id') not in (None,req['task_id']):
+        raise ValueError('LAYER_RESULT_INVALID: recovered result identity mismatch')
+    asset_hashes=_result_asset_hashes(result_path)
+    if recovering and previous and previous.get('asset_sha256') and previous['asset_sha256']!=asset_hashes:
+        return {'status':'LAYER_RESULT_RECOVERY_MISMATCH','slide_id':slide_id,'task_id':req['task_id'],'automatic_resubmit':False,'diagnostic_path':str(result_path)}
     record={'status':'LAYER_RESULT_BOUND','slide_id':slide_id,'run_id':plan_rec['run_id'],'plan_sha256':plan_rec['plan_sha256'],
             'text_clean_sha256':plan_rec['text_clean_sha256'],'task_id':req['task_id'],'path':str(Path(result_path).resolve()),
-            'sha256':_sha(result_path),'usage':response.get('usage',{})}
+            'sha256':_sha(result_path),'usage':response.get('usage',{}),'asset_sha256':asset_hashes}
     with router.transaction(state_path) as temp:
         current=r.load_runtime_state(temp); b=_ensure_bridge(current)
         if b.get('requests',{}).get(slide_id)!=req or _plan_current(current,slide_id)!=plan_rec:
             raise ValueError('LAYER_RESULT_INVALID: state changed during query')
+        if recovering and previous:b.setdefault('result_history',{}).setdefault(slide_id,[]).append(copy.deepcopy(previous))
         b['results'][slide_id]=record; b['requests'][slide_id]['status']='DONE'; b['requests'][slide_id]['usage']=response.get('usage',{})
-        b['call_ledger'].append({'slide_id':slide_id,'event':'result_bound','task_id':req['task_id']}); r._save_runtime_state(temp,current)
+        b['call_ledger'].append({'slide_id':slide_id,'event':'result_recovered' if recovering else 'result_bound','task_id':req['task_id']}); r._save_runtime_state(temp,current)
     return {'status':'LAYER_RESULT_BOUND','slide_id':slide_id,'path':record['path']}
 
 
-def status(state_path):
-    state=r.load_runtime_state(state_path); run=_current_run(state)
+def _status_state(state):
+    run=_current_run(state)
     run_order=run.get('page_order',[]); order=state.get('deck_order',run_order)
     if (not run_order or not isinstance(order,list) or not r.validate_deck_order(run_order,order)
             or not r.validate_deck_order(list(state.get('slides',{})),order)):
@@ -585,13 +759,34 @@ def status(state_path):
     return {'status':'DECK_VALIDATION','path':state['merged_deck']['merged_pptx_path']}
 
 
+def status(state_path):
+    state=r.load_runtime_state(state_path);summary=_status_state(state)
+    pages=[];actionable=[]
+    for sid in state.get('stage2_run',{}).get('page_order',[]):
+        projected=copy.deepcopy(state)
+        projected['stage2_run']['page_order']=[sid]
+        projected['deck_order']=[sid];projected['slides']={sid:projected['slides'][sid]}
+        try:
+            page_provenance(state,sid);page={'status':'PAGE_SEALED'}
+        except (ValueError,OSError,KeyError,TypeError):page=_status_state(projected)
+        page['slide_id']=sid
+        page['automatic_resubmit']=False
+        if page['status']=='LAYER_VISUAL_QA_FAILED':
+            page['quality_issue']=True;page['follow_up']='report_actual_result_without_retry_prompt'
+        elif page['status'] not in ('BLOCKED','COMPLETE','PAGE_SEALED','LAYER_REQUEST_UNCERTAIN','LAYER_RETRY_APPROVAL_REQUIRED','LAYER_REQUEST_PENDING','LAYER_REQUEST_SUBMITTING'):
+            actionable.append(sid)
+        pages.append(page)
+    return {**summary,'page_statuses':pages,'actionable_pages':actionable,'automatic_resubmit':False}
+
 def main(argv=None):
     parser=argparse.ArgumentParser(); sub=parser.add_subparsers(dest='action',required=True)
-    for action in ('init','approve-plan','submit','query','authorize-retry','status','bind-bundle','register-visual-qa','register-readiness','authorize-quality-retry','bind-graphics-first','seal-page'):
+    for action in ('init','approve-plan','submit','query','authorize-retry','status','bind-bundle','register-visual-qa','register-readiness','authorize-quality-retry','authorize-resubmit','bind-graphics-first','seal-page'):
         p=sub.add_parser(action); p.add_argument('--state',required=True)
         if action not in ('init','status'): p.add_argument('--slide-id',required=True)
         if action in ('submit','query'): p.add_argument('--work-dir',required=True)
-        if action=='authorize-retry': p.add_argument('--accept-duplicate-charge-risk',action='store_true')
+        if action=='authorize-retry':
+            p.add_argument('--accept-duplicate-charge-risk',action='store_true');p.add_argument('--authorization',required=True)
+        if action=='authorize-resubmit':p.add_argument('--authorization',required=True)
         if action in ('bind-bundle','bind-graphics-first'): p.add_argument('--bundle',required=True)
         if action in ('register-visual-qa','register-readiness','authorize-quality-retry'): p.add_argument('--evidence',required=True)
         if action=='authorize-quality-retry': p.add_argument('--authorization',required=True)
@@ -605,8 +800,9 @@ def main(argv=None):
         elif args.action=='approve-plan': result=approve_plan(args.state,args.slide_id)
         elif args.action=='submit': result=submit(args.state,args.slide_id,args.work_dir)
         elif args.action=='query': result=query(args.state,args.slide_id,args.work_dir)
-        elif args.action=='authorize-retry': result=authorize_retry(args.state,args.slide_id,accept_duplicate_charge_risk=args.accept_duplicate_charge_risk)
+        elif args.action=='authorize-retry': result=authorize_retry(args.state,args.slide_id,accept_duplicate_charge_risk=args.accept_duplicate_charge_risk,authorization_path=args.authorization)
         elif args.action=='register-readiness': result=register_readiness(args.state,args.slide_id,args.evidence)
+        elif args.action=='authorize-resubmit': result=authorize_resubmit(args.state,args.slide_id,args.authorization)
         elif args.action=='authorize-quality-retry': result=authorize_quality_retry(args.state,args.slide_id,args.evidence,args.authorization)
         elif args.action=='bind-bundle': result=bind_bundle(args.state,args.slide_id,args.bundle)
         elif args.action=='register-visual-qa': result=register_visual_qa(args.state,args.slide_id,args.evidence)

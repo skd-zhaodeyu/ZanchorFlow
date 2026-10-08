@@ -1,0 +1,290 @@
+{
+  "baseline": {
+    ".gitattributes": "0402ec41d4c371be67db21ae4b8b6d486007e676caae0947746d280784de5158",
+    ".gitignore": "48a6cba1c61947416a9f1c701338d9674ad00498e30989254e1dc196fea35a82",
+    "LICENSE": "af5161bf518cc3630861a895692be5fae6cae92ed409f0da2546b3d10d72009d",
+    "README.md": "af2ce067af4dffbd6f8122f9443e643f6d20a2c1b85e2089cf32f253df2b7eb1",
+    "requirements-dev.txt": "a790f14c61e621e31ee32e96d61f89fc57ecb122944e05dcbe12851200818a6c",
+    "dist/zanchorflow.zip": "88e31164f9229acac7fe2afc82eb272e096c5fdd0493b327eab59f7ad4788bc6",
+    "dist/zanchorflow.zip.sha256": "4b24bc151549a37658702cfced0ebc50057106ea94ee9c1516f9bb85469db10a",
+    "docs/development.md": "104af130dee987f6c33c40eb98b5e6de243ed1bde7787236c8c66f2631493c17",
+    "docs/implementation-notes.md": "fa53130188ea82b278beb93b7dc601fd815a05981bd54752c5be913454baa982",
+    "tools/build.py": "9dd71e9bf64cc7440e2ac06d7d242b239199298fab332e01d6cf004c2b33ef72",
+    "tools/check_public.py": "48733c82585e88bef3446184da6d845ed6673314be7fe6c065484e03cd751efd",
+    "zanchorflow/LICENSE": "4bfc6319be7f06e42c02098b6ed8f5fa60a690a45593d368d009ecebdf9ae38b",
+    "zanchorflow/manifest.yaml": "da9587782fd5d207ad931156b16eb02c5b0082bafe8f91ea4c361b6ce3adad76",
+    "zanchorflow/pytest.ini": "ac9a0ba54716b2a3a0113be66719419bf081daa58f405a8defebc7897cc5d0da",
+    "zanchorflow/requirements-base.txt": "6186da598b608294da612d6c3fedd0e8bb2578feb24c05118e327f709be315b8",
+    "zanchorflow/requirements-image.txt": "0002c329f2807a6e8d97f2121a85d7df0abaf8e282563fc6c9e2f49ab415d2b9",
+    "zanchorflow/requirements-office.txt": "d24bf860507e72d9c0d64ccca9c2eba37c914a5bc0f629356382511d7b994147",
+    "zanchorflow/SKILL.md": "5546049619a31ac650c4df477a47ac6972fee2d475141a04d3c4120cde28a763",
+    "zanchorflow/docs/codex-canva-bridge.md": "c5afc0a8a65125ed0b566a4cace2bddbf36550b7bbf839b5acc6fa8a13b53320",
+    "zanchorflow/docs/image-layer-backend.md": "0ca779f1c37eb3012becc93a7f45aea688b09841371172ab366154b37469e7d0",
+    "zanchorflow/docs/image-layer-box-selection.md": "51b653af8f9e8a5d9ebc091fc303ebb8ce1fcbb26914b7d6a5ccad85927d05e1",
+    "zanchorflow/docs/installation.md": "2058a0691d9a4963d4edfffbf0dfd4e6d174121ca9a390b646bd1a6ed763fe1a",
+    "zanchorflow/references/01_PPT内容架构与大纲生成协议_v1.2.md": "cb09da079639b35730308dcc35399da0fa022adfb15c5596ab93e48dd014e9f0",
+    "zanchorflow/references/02_Stage1至Stage2语义接口协议_v1.0.md": "db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2",
+    "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md": "17bd1941fbdda0f9ebb5fd00708410e28716c321597149af107132da29bdbfdd",
+    "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md": "e48948890fc9a513a94dcc4826480916716fd8d39ac36dc24589d08e453c1624",
+    "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md": "dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb",
+    "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md": "eb4eee2e613b016105bbbf2ee9e1297eddabcf026f0b8b6cf01d66c791f9a3fa",
+    "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md": "fc59541466f97c3399f843e6a596675d054eecb8193900f5318cc4a3536edaec",
+    "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md": "386148b2cd0263df9c95172bad20352e21be58d30d5351075f0d8cdac54acc5d",
+    "zanchorflow/scripts/acquisition_request.py": "5696a4c475ea7796c24b0db9c562ef5f54b4e44f679f86755b4d4d79fa5ac949",
+    "zanchorflow/scripts/assemble_deck.py": "9d557fe6f6e862d4bfe0459182f4bec627f1e3e1c16c20253cdd37a51023e994",
+    "zanchorflow/scripts/canva_bridge.py": "99fb099a770ac3dc18607e8252eefc4d958c8a829cc7e7b33f55e68875fc3422",
+    "zanchorflow/scripts/canva_pptx_finalize.ps1": "c05cbcfb20a9b7144e5a0310e8e84eae5ec5ab2cccd946d198bc27a8ff808107",
+    "zanchorflow/scripts/host_acquisition.py": "a5374798c7e176f14be7cf132b345c1e9a03cd17e1b2025f37cd88173eb77a6f",
+    "zanchorflow/scripts/layer_bridge.py": "790c456d6364bb89f29fd5401106d72a349a32a2856aa1e745d867f141e1158f",
+    "zanchorflow/scripts/layer_build_pptx.py": "47668f8b423ec8d8f2215d6c0a48f588ffb11166deb6ee2a04e73f225c659132",
+    "zanchorflow/scripts/layer_geometry.py": "bca60be7be50e4d62b7c0dd571f928e29b42a11c8a088b0ef09c38a10501ae3d",
+    "zanchorflow/scripts/layer_geometry_verify.py": "8331242ca29dcbb4bc45d9bcfb25b439cec0c09b9a4b29f09f2d97e4d459c756",
+    "zanchorflow/scripts/layer_package.py": "26c0eb2d7f8116ce6ea39e6e2ee5e6d743b5c2411fb346abdcf1cc95af891b59",
+    "zanchorflow/scripts/layer_policy.py": "9a5f35e44de84147d9424d63d81352e1c11fd0661b66a1dcf4bd3a8366efc904",
+    "zanchorflow/scripts/layer_provider_360.py": "94e2283a6d1465a02381139d7d9cd1de8bcd4f93364e3aa37f9cf05d6beaa658",
+    "zanchorflow/scripts/layer_review_boxes.py": "55fb595e12f8634c944c1e0ed15d19500fafb7cb92fbe53eb1f7815abe3ab060",
+    "zanchorflow/scripts/layer_validate_bundle.py": "f17ac3a44b9ec39609108ba18e4704b107bacf47fcbc34821216f81c702bc9d7",
+    "zanchorflow/scripts/merge_pptx.py": "e20887218fd4791bbdee14e0dc4751bb23498f75ceacd062a369862bdc7e05e7",
+    "zanchorflow/scripts/package_skill.py": "566aa5ee56dbaea0a69e78efcd9399d5afcf1c23262c7020706ff2bec785c037",
+    "zanchorflow/scripts/preflight.py": "4fdebf04442adc6b8f0fca611b59ca24ef1a6d50a439eb109e5ff1a980741cc6",
+    "zanchorflow/scripts/reconstruction_router.py": "5f18ab507a373cb499909e53f08abb8bc59edb3f1a6feabedd1a309edef7e550",
+    "zanchorflow/scripts/runtime.py": "a81f6e5acca73bffbca7c87bf0976e55cd5e9bcc191cfe6c7a532e620b032d83",
+    "zanchorflow/tests/publish_scope.json": "38fbd84bd9330fb92d34b4a7061f6037cb7c2d7ac9f73e145de7cb2c9edf310c",
+    "zanchorflow/tests/publish_scope.py": "270dd021d7ffe2e977ba1b39335e2620b7aaec62491fb3697ae88bdf6a245161",
+    "zanchorflow/tests/refinement_scope.py": "6671a4f3e50e15a28e43d0304cf9842448e306471361dfb8d305b3c354938945",
+    "zanchorflow/tests/stage2_test_helpers.py": "f67dd8207ea30ad8adda8d2e087ea28256fa7b5a7f8e94b4dfa7288cb406e159",
+    "zanchorflow/tests/test_acquisition_request.py": "ead42a82a4e66035762b308cc3af4f838b19fdf00ee294b6f19270d5298d90e9",
+    "zanchorflow/tests/test_agent_contract.py": "690bc08d616c9a3c390113f6af249a7640051b19a870b79dbecc18d5836205b4",
+    "zanchorflow/tests/test_anchor_formal_candidates.py": "c529791855f00c98e75889bf3699cf82c8959663d46516e92b89f7a9f318466a",
+    "zanchorflow/tests/test_canvas_adaptation.py": "1669c2742d99b17c122e18c48efe41f244c9864ed78f754315f3471c45c3e868",
+    "zanchorflow/tests/test_deck_lineage.py": "a1597e5282724d4dbae4bdcc9d971bc1a03f266f4d7159233cd29e58a8d296f7",
+    "zanchorflow/tests/test_download_provenance.py": "2fbc89ff0695810e4baddb391fcb6a4c7413b31f3c558135e9d59d66b2f10c99",
+    "zanchorflow/tests/test_host_acquisition.py": "675501f9af508ff4d7c157b73193967f70135a42b5b86a7e18bcbf5d9639e27d",
+    "zanchorflow/tests/test_host_compact.py": "666d41b4f3636e362f0989d6921ba20fbe103002306f02fb07844eab2b38d3dc",
+    "zanchorflow/tests/test_host_strategy.py": "649c65df43060baaa47e2e34804385a93b383d346adc48dc44c80ac5a19863f5",
+    "zanchorflow/tests/test_image_layer_assembly.py": "54d6fd34b90cc4577a67722c7baf0bf6e6c7a6df8b1f43dd130ddc2d78dbf9b5",
+    "zanchorflow/tests/test_integrity.py": "9586854aa7895927c5bbbb8d145976be34c9126cd388cd48dd2ec7e02eec9b4e",
+    "zanchorflow/tests/test_layer_bridge.py": "33f98ca344c69f926fc816035b03c32ff99dd2ae3e47bb918573b141df84dbab",
+    "zanchorflow/tests/test_layer_bundle.py": "ce8156230926a4b237333e4f2de50b498437ef0598deb57312c22e1dc6f40cfa",
+    "zanchorflow/tests/test_layer_geometry.py": "07c07a1c2705887e8132585b8a081c4c909abc93e45ca495f7c1d1da3ba47d08",
+    "zanchorflow/tests/test_layer_plan.py": "39eb7742ac977b1d9411d6b65228cccac143763a32cf8fc78d5e287f8222e07f",
+    "zanchorflow/tests/test_layer_pptx.py": "8f032cc87b4361732462a0db3f2a377ceedc50773b76acde9c7a0c7ed1d3e0dd",
+    "zanchorflow/tests/test_layer_provider_360.py": "332763c1034712968eb123ca076ba5e01b65385facfe30e2c6c8baa5953e40f3",
+    "zanchorflow/tests/test_layer_revision.py": "9e9b5f89720d9fdbe7a6ce29192f83867146ac909e3c929151d07cb71d057d50",
+    "zanchorflow/tests/test_lineage_contract.py": "10f4e439817b5ed3356d51d5d566747ac8f5eed7ff1d367f8daf352a958458c7",
+    "zanchorflow/tests/test_magic_layer_freeze.py": "991cb1ab4c88f65cd77446e4b4779c511fca4d25a6bbd8d5c9cf16cecfee32c3",
+    "zanchorflow/tests/test_merge.py": "6841b4a12c06d5018046895cda7e1be98b4da62f44a996d9d94d117e3a3b1c75",
+    "zanchorflow/tests/test_merge_oracle.py": "efb878857dd6e2e7d346aa5e503b156f437641c0b317660205335bbfa759d3de",
+    "zanchorflow/tests/test_native_merge.py": "25b8110ec437e9db50c61acb6f18f5fa1e6ca7a3f2789b4496ec264fb7b1f6fd",
+    "zanchorflow/tests/test_noncover_display_typography_contract.py": "2b24bf8a97e9124864a103edac039131a47139a16bfd0737789ee49337c98dc1",
+    "zanchorflow/tests/test_package.py": "aba7e52274093c43bf3bab9fbcc38ef2da18625808ee199d5e8436baf6536861",
+    "zanchorflow/tests/test_post_merge_editability.py": "6492e99fd9fbb7983675fc12ea03d2659134f127b9c0c44263f5de9bc565b584",
+    "zanchorflow/tests/test_preflight_scope.py": "ee429a5f73b0c83258d3143f0e22a9e88a005b5eb5d12d8677ad15d988271212",
+    "zanchorflow/tests/test_protocol_rc17_contract.py": "baeb38fdbdaf95e19a9f3f69e27e2cfc435cbf885d297dcd346f48ab8a1b3026",
+    "zanchorflow/tests/test_protocol_rc17_representation_contract.py": "ae65656c7be1e9f78970d0f6446632df5a4f89e122e855c0ea1a18d78ba623eb",
+    "zanchorflow/tests/test_publish_canvas.py": "7b8b503639f7e55b45bacf73798f90e72087e726b75e1543422798e704a8c8ba",
+    "zanchorflow/tests/test_rc17_pre_stage3_contract.py": "e648a620617e38b0d324ad1a1b25560f68d887063b00c09fbca570f0b2084d2b",
+    "zanchorflow/tests/test_rc18_change_contract.py": "d4cb68a61819a33bf3f6add7fe31949d1a0d9211dc23bb8befac12ef9157604d",
+    "zanchorflow/tests/test_reconstruction_backend_router.py": "c268b5e3c8c54d7c4ff5527482fd62a9d274a89c229f47982b0f51f68976808a",
+    "zanchorflow/tests/test_refinement.py": "d07147afde6ab02ec9ba8d14440b86110694936464fbc5a1af5852c104e1ea19",
+    "zanchorflow/tests/test_revision_identity.py": "5f859fa513028ead7fae568d42d27cf3f5303d916eaa43d7f9651c3e2760a082",
+    "zanchorflow/tests/test_runtime.py": "cae97a795c4481d5d1f2027d2426a4b1d482c0a4ecec7d5ce8b9e2a266a1683d",
+    "zanchorflow/tests/test_stage1_review.py": "d9e9e1fb0b00dedf358169173da9158de107de94b637479dae8edaaa53903870",
+    "zanchorflow/tests/test_stage2_qualification.py": "be70e502e052913a46380b19f026af35ce1edf8a9e252e268cde0dba6962511f",
+    "zanchorflow/tests/test_stage2_visual_approval.py": "cd0ce5a03e8c2399388f1c4e03166eb7a4aebfb363044fd76b799befd3a54df1",
+    "zanchorflow/tests/test_stage3_graphic_typography.py": "91f37c90077bfdb46be8f9b961121a3cd0b12f5bf3edd14f5e4aa441498d835b",
+    "zanchorflow/tests/test_version_contract.py": "2a5f79c68a98e2730ec9987368abf670a1eb9ac3cd92bfd60d2aeebc0ba0a0c2",
+    "zanchorflow/tests/evals/rc16_8_stage2_behavior_eval.md": "c44610a4802aa738030d34440208d9d786abc63afbba98b8713b9f6e37d98ab8",
+    "examples/image-layer/overview.png": "d1f7830c6591c466559081ded4a92297d732250e0f0dfd3bbe3be23a80192b09",
+    "examples/image-layer/presentation.pdf": "0ad7166e7f24dd53fc4b5c257a659fcfba20587067890204d4ebb4c83f2b8644",
+    "examples/image-layer/presentation.pptx": "4d4108607374aebecbc7d908ff58b2f3dee3aa3ea02bd445352dddaaefe2749d",
+    "examples/image-layer/README.md": "5bfdc9c93eba807de163b92f04ce7506ecb49038dc4c4ffbe820cd2473015c7e",
+    "examples/image-layer/representative.png": "47862d6ef2922b3f59def12f48d19202197a1b1feae025a839061120ec20eecb",
+    "examples/magic-layer/overview.png": "aabd3c1cb22b3caf7c81c4f78d43e03c1284385ca2ba6b37b064da36cbe37cb4",
+    "examples/magic-layer/presentation.pdf": "d1577e536c542316520482ec9a391d0c80a4a1ec380c51f024c43f115d946636",
+    "examples/magic-layer/presentation.pptx": "0e9d11911f6b36e1ed8ccb36e12556c8fd2d5ec3695aa8fac61caf10cb5c8da3",
+    "examples/magic-layer/README.md": "a3287133b6b0e6ec1be9f53cf122d8e820604e282c94022b3cc19a73cd5dddc7",
+    "examples/magic-layer/representative.png": "6ad2c74259fe8036b75f8d7206e6b18516f9fb8330baadeb689cdf87fa6482e0",
+    ".github/workflows/validate.yml": "af79dd79d9cd952c7226b88481784881390bd95f28aa407512b665a1d552fe22"
+  },
+  "patches": [
+    {
+      "path": "scripts/runtime.py",
+      "old": "from pathlib import Path\n",
+      "new": "from pathlib import Path\nimport title_policy as titles\n"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "def start_stage2_run(runtime_state_path, restart=False):",
+      "new": "def start_stage2_run(runtime_state_path, restart=False, title_choice_required=False):"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    state['stage2_run'] = record\n    _save_runtime_state(path, state)",
+      "new": "    if title_choice_required:\n        record['title_policy'] = titles.initial_policy(record)\n    state['stage2_run'] = record\n    _save_runtime_state(path, state)"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    if base_kind == 'final_content_truth':\n        if slide_id is None:",
+      "new": "    if base_kind == 'finalized_manifest' and slide_id is not None:\n        titles.validate_manifest(state, slide_id, json.loads(artifact_path.read_text(encoding='utf-8')))\n\n    if base_kind == 'final_content_truth':\n        if slide_id is None:"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "                              generation_intent, user_requested_variant=False):",
+      "new": "                              generation_intent, user_requested_variant=False,\n                              title_contract_ref=None, title_override_message=None):"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    candidate_id = uuid.uuid4().hex\n    run['candidate_seq']",
+      "new": "    title_context = titles.candidate_context(state, slide_id, title_contract_ref, title_override_message)\n    candidate_id = uuid.uuid4().hex\n    run['candidate_seq']"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    run.setdefault('candidates', {})[candidate_id] = record",
+      "new": "    if title_context is not None:\n        record['title_context'] = title_context\n    run.setdefault('candidates', {})[candidate_id] = record"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    run['current_approved'][slide_id] = approved\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]",
+      "new": "    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    run['current_approved'][slide_id] = approved\n    run.setdefault('anchor_candidate_displays', {}).pop(slide_id, None)",
+      "new": "    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    run.setdefault('anchor_candidate_displays', {}).pop(slide_id, None)"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "def build_stage2_formal_display_set(runtime_state_path):\n    \"\"\"Derive the only formal Stage 2 review set from current Approved Renders.\"\"\"\n    fingerprint = require_stage2_entry(runtime_state_path)\n    state = load_runtime_state(runtime_state_path)\n    run = _current_stage2_run(state, fingerprint)\n    pending = set(run.get('pending_visual_revisions', []))\n    renders = []\n    missing = []\n    for slide_id in run.get('page_order', []):\n        approved = current_stage2_approved_render(runtime_state_path, slide_id)\n        if approved is None or slide_id in pending:\n            missing.append(slide_id)\n            continue\n        renders.append({\n            'slide_id': slide_id,\n            'candidate_id': approved['candidate_id'],\n            'path': approved['path'],\n            'sha256': approved['sha256'],\n            'approval_mode': approved.get('approval_mode'),\n        })\n    complete = not missing and len(renders) == len(run.get('page_order', []))\n    result = {\n        'status': 'COMPLETE' if complete else 'INCOMPLETE',\n        'page_order': list(run.get('page_order', [])),\n        'renders': renders,\n        'missing': missing,\n    }\n    if complete:\n        result['display_set_fingerprint'] = _stage2_display_fingerprint(run['page_order'], renders)\n    return result\n\n",
+      "new": "def build_stage2_formal_display_set(runtime_state_path):\n    \"\"\"Derive the only formal Stage 2 review set from current Approved Renders.\"\"\"\n    fingerprint = require_stage2_entry(runtime_state_path)\n    state = load_runtime_state(runtime_state_path)\n    run = _current_stage2_run(state, fingerprint)\n    pending = set(run.get('pending_visual_revisions', [])) | set(titles.pending_pages(state))\n    renders = []\n    missing = []\n    for slide_id in run.get('page_order', []):\n        approved = current_stage2_approved_render(runtime_state_path, slide_id)\n        if approved is None or slide_id in pending:\n            missing.append(slide_id)\n            continue\n        renders.append({\n            'slide_id': slide_id,\n            'candidate_id': approved['candidate_id'],\n            'path': approved['path'],\n            'sha256': approved['sha256'],\n            'approval_mode': approved.get('approval_mode'),\n        })\n    complete = not missing and len(renders) == len(run.get('page_order', []))\n    result = {\n        'status': 'COMPLETE' if complete else 'INCOMPLETE',\n        'page_order': list(run.get('page_order', [])),\n        'renders': renders,\n        'missing': missing,\n    }\n    if complete:\n        result['display_set_fingerprint'] = _stage2_display_fingerprint(run['page_order'], renders)\n    return result\n\n"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "def stage2_visual_status(runtime_state_path):\n    fingerprint = require_stage2_entry(runtime_state_path)\n    state = load_runtime_state(runtime_state_path)\n    run = _current_stage2_run(state, fingerprint)\n    pending = set(run.get('pending_visual_revisions', []))\n    missing = [slide_id for slide_id in run.get('page_order', [])\n               if current_stage2_approved_render(runtime_state_path, slide_id) is None\n               or slide_id in pending]\n    return {'status': 'COMPLETE' if not missing else 'INCOMPLETE', 'missing': missing}\n\n",
+      "new": "def stage2_visual_status(runtime_state_path):\n    fingerprint = require_stage2_entry(runtime_state_path)\n    state = load_runtime_state(runtime_state_path)\n    run = _current_stage2_run(state, fingerprint)\n    pending = set(run.get('pending_visual_revisions', [])) | set(titles.pending_pages(state))\n    missing = [slide_id for slide_id in run.get('page_order', [])\n               if current_stage2_approved_render(runtime_state_path, slide_id) is None\n               or slide_id in pending]\n    return {'status': 'COMPLETE' if not missing else 'INCOMPLETE', 'missing': missing}\n\n"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    slide = state['slides'][slide_id]\n    def read_json(key):",
+      "new": "    slide = state['slides'][slide_id]\n    if state.get('stage2_run', {}).get('title_policy', {}).get('mode') == 'uniform':\n        titles.validate_manifest(state, slide_id, json.loads(_state_path(state, slide['finalized_manifest']).read_text(encoding='utf-8')))\n    def read_json(key):"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "        'stage2-handoff-status', 'stage3-text-clean-display', 'resume'))",
+      "new": "        'stage2-handoff-status', 'stage3-text-clean-display', 'resume',\n        'stage2-title-policy', 'stage2-title-bind', 'stage2-title-context'))"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "    parser.add_argument('--restart', action='store_true')",
+      "new": "    parser.add_argument('--restart', action='store_true')\n    parser.add_argument('--title-choice-required', action='store_true')\n    parser.add_argument('--mode', choices=('pending', 'uniform', 'free'))\n    parser.add_argument('--page-roles-json')\n    parser.add_argument('--contract-json')\n    parser.add_argument('--scope', choices=('prototype', 'page_override', 'global_revision'), default='prototype')\n    parser.add_argument('--title-contract-ref')\n    parser.add_argument('--title-override-message')"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "            result = start_stage2_run(args.state, restart=args.restart)",
+      "new": "            result = start_stage2_run(args.state, restart=args.restart, title_choice_required=args.title_choice_required)"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "                user_requested_variant=args.user_requested_variant)",
+      "new": "                user_requested_variant=args.user_requested_variant,\n                title_contract_ref=args.title_contract_ref, title_override_message=args.title_override_message)"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "        elif args.action == 'stage2-handoff-status':",
+      "new": "        elif args.action == 'stage2-title-policy':\n            roles = json.loads(Path(args.page_roles_json).read_text(encoding='utf-8')) if args.page_roles_json else None\n            result = titles.set_policy(args.state, args.mode, roles, args.message or '')\n        elif args.action == 'stage2-title-bind':\n            payload = json.loads(Path(args.contract_json).read_text(encoding='utf-8'))\n            affected = json.loads(Path(args.slide_ids_json).read_text(encoding='utf-8')) if args.slide_ids_json else None\n            result = titles.bind(args.state, args.slide_id, payload, args.scope, args.message or '', affected)\n        elif args.action == 'stage2-title-context':\n            result = titles.context(args.state, args.slide_id)\n        elif args.action == 'stage2-handoff-status':"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "def start_run(state_path):",
+      "new": "def start_run(state_path, title_choice_required=False):"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "        run = r.start_stage2_run(temp)",
+      "new": "        run = r.start_stage2_run(temp, title_choice_required=title_choice_required)"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "    r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)\r\n    expected = {",
+      "new": "    r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)\r\n    r.titles.validate_manifest(state, slide_id, manifest)\r\n    expected = {"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "        summary = r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)",
+      "new": "        r.titles.validate_manifest(state, slide_id, manifest)\r\n        summary = r.validate_stage3_text_plan(manifest, inventory, truth, slide_id)"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "        return {'status':'STAGE2_PRODUCTION','missing':visual.get('missing',[])}",
+      "new": "        result = {'status':'STAGE2_PRODUCTION','missing':visual.get('missing',[])}\r\n        if state['stage2_run'].get('title_policy') is not None:\r\n            result['title_policy'] = r.titles.context_from_state(state)\r\n        return result"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "    parser.add_argument('--recovery-evidence')",
+      "new": "    parser.add_argument('--recovery-evidence')\r\n    parser.add_argument('--title-choice-required',action='store_true')"
+    },
+    {
+      "path": "scripts/canva_bridge.py",
+      "old": "        elif args.action == 'start-run': result = {**start_run(args.state), 'status':'RUN_READY'}",
+      "new": "        elif args.action == 'start-run': result = {**start_run(args.state,args.title_choice_required), 'status':'RUN_READY'}"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "def review_stage2_candidate(runtime_state_path, candidate_id, verdict,\n                            failed_hard_gate=None, observable_evidence=None,\n                            required_correction=None, replan_evidence=None, review_notes=None,\n                            approval_mode='qualification_review'):\n    \"\"\"Qualification review: PASS by absence of evidenced H1-H4; no aesthetic scoring.\"\"\"\n    path = Path(runtime_state_path).resolve()\n    fingerprint = require_stage2_entry(path)\n    state = load_runtime_state(path)\n    run = _current_stage2_run(state, fingerprint)\n    candidate = run.get('candidates', {}).get(candidate_id)\n    if not isinstance(candidate, dict):\n        raise ValueError(f'STAGE2_CANDIDATE_NOT_FOUND: {candidate_id}')\n    if candidate.get('status') != 'candidate':\n        raise ValueError('STAGE2_CANDIDATE_ALREADY_REVIEWED')\n    verdict = str(verdict).upper()\n    if verdict not in {'PASS', 'REVISE', 'REJECT'}:\n        raise ValueError('STAGE2_REVIEW_VERDICT_INVALID')\n    notes = _normalize_review_notes(review_notes)\n\n    review = {'verdict': verdict, 'review_notes': notes, 'approval_mode': approval_mode}\n    if verdict in {'REVISE', 'REJECT'}:\n        if (failed_hard_gate not in {'H1', 'H2', 'H3', 'H4'}\n                or not str(observable_evidence or '').strip()\n                or not str(required_correction or '').strip()):\n            raise ValueError('STAGE2_REVIEW_EVIDENCE_REQUIRED: H1-H4, evidence and correction are mandatory')\n        replan = str(replan_evidence or '').strip()\n        if verdict == 'REVISE' and replan:\n            raise ValueError('STAGE2_REVISE_CANNOT_CONTAIN_REPLAN_EVIDENCE')\n        if verdict == 'REJECT' and not replan:\n            raise ValueError('STAGE2_REJECT_REPLAN_EVIDENCE_REQUIRED')\n        review.update(\n            failed_hard_gate=failed_hard_gate,\n            observable_evidence=str(observable_evidence).strip(),\n            required_correction=str(required_correction).strip(),\n        )\n        if verdict == 'REJECT':\n            review['replan_evidence'] = replan\n        candidate['status'] = verdict.lower()\n        candidate['review'] = review\n        _save_runtime_state(path, state)\n        return candidate\n\n    if failed_hard_gate or observable_evidence or required_correction or replan_evidence:\n        raise ValueError('STAGE2_PASS_CANNOT_CONTAIN_HARD_FAILURE')\n    if approval_mode == 'anchor_exploration_candidate':\n        candidate['status'] = 'qualified'\n        candidate['review'] = review\n        run.setdefault('anchor_candidate_displays', {}).pop(candidate['slide_id'], None)\n        _save_runtime_state(path, state)\n        return candidate\n    slide_id = candidate['slide_id']\n    old = run.setdefault('current_approved', {}).get(slide_id)\n    if isinstance(old, dict) and old.get('candidate_id') != candidate_id:\n        old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))\n        if isinstance(old_candidate, dict):\n            old_candidate['status'] = 'superseded'\n            old_candidate['superseded_by'] = candidate_id\n    candidate['status'] = 'approved'\n    candidate['review'] = review\n    approved = {\n        'slide_id': slide_id,\n        'candidate_id': candidate_id,\n        'path': candidate['path'],\n        'sha256': candidate['sha256'],\n        'approval_mode': approval_mode,\n        'run_id': run['run_id'],\n        'approved_outline_fingerprint': fingerprint,\n    }\n    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]\n    run['pending_visual_revisions'] = pending\n    _invalidate_stage2_visual_approval(run, 'approved_render_changed')\n    _invalidate_page_artifacts(run, state, slide_id)\n    state.setdefault('slides', {}).setdefault(slide_id, {})['approved_render'] = candidate['path']\n    _save_runtime_state(path, state)\n    return candidate\n\n",
+      "new": "def review_stage2_candidate(runtime_state_path, candidate_id, verdict,\n                            failed_hard_gate=None, observable_evidence=None,\n                            required_correction=None, replan_evidence=None, review_notes=None,\n                            approval_mode='qualification_review'):\n    \"\"\"Qualification review: PASS by absence of evidenced H1-H4; no aesthetic scoring.\"\"\"\n    path = Path(runtime_state_path).resolve()\n    fingerprint = require_stage2_entry(path)\n    state = load_runtime_state(path)\n    run = _current_stage2_run(state, fingerprint)\n    candidate = run.get('candidates', {}).get(candidate_id)\n    if not isinstance(candidate, dict):\n        raise ValueError(f'STAGE2_CANDIDATE_NOT_FOUND: {candidate_id}')\n    if candidate.get('status') != 'candidate':\n        raise ValueError('STAGE2_CANDIDATE_ALREADY_REVIEWED')\n    verdict = str(verdict).upper()\n    if verdict not in {'PASS', 'REVISE', 'REJECT'}:\n        raise ValueError('STAGE2_REVIEW_VERDICT_INVALID')\n    notes = _normalize_review_notes(review_notes)\n\n    review = {'verdict': verdict, 'review_notes': notes, 'approval_mode': approval_mode}\n    if verdict in {'REVISE', 'REJECT'}:\n        if (failed_hard_gate not in {'H1', 'H2', 'H3', 'H4'}\n                or not str(observable_evidence or '').strip()\n                or not str(required_correction or '').strip()):\n            raise ValueError('STAGE2_REVIEW_EVIDENCE_REQUIRED: H1-H4, evidence and correction are mandatory')\n        replan = str(replan_evidence or '').strip()\n        if verdict == 'REVISE' and replan:\n            raise ValueError('STAGE2_REVISE_CANNOT_CONTAIN_REPLAN_EVIDENCE')\n        if verdict == 'REJECT' and not replan:\n            raise ValueError('STAGE2_REJECT_REPLAN_EVIDENCE_REQUIRED')\n        review.update(\n            failed_hard_gate=failed_hard_gate,\n            observable_evidence=str(observable_evidence).strip(),\n            required_correction=str(required_correction).strip(),\n        )\n        if verdict == 'REJECT':\n            review['replan_evidence'] = replan\n        candidate['status'] = verdict.lower()\n        candidate['review'] = review\n        _save_runtime_state(path, state)\n        return candidate\n\n    if failed_hard_gate or observable_evidence or required_correction or replan_evidence:\n        raise ValueError('STAGE2_PASS_CANNOT_CONTAIN_HARD_FAILURE')\n    if approval_mode == 'anchor_exploration_candidate':\n        candidate['status'] = 'qualified'\n        candidate['review'] = review\n        run.setdefault('anchor_candidate_displays', {}).pop(candidate['slide_id'], None)\n        _save_runtime_state(path, state)\n        return candidate\n    slide_id = candidate['slide_id']\n    titles.check_promotion(state, slide_id, candidate)\n    old = run.setdefault('current_approved', {}).get(slide_id)\n    if isinstance(old, dict) and old.get('candidate_id') != candidate_id:\n        old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))\n        if isinstance(old_candidate, dict):\n            old_candidate['status'] = 'superseded'\n            old_candidate['superseded_by'] = candidate_id\n    candidate['status'] = 'approved'\n    candidate['review'] = review\n    approved = {\n        'slide_id': slide_id,\n        'candidate_id': candidate_id,\n        'path': candidate['path'],\n        'sha256': candidate['sha256'],\n        'approval_mode': approval_mode,\n        'run_id': run['run_id'],\n        'approved_outline_fingerprint': fingerprint,\n    }\n    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]\n    run['pending_visual_revisions'] = pending\n    _invalidate_stage2_visual_approval(run, 'approved_render_changed')\n    _invalidate_page_artifacts(run, state, slide_id)\n    state.setdefault('slides', {}).setdefault(slide_id, {})['approved_render'] = candidate['path']\n    _save_runtime_state(path, state)\n    return candidate\n\n"
+    },
+    {
+      "path": "scripts/runtime.py",
+      "old": "def select_anchor_candidate(runtime_state_path, slide_id, candidate_id):\n    \"\"\"Promote one formally displayed qualified Anchor candidate to the page render.\"\"\"\n    path = Path(runtime_state_path).resolve()\n    fingerprint = require_stage2_entry(path)\n    display = build_anchor_formal_candidate_set(path, slide_id)\n    if display['status'] != 'COMPLETE':\n        raise ValueError('ANCHOR_FORMAL_CANDIDATE_SET_REQUIRED: no qualified candidates')\n    state = load_runtime_state(path)\n    run = _current_stage2_run(state, fingerprint)\n    shown = run.get('anchor_candidate_displays', {}).get(slide_id, {})\n    if (shown.get('candidate_set_fingerprint') != display.get('candidate_set_fingerprint')\n            or candidate_id not in shown.get('candidate_ids', [])):\n        raise ValueError('ANCHOR_FORMAL_CANDIDATE_SET_STALE: show the current candidate set before selection')\n    candidate = run.get('candidates', {}).get(candidate_id)\n    if not isinstance(candidate, dict) or candidate.get('status') != 'qualified':\n        raise ValueError('ANCHOR_CANDIDATE_NOT_QUALIFIED')\n\n    old = run.setdefault('current_approved', {}).get(slide_id)\n    if isinstance(old, dict) and old.get('candidate_id') != candidate_id:\n        old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))\n        if isinstance(old_candidate, dict):\n            old_candidate['status'] = 'superseded'\n            old_candidate['superseded_by'] = candidate_id\n    candidate['status'] = 'approved'\n    candidate.setdefault('review', {})['approval_mode'] = 'user_selected_anchor_page'\n    approved = {\n        'slide_id': slide_id,\n        'candidate_id': candidate_id,\n        'path': candidate['path'],\n        'sha256': candidate['sha256'],\n        'approval_mode': 'user_selected_anchor_page',\n        'run_id': run['run_id'],\n        'approved_outline_fingerprint': fingerprint,\n    }\n    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    run.setdefault('anchor_candidate_displays', {}).pop(slide_id, None)\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]\n    run['pending_visual_revisions'] = pending\n    _invalidate_stage2_visual_approval(run, 'approved_render_changed')\n    _invalidate_page_artifacts(run, state, slide_id)\n    state.setdefault('slides', {}).setdefault(slide_id, {})['approved_render'] = candidate['path']\n    _save_runtime_state(path, state)\n    return approved\n\n",
+      "new": "def select_anchor_candidate(runtime_state_path, slide_id, candidate_id):\n    \"\"\"Promote one formally displayed qualified Anchor candidate to the page render.\"\"\"\n    path = Path(runtime_state_path).resolve()\n    fingerprint = require_stage2_entry(path)\n    display = build_anchor_formal_candidate_set(path, slide_id)\n    if display['status'] != 'COMPLETE':\n        raise ValueError('ANCHOR_FORMAL_CANDIDATE_SET_REQUIRED: no qualified candidates')\n    state = load_runtime_state(path)\n    run = _current_stage2_run(state, fingerprint)\n    shown = run.get('anchor_candidate_displays', {}).get(slide_id, {})\n    if (shown.get('candidate_set_fingerprint') != display.get('candidate_set_fingerprint')\n            or candidate_id not in shown.get('candidate_ids', [])):\n        raise ValueError('ANCHOR_FORMAL_CANDIDATE_SET_STALE: show the current candidate set before selection')\n    candidate = run.get('candidates', {}).get(candidate_id)\n    if not isinstance(candidate, dict) or candidate.get('status') != 'qualified':\n        raise ValueError('ANCHOR_CANDIDATE_NOT_QUALIFIED')\n\n    titles.check_promotion(state, slide_id, candidate)\n    old = run.setdefault('current_approved', {}).get(slide_id)\n    if isinstance(old, dict) and old.get('candidate_id') != candidate_id:\n        old_candidate = run.get('candidates', {}).get(old.get('candidate_id'))\n        if isinstance(old_candidate, dict):\n            old_candidate['status'] = 'superseded'\n            old_candidate['superseded_by'] = candidate_id\n    candidate['status'] = 'approved'\n    candidate.setdefault('review', {})['approval_mode'] = 'user_selected_anchor_page'\n    approved = {\n        'slide_id': slide_id,\n        'candidate_id': candidate_id,\n        'path': candidate['path'],\n        'sha256': candidate['sha256'],\n        'approval_mode': 'user_selected_anchor_page',\n        'run_id': run['run_id'],\n        'approved_outline_fingerprint': fingerprint,\n    }\n    run['current_approved'][slide_id] = approved\n    titles.promote(state, slide_id, candidate, approved)\n    run.setdefault('anchor_candidate_displays', {}).pop(slide_id, None)\n    pending = [sid for sid in run.get('pending_visual_revisions', []) if sid != slide_id]\n    run['pending_visual_revisions'] = pending\n    _invalidate_stage2_visual_approval(run, 'approved_render_changed')\n    _invalidate_page_artifacts(run, state, slide_id)\n    state.setdefault('slides', {}).setdefault(slide_id, {})['approved_render'] = candidate['path']\n    _save_runtime_state(path, state)\n    return approved\n\n"
+    },
+    {
+      "path": "references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n## Optional ordinary-page Title Contract\n\n正文主标题默认承担导航和层级作用，由实质信息内容承担页面主视觉；统一标题规范只能从符合这一要求的普通内容页提取，单页获准的展示性大标题不得成为后续页面的统一基准。\n\nAfter Outline approval, a new task asks once: **是否统一普通内容页的主标题？A. 统一（推荐）／B. 自由。** An existing explicit instruction answers this choice without another question. Keep the existing cover/Anchor preview, preview batch size and complete-deck approval. There is no second-page sample, Title Contract display/reply gate or per-page human title approval. If there are no applicable pages, skip the choice and record free/no_applicable_pages. Existing states without title_policy stay on their original free flow.\n\nClassify existing page_task into cover/content/toc/section/thanks/display in work/page-roles.json; this metadata does not add Outline fields or change Content Truth. Ordinary content, including substantive summaries, participates. Cover, agenda, section transitions, pure thanks and explicitly display-oriented pages do not. Their exclusion does not exempt them from the existing NON_COVER rule. A source is usually page two; skip special pages and use the first current ordinary normal-heading PASS. An explicitly accepted actual ordinary-page Anchor can supply the same source without regenerating it.\n\nBefore first source generation, compile the navigation-heading/content-primary requirement into the compact current-page prompt. Qualification already decides normal heading versus evidenced H2 dominance: prominence or size alone is not failure. The bind function checks source hashes and the supplied existing visual assessment; it is not a new aesthetic classifier. An unauthorized typography-primary page follows the existing targeted H2 correction before PASS. A specifically authorized display heading remains local and cannot seed subsequent titles.\n\nUse the current task's genuine user reply with the structured choice; do not keyword-match. Actual page roles come from the approved semantic task. Do not relabel cover or invent promotional authorization. The title policy is separate from Style DNA: fixed heading coordinates/scale do not enter Style DNA; source scene, body arrangement and layout are never propagated.\n\n~~~powershell\npython scripts/canva_bridge.py start-run --state <state> --title-choice-required\npython scripts/runtime.py stage2-title-policy --state <state> --mode uniform --page-roles-json <work/page-roles.json> --message <actual-choice>\npython scripts/runtime.py stage2-title-context --state <state> --slide-id <id>\n~~~\n\nA context with next_action=bind_current_prototype means an automatic internal measurement/bind step, never a request for author confirmation. After the first normal Approved Render, save a work/title-contract.json with these exact fields. source_render_sha256 is the actual current approved image hash. heading_assessment is the existing page observation, not an invented result; font_family_basis records uncertainty.\n\n~~~json\n{\n  \"source_render_sha256\": \"<current-approved-image-sha256>\",\n  \"heading_assessment\": {\n    \"role\": \"navigation\", \"content_is_primary\": true, \"display_exception\": false,\n    \"evidence\": \"<actual image observation: normal heading; substantive content is primary>\"\n  },\n  \"style\": {\n    \"font_family\": \"<chosen available matching family>\", \"fallback_font_family\": \"<available shared fallback>\",\n    \"font_family_basis\": \"estimated\", \"font_weight\": \"bold\", \"color\": \"#203040\",\n    \"title_region\": [0.08, 0.04, 0.84, 0.17], \"alignment\": \"left\",\n    \"first_line_baseline\": 0.10, \"visible_glyph_height\": 0.045,\n    \"line_height_ratio\": 1.15, \"max_lines\": 2\n  }\n}\n~~~\n\nThe numbers above are illustrative, not universal font/area limits. Measure the actual source and use coordinates normalized to the existing mapped content rectangle. title_region reserves up to two lines; visual_bbox_normalized remains each page's actual visible glyph envelope. Never convert raster pixels directly to points. Keep the shared intended glyph scale, line spacing and first-line alignment, with existing finite Native Text Visual Fit calibration. Long headings wrap to at most two lines; further overflow needs actual author shortening or local exception, never silent shrink/truncation/content alteration. Keep chosen/fallback heading families consistent before Manifest freeze; preserve original available-font and fit rules.\n\n~~~powershell\npython scripts/runtime.py stage2-title-bind --state <state> --slide-id <source-id> --contract-json <work/title-contract.json>\n~~~\n\nThe first bind has scope=prototype and origin=system_derived; user approval is the earlier uniform/free choice, not a synthetic standard approval. It snapshots source page/hash, run/Outline, style and observation. Repeating identical input is idempotent. Carry the returned ref into later candidates. Once frozen, editing the prototype page does not update the deck standard. Old snapshots remain valid historical sources; they need not match the prototype's latest image forever.\n\nFor an actual local title edit, use the existing --user-requested-variant with --title-override-message <actual-page-request>; qualify the new image, then stage2-title-bind --scope page_override --message <actual-request>. A normal local override includes measured style. A display override has role=display/content_is_primary=false/display_exception=true with actual page authorization; style is unused. A whole-deck title instruction uses --scope global_revision --message <actual-request> and optional --slide-ids-json <affected-current-content-ids>. Preserve existing local exceptions unless the new instruction explicitly includes them. Existing affected PASS pages become pending_visual_revisions; use user-requested variants, retain old files until new PASS. Before complete deck display, do not call the full-display-only revision endpoint. Neither bind nor revision grants any ImageGen/Magic/download/paid retry permission or resets a lock/budget.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "references/04_页面二维生成前置约束与渲染协议_v2.9.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n## Ordinary-heading generation and qualification wiring\n\nRead Reference 03 Optional ordinary-page Title Contract when the current task enables heading uniformity. Before each page generation, run stage2-title-context --state <state> --slide-id <id>. A first ordinary page already receives: **正文主标题默认承担导航和层级作用，由实质信息内容承担页面主视觉。** Keep normal, readable heading hierarchy; no new fixed point-size/area percentage or similarity score is introduced.\n\nAfter an eligible page qualification PASS, complete the automatic measured prototype bind inside the existing preview batch. When context includes contract_ref, pass that exact observed ref with stage2-candidate-register --title-contract-ref <ref>; it represents the actual generation instruction. Candidate promotion rechecks it against current policy, so an interrupted old candidate cannot silently acquire a new global standard. A supplied page-local modification uses --title-override-message <actual-instruction>. Free/legacy/non-applicable pages retain old call behavior.\n\nExisting H2 still handles an evidenced unauthorized title-primary composition before PASS. Normal prominent headings remain legal. Explicitly authorized display typography can PASS locally but is excluded from deck title seeding. Preserve source page/hash and actual normal-heading evidence; PASS alone is not permission to propagate every title appearance. There is no added Hard Gate, no standard confirmation, no aesthetic retry loop and no automatic regeneration of already PASS pages. Keep the original cover selection, preview batch and exact full-set approval.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "references/07_Stage3_文字处理_消字与复原规范_v1.5.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n## Optional heading reference during native text restoration\n\nFor an applicable uniform-heading page, read Reference 03 Optional ordinary-page Title Contract and current stage2-title-context. Add top-level title_contract_ref and title_element_ids (the actual primary-title native-text element IDs) to Text Manifest before freeze. These are occurrence IDs, not string matching: same words in body/chart labels must remain untouched. A protected Graphic Typography/Logo is not reclassified by this metadata; an authorized local graphic/display title can have no native title IDs while existing graphic protection rules still apply.\n\nMeasure visual_bbox_normalized from each actual Approved Render, independently of the shared reserved title_region. Normalize against the existing source/content rectangle and apply the original approved canvas mapping. Choose available matching and common fallback fonts before freeze; apply shared title targets only to listed native elements through the existing Native Text Visual Fit, with its existing bounded calibration. No PNG-pixel-to-point conversion, silent long-heading shrinking or frozen-plan rewriting.\n\nRegistration validates current render/run, immutable snapshot and actual primary native occurrences before invalidating downstream artifacts. Both Magic Text Plan rechecks and Image seal/provenance use the shared check. Source fingerprint and prior Text Plan record shape stay unchanged; title metadata is naturally covered by the existing Manifest hash. Title checks do not replace Truth, safe cleanup, canvas/framing, original-object preservation or four Hard Gates. Local/global edits follow original authorized variants and stale-lineage handling; never automatically redo Magic, acquisition or paid splitting to fix heading preference.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n## Optional ordinary-heading restoration pointer\n\nIf title_policy=uniform, read Reference 03 Optional ordinary-page Title Contract and Reference 07 Optional heading reference during native text restoration. Complete the automatic first normal-heading bind in Stage 2, preserve page-bound snapshots and primary occurrence IDs. Both register-text-plan and its currentness recheck enforce the same title binding before destructive invalidation. This adds no user title approval, fifth Gate, download, Magic call or retry permission. The existing 5-source-pixel canvas tolerance, controlled mapping and native fit remain.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n## Optional ordinary-heading restoration pointer\n\nThe Image Layer branch inherits the same optional Title Contract from Reference 03 and native-text metadata from Reference 07. Current finalized_manifest registration and shared seal/provenance lineage checks validate the page's adopted snapshot and primary native element IDs; Graphics-first images and original layer placement remain untouched. A local display exception is not a deck heading seed or permission to remove Graphic Typography. Preserve Native Text Visual Fit, source binding, 5-source-pixel canvas tolerance, four Gates and all existing paid/retry conditions. No new title confirmation or remote reconstruction is required.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "SKILL.md",
+      "old": "then `canva_bridge.py start-run`; current-run PASS pages",
+      "new": "then `canva_bridge.py start-run --title-choice-required` for new tasks (`start-run` alone for legacy resume); current-run PASS pages"
+    },
+    {
+      "path": "SKILL.md",
+      "old": "## Read only the current step",
+      "new": "After Outline approval, new tasks choose uniform/free ordinary-page headings once (reuse explicit author instructions). Read Reference 03 Optional ordinary-page Title Contract and 04 generation wiring. Keep cover preview/batches; no second-page sample or title-standard approval. The first ordinary normal-heading PASS seeds a separate immutable Title Contract automatically; cover/display headings never seed it. Before each generation query `runtime.py stage2-title-context`; carry its ref into the candidate. For restoration load 07's optional heading reference. Legacy states stay free; preserve existing NON_COVER protection, fit and four Gates.\n\n## Read only the current step"
+    },
+    {
+      "path": "docs/codex-canva-bridge.md",
+      "old": "",
+      "new": "\n\n<!-- TITLE_POLICY_BEGIN -->\n### Short heading-policy calls\n\nNew-task start-run accepts --title-choice-required; legacy calls stay unchanged. After approved Outline, use runtime.py stage2-title-policy --mode uniform|free --page-roles-json <work/roles.json> --message <actual-choice>. Use stage2-title-context --slide-id <id> before generation and carry its observed --title-contract-ref into candidate registration. Complete a normal-source stage2-title-bind automatically after PASS; no title review/reply endpoint exists. The authoritative payload is in Reference 03 Optional ordinary-page Title Contract, and native occurrence metadata in Reference 07. The adapter's status returns concise title_policy context only when this optional policy exists.\n<!-- TITLE_POLICY_END -->\n"
+    },
+    {
+      "path": "references/03_PPT视觉探索与Anchor延续协议_v2.12.md",
+      "old": "<!-- TITLE_POLICY_END -->",
+      "new": "No applicable ordinary pages: before asking, classify current page roles using `stage2-title-policy --mode pending --page-roles-json roles.json`. With no `content` page the policy records a system skip, requires no user message, and generation continues in free mode. Do not invent an author selection.\n\n<!-- TITLE_POLICY_END -->"
+    }
+  ],
+  "new_runtime_files": {
+    "scripts/title_policy.py": "e08b2ce08ae9ee36aa3759a09ea6d97585b29a08a8ad7d9bd42b3764df7c834f"
+  }
+}

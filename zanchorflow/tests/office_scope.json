@@ -1,0 +1,458 @@
+{
+  "baseline_updated_at_utc": "2026-10-03T04:41:34Z",
+  "baseline_slim_sha256": "6491e4f511e0754c83ec02bb257f262f7c8485214e96b6574b93bf1ccb2f5c6b",
+  "baseline_full_sha256": "39855d8d6291fe2ab133e41ab8c6cc4857e4a7a0dad791cd8e7d9b8354f9aec3",
+  "baseline": {
+    ".gitattributes": "0402ec41d4c371be67db21ae4b8b6d486007e676caae0947746d280784de5158",
+    ".github/workflows/validate.yml": "af79dd79d9cd952c7226b88481784881390bd95f28aa407512b665a1d552fe22",
+    ".gitignore": "48a6cba1c61947416a9f1c701338d9674ad00498e30989254e1dc196fea35a82",
+    "dist/zanchorflow.zip": "6491e4f511e0754c83ec02bb257f262f7c8485214e96b6574b93bf1ccb2f5c6b",
+    "dist/zanchorflow.zip.sha256": "f510e792a91bcdacadd81b6362371adc90952b6d4867e3d645f2793ae7d25d91",
+    "docs/development.md": "2d06f4976123614c464d531fb6a05e412a0754fa4e0fcf87c2804015c494e8d1",
+    "docs/implementation-notes.md": "fa53130188ea82b278beb93b7dc601fd815a05981bd54752c5be913454baa982",
+    "examples/image-layer/overview.png": "d1f7830c6591c466559081ded4a92297d732250e0f0dfd3bbe3be23a80192b09",
+    "examples/image-layer/presentation.pdf": "0ad7166e7f24dd53fc4b5c257a659fcfba20587067890204d4ebb4c83f2b8644",
+    "examples/image-layer/presentation.pptx": "4d4108607374aebecbc7d908ff58b2f3dee3aa3ea02bd445352dddaaefe2749d",
+    "examples/image-layer/README.md": "5bfdc9c93eba807de163b92f04ce7506ecb49038dc4c4ffbe820cd2473015c7e",
+    "examples/image-layer/representative.png": "47862d6ef2922b3f59def12f48d19202197a1b1feae025a839061120ec20eecb",
+    "examples/magic-layer/overview.png": "aabd3c1cb22b3caf7c81c4f78d43e03c1284385ca2ba6b37b064da36cbe37cb4",
+    "examples/magic-layer/presentation.pdf": "d1577e536c542316520482ec9a391d0c80a4a1ec380c51f024c43f115d946636",
+    "examples/magic-layer/presentation.pptx": "0e9d11911f6b36e1ed8ccb36e12556c8fd2d5ec3695aa8fac61caf10cb5c8da3",
+    "examples/magic-layer/README.md": "a3287133b6b0e6ec1be9f53cf122d8e820604e282c94022b3cc19a73cd5dddc7",
+    "examples/magic-layer/representative.png": "6ad2c74259fe8036b75f8d7206e6b18516f9fb8330baadeb689cdf87fa6482e0",
+    "LICENSE": "af5161bf518cc3630861a895692be5fae6cae92ed409f0da2546b3d10d72009d",
+    "README.md": "99555aac9327b8688b886d3a2fc543a03006419aaadd24b076296262ec911ab9",
+    "requirements-dev.txt": "a790f14c61e621e31ee32e96d61f89fc57ecb122944e05dcbe12851200818a6c",
+    "tools/build.py": "85b7f7ebcb2fde8242ecbe911e292e7da6155f44e649d6c7b5a6ffa566f3355a",
+    "tools/check_public.py": "48733c82585e88bef3446184da6d845ed6673314be7fe6c065484e03cd751efd",
+    "zanchorflow/docs/codex-canva-bridge.md": "1903a39f53f963cbb6541b81adc904412b0d5126d6081b08f772921f1f392d3e",
+    "zanchorflow/docs/image-layer-backend.md": "0ca779f1c37eb3012becc93a7f45aea688b09841371172ab366154b37469e7d0",
+    "zanchorflow/docs/image-layer-box-selection.md": "51b653af8f9e8a5d9ebc091fc303ebb8ce1fcbb26914b7d6a5ccad85927d05e1",
+    "zanchorflow/docs/installation.md": "2058a0691d9a4963d4edfffbf0dfd4e6d174121ca9a390b646bd1a6ed763fe1a",
+    "zanchorflow/LICENSE": "4bfc6319be7f06e42c02098b6ed8f5fa60a690a45593d368d009ecebdf9ae38b",
+    "zanchorflow/manifest.yaml": "b7bf1e509e7f0f63831afcb292603252845ee19d7dd7487fc67706ad0a3b0819",
+    "zanchorflow/pytest.ini": "ac9a0ba54716b2a3a0113be66719419bf081daa58f405a8defebc7897cc5d0da",
+    "zanchorflow/references/01_PPT内容架构与大纲生成协议_v1.2.md": "95e5d412ffd7e6726c1aec9457e1f496e5e65beb69fd6607f8cd4fecb61edab5",
+    "zanchorflow/references/02_Stage1至Stage2语义接口协议_v1.0.md": "db0741f7688df2bec72ed38d7d16545f0944c79e4bf4eeb79fd6cec5e4e980d2",
+    "zanchorflow/references/03_PPT视觉探索与Anchor延续协议_v2.12.md": "b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4",
+    "zanchorflow/references/04_页面二维生成前置约束与渲染协议_v2.9.md": "406e4dcdaf442e4139ae86c4743f0e1f69f48b10a26ffe0c467a0cb27e2da86b",
+    "zanchorflow/references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md": "dac934785dfcb846939889add603be7fb8594638225f117f13383e9426c32cfb",
+    "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md": "36181885027335a1849f0cde8d923be89edc0edbf2d6fcfe7e375492a1ef827d",
+    "zanchorflow/references/07_Stage3_文字处理_消字与复原规范_v1.5.md": "4df60f8c27bc817ed355bfd6b421108407b2492a4ee8046c248d447dd0c4bc11",
+    "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md": "82c9f7dd29da1ec4376e5879c19b1af2e8932d6b9521c903cf269c7ec4bedf25",
+    "zanchorflow/requirements-base.txt": "6186da598b608294da612d6c3fedd0e8bb2578feb24c05118e327f709be315b8",
+    "zanchorflow/requirements-image.txt": "0002c329f2807a6e8d97f2121a85d7df0abaf8e282563fc6c9e2f49ab415d2b9",
+    "zanchorflow/requirements-office.txt": "d24bf860507e72d9c0d64ccca9c2eba37c914a5bc0f629356382511d7b994147",
+    "zanchorflow/scripts/acquisition_request.py": "5696a4c475ea7796c24b0db9c562ef5f54b4e44f679f86755b4d4d79fa5ac949",
+    "zanchorflow/scripts/assemble_deck.py": "9d557fe6f6e862d4bfe0459182f4bec627f1e3e1c16c20253cdd37a51023e994",
+    "zanchorflow/scripts/canva_bridge.py": "0f45a70d38fe942c605cf56f8de6d2742fbc5e3a132c9d2312a36e75414a364c",
+    "zanchorflow/scripts/canva_pptx_finalize.ps1": "c05cbcfb20a9b7144e5a0310e8e84eae5ec5ab2cccd946d198bc27a8ff808107",
+    "zanchorflow/scripts/host_acquisition.py": "a5374798c7e176f14be7cf132b345c1e9a03cd17e1b2025f37cd88173eb77a6f",
+    "zanchorflow/scripts/layer_bridge.py": "790c456d6364bb89f29fd5401106d72a349a32a2856aa1e745d867f141e1158f",
+    "zanchorflow/scripts/layer_build_pptx.py": "47668f8b423ec8d8f2215d6c0a48f588ffb11166deb6ee2a04e73f225c659132",
+    "zanchorflow/scripts/layer_geometry.py": "bca60be7be50e4d62b7c0dd571f928e29b42a11c8a088b0ef09c38a10501ae3d",
+    "zanchorflow/scripts/layer_geometry_verify.py": "8331242ca29dcbb4bc45d9bcfb25b439cec0c09b9a4b29f09f2d97e4d459c756",
+    "zanchorflow/scripts/layer_package.py": "26c0eb2d7f8116ce6ea39e6e2ee5e6d743b5c2411fb346abdcf1cc95af891b59",
+    "zanchorflow/scripts/layer_policy.py": "9a5f35e44de84147d9424d63d81352e1c11fd0661b66a1dcf4bd3a8366efc904",
+    "zanchorflow/scripts/layer_provider_360.py": "94e2283a6d1465a02381139d7d9cd1de8bcd4f93364e3aa37f9cf05d6beaa658",
+    "zanchorflow/scripts/layer_review_boxes.py": "55fb595e12f8634c944c1e0ed15d19500fafb7cb92fbe53eb1f7815abe3ab060",
+    "zanchorflow/scripts/layer_validate_bundle.py": "f17ac3a44b9ec39609108ba18e4704b107bacf47fcbc34821216f81c702bc9d7",
+    "zanchorflow/scripts/merge_pptx.py": "e20887218fd4791bbdee14e0dc4751bb23498f75ceacd062a369862bdc7e05e7",
+    "zanchorflow/scripts/package_skill.py": "566aa5ee56dbaea0a69e78efcd9399d5afcf1c23262c7020706ff2bec785c037",
+    "zanchorflow/scripts/preflight.py": "4fdebf04442adc6b8f0fca611b59ca24ef1a6d50a439eb109e5ff1a980741cc6",
+    "zanchorflow/scripts/reconstruction_router.py": "5f18ab507a373cb499909e53f08abb8bc59edb3f1a6feabedd1a309edef7e550",
+    "zanchorflow/scripts/runtime.py": "ac562839e924b94a82a778ce77dd9e17d875b80c900c42b89141a85e7ece9a77",
+    "zanchorflow/scripts/title_policy.py": "e4d216b717f6d5a2c4ca24bcb4b0f36acf75c55d88c74838c4369fedae0ed0d8",
+    "zanchorflow/SKILL.md": "a05e5bd8821c2e429f37ce839f1bf3a1bac464cee8abed614b94470c842bd313",
+    "zanchorflow/tests/evals/rc16_8_stage2_behavior_eval.md": "c44610a4802aa738030d34440208d9d786abc63afbba98b8713b9f6e37d98ab8",
+    "zanchorflow/tests/heading_refine_scope.json": "6d9e4f9ae0ec1c50c05ba448f2612bcf6b959018bb8a7713037a00f648cdd5f8",
+    "zanchorflow/tests/heading_refine_scope.py": "c36d702318860f0666b169f74f2c1274da672720b148dfb21adcf360c68a75e9",
+    "zanchorflow/tests/publish_scope.json": "38fbd84bd9330fb92d34b4a7061f6037cb7c2d7ac9f73e145de7cb2c9edf310c",
+    "zanchorflow/tests/publish_scope.py": "270dd021d7ffe2e977ba1b39335e2620b7aaec62491fb3697ae88bdf6a245161",
+    "zanchorflow/tests/refinement_scope.py": "10624085d43aba3bb05159ddbc5c989f65dff153d47a43c5f3ed279c9fe39249",
+    "zanchorflow/tests/stage2_test_helpers.py": "f67dd8207ea30ad8adda8d2e087ea28256fa7b5a7f8e94b4dfa7288cb406e159",
+    "zanchorflow/tests/test_acquisition_request.py": "ead42a82a4e66035762b308cc3af4f838b19fdf00ee294b6f19270d5298d90e9",
+    "zanchorflow/tests/test_agent_contract.py": "690bc08d616c9a3c390113f6af249a7640051b19a870b79dbecc18d5836205b4",
+    "zanchorflow/tests/test_anchor_formal_candidates.py": "c529791855f00c98e75889bf3699cf82c8959663d46516e92b89f7a9f318466a",
+    "zanchorflow/tests/test_canvas_adaptation.py": "1669c2742d99b17c122e18c48efe41f244c9864ed78f754315f3471c45c3e868",
+    "zanchorflow/tests/test_deck_lineage.py": "a1597e5282724d4dbae4bdcc9d971bc1a03f266f4d7159233cd29e58a8d296f7",
+    "zanchorflow/tests/test_download_provenance.py": "2fbc89ff0695810e4baddb391fcb6a4c7413b31f3c558135e9d59d66b2f10c99",
+    "zanchorflow/tests/test_heading_refine.py": "a7730c63192c53c04e338877434a4f489725d62452e0cea8b89e7c032629e89a",
+    "zanchorflow/tests/test_host_acquisition.py": "675501f9af508ff4d7c157b73193967f70135a42b5b86a7e18bcbf5d9639e27d",
+    "zanchorflow/tests/test_host_compact.py": "666d41b4f3636e362f0989d6921ba20fbe103002306f02fb07844eab2b38d3dc",
+    "zanchorflow/tests/test_host_strategy.py": "649c65df43060baaa47e2e34804385a93b383d346adc48dc44c80ac5a19863f5",
+    "zanchorflow/tests/test_image_layer_assembly.py": "f187749aa477dfb955ee158454926ddd40b7146c7ae48dc85d8e9fee167880c2",
+    "zanchorflow/tests/test_integrity.py": "9586854aa7895927c5bbbb8d145976be34c9126cd388cd48dd2ec7e02eec9b4e",
+    "zanchorflow/tests/test_layer_bridge.py": "33f98ca344c69f926fc816035b03c32ff99dd2ae3e47bb918573b141df84dbab",
+    "zanchorflow/tests/test_layer_bundle.py": "ce8156230926a4b237333e4f2de50b498437ef0598deb57312c22e1dc6f40cfa",
+    "zanchorflow/tests/test_layer_geometry.py": "07c07a1c2705887e8132585b8a081c4c909abc93e45ca495f7c1d1da3ba47d08",
+    "zanchorflow/tests/test_layer_plan.py": "39eb7742ac977b1d9411d6b65228cccac143763a32cf8fc78d5e287f8222e07f",
+    "zanchorflow/tests/test_layer_pptx.py": "8f032cc87b4361732462a0db3f2a377ceedc50773b76acde9c7a0c7ed1d3e0dd",
+    "zanchorflow/tests/test_layer_provider_360.py": "332763c1034712968eb123ca076ba5e01b65385facfe30e2c6c8baa5953e40f3",
+    "zanchorflow/tests/test_layer_revision.py": "9e9b5f89720d9fdbe7a6ce29192f83867146ac909e3c929151d07cb71d057d50",
+    "zanchorflow/tests/test_lineage_contract.py": "10f4e439817b5ed3356d51d5d566747ac8f5eed7ff1d367f8daf352a958458c7",
+    "zanchorflow/tests/test_magic_layer_freeze.py": "d941fc5ed87772ba4a6f37320bb83d99dac1d550a7c2fa0379a6154035abd27f",
+    "zanchorflow/tests/test_merge.py": "6841b4a12c06d5018046895cda7e1be98b4da62f44a996d9d94d117e3a3b1c75",
+    "zanchorflow/tests/test_merge_oracle.py": "efb878857dd6e2e7d346aa5e503b156f437641c0b317660205335bbfa759d3de",
+    "zanchorflow/tests/test_native_merge.py": "25b8110ec437e9db50c61acb6f18f5fa1e6ca7a3f2789b4496ec264fb7b1f6fd",
+    "zanchorflow/tests/test_noncover_display_typography_contract.py": "2b24bf8a97e9124864a103edac039131a47139a16bfd0737789ee49337c98dc1",
+    "zanchorflow/tests/test_package.py": "aba7e52274093c43bf3bab9fbcc38ef2da18625808ee199d5e8436baf6536861",
+    "zanchorflow/tests/test_post_merge_editability.py": "6492e99fd9fbb7983675fc12ea03d2659134f127b9c0c44263f5de9bc565b584",
+    "zanchorflow/tests/test_preflight_scope.py": "ee429a5f73b0c83258d3143f0e22a9e88a005b5eb5d12d8677ad15d988271212",
+    "zanchorflow/tests/test_protocol_rc17_contract.py": "baeb38fdbdaf95e19a9f3f69e27e2cfc435cbf885d297dcd346f48ab8a1b3026",
+    "zanchorflow/tests/test_protocol_rc17_representation_contract.py": "ae65656c7be1e9f78970d0f6446632df5a4f89e122e855c0ea1a18d78ba623eb",
+    "zanchorflow/tests/test_publish_canvas.py": "7b8b503639f7e55b45bacf73798f90e72087e726b75e1543422798e704a8c8ba",
+    "zanchorflow/tests/test_rc17_pre_stage3_contract.py": "e648a620617e38b0d324ad1a1b25560f68d887063b00c09fbca570f0b2084d2b",
+    "zanchorflow/tests/test_rc18_change_contract.py": "d4cb68a61819a33bf3f6add7fe31949d1a0d9211dc23bb8befac12ef9157604d",
+    "zanchorflow/tests/test_reconstruction_backend_router.py": "c268b5e3c8c54d7c4ff5527482fd62a9d274a89c229f47982b0f51f68976808a",
+    "zanchorflow/tests/test_refinement.py": "d11c3b5bf2a26db203f085c19a719bfc6dfec9885ffa8b61b8b31d1e16f78b48",
+    "zanchorflow/tests/test_revision_identity.py": "f3ff92c4e6eda0b29147b436b8805ffdc0491cca387c65541f668f80fa1e9a8e",
+    "zanchorflow/tests/test_runtime.py": "cae97a795c4481d5d1f2027d2426a4b1d482c0a4ecec7d5ce8b9e2a266a1683d",
+    "zanchorflow/tests/test_stage1_review.py": "d9e9e1fb0b00dedf358169173da9158de107de94b637479dae8edaaa53903870",
+    "zanchorflow/tests/test_stage2_qualification.py": "be70e502e052913a46380b19f026af35ce1edf8a9e252e268cde0dba6962511f",
+    "zanchorflow/tests/test_stage2_visual_approval.py": "cd0ce5a03e8c2399388f1c4e03166eb7a4aebfb363044fd76b799befd3a54df1",
+    "zanchorflow/tests/test_stage3_graphic_typography.py": "91f37c90077bfdb46be8f9b961121a3cd0b12f5bf3edd14f5e4aa441498d835b",
+    "zanchorflow/tests/test_title_policy.py": "0d24900d826bc127b53bf032eeb2d1e7144a2d4c5d4561fd984148d44890de32",
+    "zanchorflow/tests/test_title_routes.py": "462f57e52f88822095403d09251fad390336146dd0449819f73944b081b437d2",
+    "zanchorflow/tests/test_version_contract.py": "2a5f79c68a98e2730ec9987368abf670a1eb9ac3cd92bfd60d2aeebc0ba0a0c2",
+    "zanchorflow/tests/title_scope.json": "0e582ff347cc521d8f1e8c011427b3b9347064f2da9dc806935e05dfe2b76eec",
+    "zanchorflow/tests/title_scope.py": "3133de3ec2ecdf137b9e2b88f5a7ddd53083b5bf46f2073d42b6230d30921df6"
+  },
+  "baseline_revision_scope": [
+    "controlled_magic_canvas_mapping",
+    "host_dom_event_candidate_with_original_fallback",
+    "noncritical_glyph_local_handling",
+    "progressive_context_loading",
+    "david_z_attribution",
+    "approved_image_target_wiring",
+    "github_distribution",
+    "optional_ordinary_heading_consistency",
+    "normal_heading_seed_protection",
+    "dual_package_source_build",
+    "independent_native_title_postprocessing",
+    "title_residual_notes_without_auto_repair",
+    "flat_shadow_evidence_guidance",
+    "compact_interface_examples"
+  ],
+  "added_revision_scope": [
+    "wps_native_merge_fallback",
+    "agent_conditional_python_guidance"
+  ],
+  "patches": [
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "\"\"\"PowerPoint-native merge of RC3 validated single-page decks.\n\nPowerPoint performs import; this module rejects broken OOXML dependencies and\nloss of editable objects. It does not fall back to another merge engine.\n\"\"\"",
+      "new": "\"\"\"Office-native merge of validated single-page decks.\n\nPrefer PowerPoint; WPS uses the same import and integrity checks. Application\nselection ends before real import; failures never retry another merge engine.\n\"\"\""
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "def _native_merge(inputs, order, target):",
+      "new": "OFFICE_PROGIDS = {'powerpoint': 'PowerPoint.Application', 'wps': 'KWPP.Application'}\nOFFICE_HOSTS = ('auto', 'powerpoint', 'wps')\n\n\ndef _create_office_app(office_host, diagnostics):\n    if office_host not in OFFICE_HOSTS:\n        raise ValueError('unknown office host: ' + str(office_host))\n    import win32com.client\n    hosts = ('powerpoint', 'wps') if office_host == 'auto' else (office_host,)\n    diagnostics.update(office_host=None, office_progid=None, office_attempts=[])\n    for host in hosts:\n        progid = OFFICE_PROGIDS[host]\n        try:\n            app = win32com.client.DispatchEx(progid)\n        except Exception as exc:\n            diagnostics['office_attempts'].append({'host': host, 'progid': progid, 'status': 'FAIL', 'detail': str(exc)})\n            if host == hosts[-1]:\n                raise RuntimeError('native application unavailable: ' + '; '.join(x['detail'] for x in diagnostics['office_attempts'])) from exc\n        else:\n            diagnostics['office_attempts'].append({'host': host, 'progid': progid, 'status': 'CREATED'})\n            diagnostics.update(office_host=host, office_progid=progid)\n            return app\n\n\ndef _native_merge(inputs, order, target, *, office_host='auto', diagnostics=None):"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "    import win32com.client\n    app = win32com.client.DispatchEx('PowerPoint.Application')\n    prs = None\n    try:\n",
+      "new": "    import win32com.client\n    diagnostics = {} if diagnostics is None else diagnostics\n    app = _create_office_app(office_host, diagnostics)\n    selected = diagnostics['office_host']\n    prs = None\n    failure = None\n    try:\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "        prs.SaveAs(str(target), 24)\n        prs.Close()\n        prs = app.Presentations.Open(str(target), 0, 0, 0)",
+      "new": "        prs.SaveAs(str(target), 24)\n        prs.Close(); prs = None\n        if selected == 'wps':\n            app = None\n            app = win32com.client.DispatchEx(OFFICE_PROGIDS[selected])\n        prs = app.Presentations.Open(str(target), 0, 0, 0)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "            raise RuntimeError(f'PowerPoint reopened {actual} slides; expected {len(order)}')\n    finally:\n        if prs is not None:\n            prs.Close()\n        app.Quit()\n",
+      "new": "            raise RuntimeError(f'{selected} reopened {actual} slides; expected {len(order)}')\n    except BaseException as exc:\n        failure = exc\n        raise\n    finally:\n        cleanup = []\n        if prs is not None:\n            try:\n                prs.Close()\n            except Exception as exc:\n                cleanup.append('document close: ' + str(exc))\n        if selected == 'powerpoint' and app is not None:\n            try:\n                app.Quit()\n            except Exception as exc:\n                cleanup.append('application quit: ' + str(exc))\n        app = None\n        if cleanup:\n            diagnostics['cleanup_errors'] = cleanup\n            if failure is None:\n                raise RuntimeError('native cleanup failed: ' + '; '.join(cleanup))\n    return diagnostics\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "def merge(inputs, deck_order, output, runtime_state_path=None):",
+      "new": "def merge(inputs, deck_order, output, runtime_state_path=None, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "    code, reasons = _merge_input_diagnostics(inputs, deck_order, runtime_state_path)",
+      "new": "    if office_host not in OFFICE_HOSTS:\n        raise ValueError('unknown office host: ' + str(office_host))\n    code, reasons = _merge_input_diagnostics(inputs, deck_order, runtime_state_path)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "        try:\n            _native_merge(inputs, deck_order, candidate)",
+      "new": "        native = {}\n        try:\n            _native_merge(inputs, deck_order, candidate, office_host=office_host, diagnostics=native)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':errors}",
+      "new": "return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':errors, **native}"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "'ooxml_relationships':'PASS', 'native_reopen':'PASS'}",
+      "new": "'ooxml_relationships':'PASS', 'native_reopen':'PASS', **native}"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "'details':[str(exc)]}\n\n\n",
+      "new": "'details':[str(exc)], **native}\n\n\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "    args = parser.parse_args()\n",
+      "new": "    parser.add_argument('--office-host', choices=OFFICE_HOSTS, default='auto')\n    args = parser.parse_args()\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/merge_pptx.py",
+      "old": "job['output'], args.runtime_state)",
+      "new": "job['output'], args.runtime_state, office_host=args.office_host)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "\"\"\"Stage-scoped environment diagnostics; no alternate implementation routes.\"\"\"\r",
+      "new": "\"\"\"Stage-scoped diagnostics with capability-tested Office application selection.\"\"\""
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "    app = None\r\n    prs = None\r\n    try:\r",
+      "new": "    app = None\r\n    prs = None\r\n    ok, detail = False, ''\r\n    cleanup = []\r\n    try:"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "        return True, ''\r\n    except Exception as exc:\r\n        return False, str(exc)\r\n    finally:\r\n        if prs is not None:\r\n            prs.Close()\r\n        if app is not None:\r\n            app.Quit()\r",
+      "new": "        ok = True\r\n    except Exception as exc:\r\n        detail = str(exc)\r\n    finally:\r\n        if prs is not None:\r\n            try:\r\n                prs.Close()\r\n            except Exception as exc:\r\n                cleanup.append('document close: ' + str(exc))\r\n        if app is not None:\r\n            try:\r\n                app.Quit()\r\n            except Exception as exc:\r\n                cleanup.append('application quit: ' + str(exc))\r\n    return ok and not cleanup, '; '.join([detail] if detail else [] + cleanup) if not cleanup else '; '.join(([detail] if detail else []) + cleanup)\r\n\r\n\r\ndef _probe_wps(output_dir):\r\n    from pptx import Presentation\r\n    from merge_pptx import _native_merge\r\n    with tempfile.TemporaryDirectory(dir=output_dir) as td:\r\n        source, target = Path(td)/'source.pptx', Path(td)/'target.pptx'\r\n        prs = Presentation(); prs.slides.add_slide(prs.slide_layouts[6]); prs.save(source)\r\n        _native_merge([{'slide_id': 'probe', 'path': str(source)}], ['probe'], target, office_host='wps')\r\n        if len(Presentation(target).slides) != 1:\r\n            raise RuntimeError('WPS probe did not reopen one slide')\r\n    return True, ''\r\n\r\n\r\ndef _safe_office_probe(probe, output_dir):\r\n    try:\r\n        return probe(output_dir)\r\n    except Exception as exc:\r\n        return False, str(exc)\r\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "    return ok and not cleanup, '; '.join([detail] if detail else [] + cleanup) if not cleanup else '; '.join(([detail] if detail else []) + cleanup)\r",
+      "new": "    return ok and not cleanup, '; '.join(([detail] if detail else []) + cleanup)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "          host_report=None, runtime_state=None, slide_id=None):\r",
+      "new": "          host_report=None, runtime_state=None, slide_id=None, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "    root = Path(skill_dir)\r",
+      "new": "    if office_host not in ('auto', 'powerpoint', 'wps'):\n        raise ValueError('unknown office host: ' + str(office_host))\n    root = Path(skill_dir)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "        'output_writable': 'FAIL', 'powerpoint_com': 'NOT_REQUIRED',\r",
+      "new": "        'output_writable': 'FAIL', 'powerpoint_com': 'NOT_REQUIRED',\n        'wps_com': 'NOT_REQUIRED', 'office_host': None, 'office_progid': None, 'office_diagnostics': [],"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "    if scope in ('merge','full'):\r\n        result['powerpoint_com'] = 'NOT_EXECUTED'\r\n        if result['output_writable'] == 'PASS' and not any(result['runtime_dependencies'].get(n) == 'FAIL' for n in ('pptx','lxml','win32com')):\r\n            ok, detail = _probe_powerpoint(output_dir)\r\n            result['powerpoint_com'] = 'PASS' if ok else 'FAIL'\r\n            if not ok:\r\n                result['blockers'].append({'stage':'local_merge','code':'POWERPOINT_NATIVE_IMPORT_UNAVAILABLE',\r\n                                           'environment':True,'user_action':True,'detail':detail})\r\n",
+      "new": "    if scope in ('merge','full'):\r\n        hosts = ('powerpoint', 'wps') if office_host == 'auto' else (office_host,)\r\n        for host in hosts:\r\n            result[host + '_com'] = 'NOT_EXECUTED'\r\n        if result['output_writable'] == 'PASS' and not missing:\r\n            from merge_pptx import OFFICE_PROGIDS\r\n            for host in hosts:\r\n                probe = _probe_powerpoint if host == 'powerpoint' else _probe_wps\r\n                ok, detail = _safe_office_probe(probe, output_dir)\r\n                result[host + '_com'] = 'PASS' if ok else 'FAIL'\r\n                result['office_diagnostics'].append({'host': host, 'progid': OFFICE_PROGIDS[host], 'status': 'PASS' if ok else 'FAIL', 'detail': detail})\r\n                if ok:\r\n                    result.update(office_host=host, office_progid=OFFICE_PROGIDS[host])\r\n                    break\r\n            if result['office_host'] is None:\r\n                for attempt in result['office_diagnostics']:\r\n                    result['blockers'].append({'stage':'local_merge','code':attempt['host'].upper() + '_NATIVE_IMPORT_UNAVAILABLE',\r\n                                               'environment':True,'user_action':True,'detail':attempt['detail']})\r\n"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "    a = p.parse_args()\r",
+      "new": "    p.add_argument('--office-host',choices=('auto','powerpoint','wps'),default='auto')\n    a = p.parse_args()"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/preflight.py",
+      "old": "a.host_report,a.runtime_state,a.slide_id)\r",
+      "new": "a.host_report,a.runtime_state,a.slide_id,office_host=a.office_host)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "def prepare(state_path, work_dir):\r",
+      "new": "def prepare(state_path, work_dir, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "work_dir, scope='merge')\r",
+      "new": "work_dir, scope='merge', office_host=office_host)"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "result = merge(inputs,order,candidate,temp)\r",
+      "new": "result = merge(inputs,order,candidate,temp,office_host=report['office_host'])"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "review_path.write_text(json.dumps(_review_template(current,order),ensure_ascii=False,indent=2),encoding='utf-8')\r",
+      "new": "review = _review_template(current,order)\n            review['native_merge'] = {key:result[key] for key in ('office_host','office_progid','office_attempts','cleanup_errors') if key in result}\n            review_path.write_text(json.dumps(review,ensure_ascii=False,indent=2),encoding='utf-8')"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "return {**result, 'status':'AWAITING_DECK_VALIDATION', 'validation_report':str(review_path)}\r",
+      "new": "return {**result, 'status':'AWAITING_DECK_VALIDATION', 'validation_report':str(review_path), 'preflight':report}"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "    deliver = sub.add_parser('publish')\r",
+      "new": "    build.add_argument('--office-host',choices=('auto','powerpoint','wps'),default='auto')\n    deliver = sub.add_parser('publish')"
+    },
+    {
+      "repo_path": "zanchorflow/scripts/assemble_deck.py",
+      "old": "result = prepare(args.state,args.work_dir)\r",
+      "new": "result = prepare(args.state,args.work_dir,office_host=args.office_host)"
+    },
+    {
+      "repo_path": "zanchorflow/SKILL.md",
+      "old": "Use acquisition/merge scoped preflight at their checkpoints.",
+      "new": "Use acquisition/merge scoped preflight at their checkpoints; native merge prefers PowerPoint and can select capability-tested WPS (Host §4)."
+    },
+    {
+      "repo_path": "zanchorflow/SKILL.md",
+      "old": "The package metadata file is manifest.yaml.",
+      "new": "Prioritize the current Host's available Python. Only when the current step actually lacks an interpreter or required dependency, the executing Agent diagnoses the specific preparation needed and explains it to the user; no fixed startup reminder or automatic installation. Details: docs/installation.md.\n\nThe package metadata file is manifest.yaml."
+    },
+    {
+      "repo_path": "zanchorflow/docs/installation.md",
+      "old": "本地验证环境：Windows、Python 3.14.5；具体已验证依赖版本见分组 requirements 文件。\r",
+      "new": "本地验证环境：Windows、Python 3.14.5；具体已验证依赖版本见分组 requirements 文件。\n优先复用当前 Host 的可用 Python。执行 agent 仅在发现当前步骤缺少解释器或必要依赖时提醒，并按实际缺项说明需要做的准备；不固定开场提醒。单个 python 命令不可用不代表未安装，先结合 Host 运行环境、可用启动器及实际路径判断。没有可用解释器时说明受影响步骤和建立环境的方法；缺库时仅安装当前步骤对应的分组依赖。路径、权限、COM 和网络错误分别诊断。以下命令供实际缺项时使用，不要求重复安装；不自动安装、改全局 PATH 或捆绑环境管理器。"
+    },
+    {
+      "repo_path": "zanchorflow/docs/installation.md",
+      "old": "完整原生合并需要 Windows、桌面 Microsoft PowerPoint，以及 requirements-office.txt；Office 不是 pip 包。",
+      "new": "完整原生合并需要 Windows、桌面 Microsoft PowerPoint 或通过本机能力预检的 WPS 演示，以及 requirements-office.txt；Office/WPS 不是 pip 包。默认优先 PowerPoint，不可用时检测 WPS 的 KWPP.Application；也可使用 --office-host powerpoint 或 --office-host wps 显式选择。"
+    },
+    {
+      "repo_path": "zanchorflow/docs/installation.md",
+      "old": "测试与 Excel/OLE 编辑夹具另见仓库开发说明。\r",
+      "new": "测试与 Excel/OLE 编辑夹具另见仓库开发说明。已实测 WPS Office 12.1.0.28505 的小型 PPTX 合并和编辑；其他版本、复杂对象及跨应用字体呈现另行验证，不承诺跨应用像素一致。"
+    },
+    {
+      "repo_path": "README.md",
+      "old": "原生整套合并需要 Windows 桌面 PowerPoint 和 requirements-office.txt。",
+      "new": "原生整套合并需要 Windows 桌面 PowerPoint 或通过能力预检的 WPS 演示，以及 requirements-office.txt；默认优先 PowerPoint，WPS 为备用。执行 agent 仅在当前步骤实际缺少 Python 或必要依赖时说明准备工作，不固定开场提醒。"
+    },
+    {
+      "repo_path": "zanchorflow/docs/codex-canva-bridge.md",
+      "old": "Prepare calls the unchanged native merge engine and returns",
+      "new": "Prepare uses the existing native import/integrity pipeline with the application chosen by scoped preflight and returns"
+    },
+    {
+      "repo_path": "zanchorflow/docs/codex-canva-bridge.md",
+      "old": "Native merge preflight is run only here, not during connection checking.",
+      "new": "Native merge preflight is run only here, not during connection checking. --office-host auto (default) probes PowerPoint first, then KWPP.Application when unavailable; explicit powerpoint/wps tests only that host. The chosen application is passed to merge without a second selection probe. Probe exceptions, including document/application cleanup, remain diagnostic evidence; a successful WPS probe removes the failed PowerPoint attempt as a blocker, never relabels it PASS. Results record office_host/office_progid and diagnostics; private paths/process details belong in work only.\n\nStandalone merge_pptx.py also accepts --office-host auto|powerpoint|wps. Its auto fallback covers application creation only, before importing actual inputs; use scoped preflight for full capability checks. Formal import/save/reopen/integrity failure never retries another application within the operation. Common Python dependency errors are diagnosed separately. WPS closes only owned documents and releases/recreates its KWPP handle before reopen, without a global Quit or process kill. Keep original input files, state/locks/budgets and existing outcomes; normal temporary candidate cleanup remains unchanged. Recover an existing valid candidate through recover-review without rerunning native merge."
+    },
+    {
+      "repo_path": "zanchorflow/references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md",
+      "old": "c page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->\n",
+      "new": "c page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->\n\n\n### Native assembly application selection\nUse the existing sealed-page assembly and four Gates. Codex Host §4 defines --office-host auto|powerpoint|wps: prefer PowerPoint, use capability-tested KWPP.Application as the small WPS fallback, then keep that selection for the merge. This changes the native application only, not source identities, canvas mapping, text restoration or integrity checks. Existing validated candidates resume without another merge.\n"
+    },
+    {
+      "repo_path": "zanchorflow/references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md",
+      "old": "c page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->\n",
+      "new": "c page repair; PASS never means exact title identity.\n<!-- TITLE_POLICY_END -->\n\n\n### Native assembly application selection\nUse the existing sealed-page assembly and four Gates. Codex Host §4 defines --office-host auto|powerpoint|wps: prefer PowerPoint, use capability-tested KWPP.Application as the small WPS fallback, then keep that selection for the merge. This changes the native application only, not source identities, canvas mapping, text restoration or integrity checks. Existing validated candidates resume without another merge.\n"
+    },
+    {
+      "repo_path": "docs/development.md",
+      "old": "本地安装 Microsoft PowerPoint/Excel 后，运行完整 tests；",
+      "new": "本地安装 Microsoft PowerPoint/Excel 后，运行原有完整 tests；新增 WPS integration 测试另需本机 WPS 演示与 KWPP.Application，CI 不安装 WPS。"
+    },
+    {
+      "repo_path": "docs/development.md",
+      "old": "报告首表反映当前结果，事件历史独立保留。\r",
+      "new": "报告首表反映当前结果，事件历史独立保留。\n\n## WPS 备用与 Python 条件提醒验证\n新增 office_scope 精确差异还原先回到本轮来源基线，再进入 heading_refine_scope/title_scope；旧基线及行为断言保留。普通测试模拟两种应用，不启动真实 Office。WPS integration 使用合成输入进行原生合并、重开、编辑保存、错误页序与图片负例；仅操作本次文档。跨应用字体差异另记，其他 WPS 版本和复杂对象不据此声明兼容。Python 指引的静态检查、程序依赖诊断和实际 agent 行为分开记录。"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_preflight_scope.py",
+      "old": "    result=preflight.check(ROOT,tmp_path,scope='merge')\n    assert any(x['code']=='POWERPOINT_NATIVE_IMPORT_UNAVAILABLE'",
+      "new": "    monkeypatch.setattr(preflight,'_probe_wps',lambda _output_dir: (False,'synthetic WPS unavailable'))\n    result=preflight.check(ROOT,tmp_path,scope='merge')\n    assert any(x['code']=='POWERPOINT_NATIVE_IMPORT_UNAVAILABLE'"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_merge.py",
+      "old": "lambda *_args,**_kwargs: {'blockers':[]}",
+      "new": "lambda *_args,**_kwargs: {'blockers':[], 'office_host':'powerpoint'}"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_merge.py",
+      "old": "def fake_merge(inputs, order, output, state_path):",
+      "new": "def fake_merge(inputs, order, output, state_path, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_merge.py",
+      "old": "    def native(inputs,order,path):",
+      "new": "    def native(inputs,order,path, *, office_host='auto', diagnostics=None):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_merge.py",
+      "old": "    def failure(*args): raise OSError",
+      "new": "    def failure(*args,**kwargs): raise OSError"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_merge.py",
+      "old": "def native(inputs,order,target):",
+      "new": "def native(inputs,order,target, *, office_host='auto', diagnostics=None):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_title_routes.py",
+      "old": "    def native(inputs,order,target):\r",
+      "new": "    def native(inputs,order,target, *, office_host='auto', diagnostics=None):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/heading_refine_scope.py",
+      "old": "    text=raw.decode(\"utf-8\")\r",
+      "new": "    from office_scope import restore_repo_bytes\n    text=restore_repo_bytes(\"zanchorflow/\"+rel,raw).decode(\"utf-8\")"
+    },
+    {
+      "repo_path": "zanchorflow/tests/heading_refine_scope.py",
+      "old": "def restore_text(rel,text):\r\n",
+      "new": "def restore_text(rel,text):\r\n    from office_scope import restore_repo_text\r\n    text=restore_repo_text(\"zanchorflow/\"+rel,text)\r\n"
+    },
+    {
+      "repo_path": "zanchorflow/tests/heading_refine_scope.py",
+      "old": "    d=data();expected=",
+      "new": "    from office_scope import normalize_manifest\n    m=normalize_manifest(m)\n    d=data();expected="
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_heading_refine.py",
+      "old": "    assert raw[\"revision_scope\"]==data()[\"baseline_revision_scope\"]+data()[\"added_revision_scope\"]\r",
+      "new": "    from office_scope import normalize_manifest\n    assert normalize_manifest(raw)[\"revision_scope\"]==data()[\"baseline_revision_scope\"]+data()[\"added_revision_scope\"]"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_deck_lineage.py",
+      "old": "def _fake_native_merge(inputs, order, target):",
+      "new": "def _fake_native_merge(inputs, order, target, *, office_host='auto', diagnostics=None):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_image_layer_assembly.py",
+      "old": "    monkeypatch.setattr(assembly.preflight,'check',lambda *_a,**_k:{'blockers':[]})\r",
+      "new": "    monkeypatch.setattr(assembly.preflight,'check',lambda *_a,**_k:{'blockers':[], 'office_host':'powerpoint'})"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_image_layer_assembly.py",
+      "old": "    def fake_merge(inputs,order,target,state_path):\r",
+      "new": "    def fake_merge(inputs,order,target,state_path, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_layer_bridge.py",
+      "old": "    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs:{'blockers':[]})\r",
+      "new": "    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs:{'blockers':[], 'office_host':'powerpoint'})"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_layer_bridge.py",
+      "old": "    def fake_merge(inputs,order,output,state_path):\r",
+      "new": "    def fake_merge(inputs,order,output,state_path, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_layer_revision.py",
+      "old": "    monkeypatch.setattr(assembly.preflight,'check',lambda *a,**k:{'blockers':[]})\r",
+      "new": "    monkeypatch.setattr(assembly.preflight,'check',lambda *a,**k:{'blockers':[], 'office_host':'powerpoint'})"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_layer_revision.py",
+      "old": "    def merge(inputs,order,target,state_path):\r",
+      "new": "    def merge(inputs,order,target,state_path, *, office_host='auto'):"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_magic_layer_freeze.py",
+      "old": "    return hashlib.sha256(path.read_bytes()).hexdigest()",
+      "new": "    from office_scope import restore_repo_bytes\n    raw=restore_repo_bytes('zanchorflow/'+path.relative_to(ROOT).as_posix(),path.read_bytes())\n    return hashlib.sha256(raw).hexdigest()"
+    },
+    {
+      "repo_path": "zanchorflow/tests/test_protocol_rc17_contract.py",
+      "old": "    return hashlib.sha256(path.read_bytes()).hexdigest()",
+      "new": "    from office_scope import restore_repo_bytes\n    raw=restore_repo_bytes('zanchorflow/'+path.relative_to(ROOT).as_posix(),path.read_bytes())\n    return hashlib.sha256(raw).hexdigest()"
+    },
+    {
+      "repo_path": "zanchorflow/pytest.ini",
+      "old": "    integration: requires local PowerPoint and Excel COM\r",
+      "new": "    integration: requires local desktop Office COM (PowerPoint/Excel or explicit WPS cases)"
+    }
+  ]
+}

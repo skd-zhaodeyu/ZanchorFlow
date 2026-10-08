@@ -22,7 +22,7 @@ def evidence_assets(items,base):
         p=Path(item['file']); p=p if p.is_absolute() else Path(base)/p
         if not p.is_file() or sha(p)!=item['sha256']: raise ValueError('evidence hash mismatch')
 
-def validate_qa(report,target_ids,base):
+def validate_qa(report,target_ids,base,require_editing=False,target_actions=None):
     checks=report.get('checks'); evidence=report.get('evidence')
     if not isinstance(checks,dict) or not isinstance(evidence,dict): raise ValueError('checks/evidence required')
     for name in CHECKS:
@@ -53,7 +53,11 @@ def validate_qa(report,target_ids,base):
             if not isinstance(refs,list) or not refs or any(x not in ids for x in refs): raise ValueError('check limitation references required')
             used.update(refs)
     if used!=ids: raise ValueError('unreferenced limitation')
-    if 'FAIL' in checks.values(): status='LAYER_VISUAL_QA_FAILED'
+    editing_failed=False
+    if require_editing or 'target_edit_checks' in report:
+        from layer_edit_review import validate_targets
+        editing_failed=validate_targets(report,target_ids,base,target_actions)
+    if editing_failed or 'FAIL' in checks.values(): status='LAYER_VISUAL_QA_FAILED'
     elif 'MODEL_LIMITATION' in checks.values(): status='LAYER_VISUAL_QA_ACCEPTED_WITH_LIMITATIONS'
     else: status='LAYER_VISUAL_QA_PASS'
     return status,limitations

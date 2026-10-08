@@ -65,7 +65,7 @@ def test_image_backend_selection_and_onboarding_do_not_store_secret(tmp_path,mon
     router.choose_backend(state,'image_layer')
     monkeypatch.delenv(router.IMAGE_LAYER_API_KEY_ENV,raising=False)
     status=router.status(state)
-    assert status=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S001'}
+    assert {k:v for k,v in status.items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S001'}
     onboarding=router.image_layer_onboarding()
     assert onboarding['api_key_url']=='https://research.360.cn/workspace/apikeys'
     assert onboarding['message']=='请核实当前账户的免费权益、余额与价格，并在真实提交前确认费用授权。'

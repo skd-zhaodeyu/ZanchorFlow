@@ -56,8 +56,8 @@ def _assembly_fixture(tmp_path, monkeypatch):
         runtime.seal_validated_single_page(state_path,slide_id,page,gates)
     monkeypatch.setattr(assembly,'require_stage2_entry',lambda _: 'synthetic-approval')
     monkeypatch.setattr(assembly,'stage2_handoff_status',lambda _: {'status':'COMPLETE'})
-    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs: {'blockers':[]})
-    def fake_merge(inputs, order, output, state_path):
+    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs: {'blockers':[], 'office_host':'powerpoint'})
+    def fake_merge(inputs, order, output, state_path, *, office_host='auto'):
         output.parent.mkdir(parents=True,exist_ok=True)
         output.write_bytes('|'.join(order).encode())
         runtime.seal_merged_deck(state_path,order,inputs,output)
@@ -213,7 +213,7 @@ def _local_native_only(monkeypatch):
     original=preflight.importlib.util.find_spec
     monkeypatch.setattr(preflight.importlib.util,'find_spec',lambda name: object() if name=='win32com' else original(name))
     monkeypatch.setattr(preflight,'_probe_powerpoint',lambda _: (True,'synthetic environment only'))
-    def native(inputs,order,path):
+    def native(inputs,order,path, *, office_host='auto', diagnostics=None):
         prs=Presentation()
         for sid in order: prs.slides.add_slide(prs.slide_layouts[6])
         prs.save(path)
@@ -383,7 +383,7 @@ def test_rc7_failed_native_merge_and_interrupted_lock_do_not_claim_completion(tm
     import pytest,canva_bridge as bridge,assemble_deck,merge_pptx
     state,seed,pages=_ready_codex_deck(tmp_path);_local_native_only(monkeypatch)
     before=state.read_bytes()
-    def failure(*args): raise OSError('synthetic native failure')
+    def failure(*args,**kwargs): raise OSError('synthetic native failure')
     monkeypatch.setattr(merge_pptx,'_native_merge',failure)
     with pytest.raises(ValueError,match='native merge failed'):
         assemble_deck.prepare(state,tmp_path/'work')
@@ -768,7 +768,7 @@ from pptx import Presentation
 original=preflight.importlib.util.find_spec
 preflight.importlib.util.find_spec=lambda n:object() if n=='win32com' else original(n)
 preflight._probe_powerpoint=lambda _: (True,'OFFLINE native capability substitute')
-def native(inputs,order,target):
+def native(inputs,order,target, *, office_host='auto', diagnostics=None):
     by_id={x['slide_id']:x for x in inputs};prs=Presentation()
     first=Presentation(by_id[order[0]]['path']);prs.slide_width=first.slide_width;prs.slide_height=first.slide_height
     for sid in order:

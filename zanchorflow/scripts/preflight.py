@@ -1,4 +1,4 @@
-"""Stage-scoped environment diagnostics; no alternate implementation routes."""
+"""Stage-scoped diagnostics with capability-tested Office application selection."""
 import argparse
 import importlib.util
 import json
@@ -18,6 +18,8 @@ TEST_DEPENDENCIES = ('pytest', 'PIL')
 def _probe_powerpoint(output_dir):
     app = None
     prs = None
+    ok, detail = False, ''
+    cleanup = []
     try:
         import win32com.client
         with tempfile.TemporaryDirectory(dir=output_dir) as td:
@@ -37,14 +39,41 @@ def _probe_powerpoint(output_dir):
             prs = app.Presentations.Open(str(target), 0, 0, 0)
             assert prs.Slides.Count == 1
             prs.Close(); prs = None
-        return True, ''
+        ok = True
     except Exception as exc:
-        return False, str(exc)
+        detail = str(exc)
     finally:
         if prs is not None:
-            prs.Close()
+            try:
+                prs.Close()
+            except Exception as exc:
+                cleanup.append('document close: ' + str(exc))
         if app is not None:
-            app.Quit()
+            try:
+                app.Quit()
+            except Exception as exc:
+                cleanup.append('application quit: ' + str(exc))
+    return ok and not cleanup, '; '.join(([detail] if detail else []) + cleanup)
+
+
+def _probe_wps(output_dir):
+    from pptx import Presentation
+    from merge_pptx import _native_merge
+    with tempfile.TemporaryDirectory(dir=output_dir) as td:
+        source, target = Path(td)/'source.pptx', Path(td)/'target.pptx'
+        prs = Presentation(); prs.slides.add_slide(prs.slide_layouts[6]); prs.save(source)
+        _native_merge([{'slide_id': 'probe', 'path': str(source)}], ['probe'], target, office_host='wps')
+        if len(Presentation(target).slides) != 1:
+            raise RuntimeError('WPS probe did not reopen one slide')
+    return True, ''
+
+
+def _safe_office_probe(probe, output_dir):
+    try:
+        return probe(output_dir)
+    except Exception as exc:
+        return False, str(exc)
+
 
 
 
@@ -73,16 +102,19 @@ def _check_codex_host(skill_dir, host_report, runtime_state, slide_id):
     return 'HOST_EVIDENCE_ACCEPTED_LIVE_UNVERIFIED'
 
 def check(skill_dir, output_dir, scope='package', acquisition_route='external',
-          host_report=None, runtime_state=None, slide_id=None):
+          host_report=None, runtime_state=None, slide_id=None, *, office_host='auto'):
     if scope not in SCOPES:
         raise ValueError(f'unknown preflight scope: {scope}')
     if acquisition_route not in ('external', 'codex-canva'):
         raise ValueError('unknown acquisition route')
+    if office_host not in ('auto', 'powerpoint', 'wps'):
+        raise ValueError('unknown office host: ' + str(office_host))
     root = Path(skill_dir)
     result = {
         'scope': scope, 'protocol_hashes': 'NOT_EXECUTED',
         'runtime_dependencies': {}, 'test_dependencies': {},
         'output_writable': 'FAIL', 'powerpoint_com': 'NOT_REQUIRED',
+        'wps_com': 'NOT_REQUIRED', 'office_host': None, 'office_progid': None, 'office_diagnostics': [],
         'image_generation': 'HOST_CAPABILITY_CHECK_REQUIRED',
         'canva_magic_layers': 'EXTERNAL_SESSION_CHECK_REQUIRED',
         'font_environment': 'PASS' if Path(os.environ.get('WINDIR','C:/Windows'),'Fonts').is_dir() else 'FAIL',
@@ -125,13 +157,23 @@ def check(skill_dir, output_dir, scope='package', acquisition_route='external',
         result['blockers'].append({'stage':'delivery','code':'OUTPUT_PATH_UNWRITABLE',
                                    'environment':True,'user_action':True,'detail':str(exc)})
     if scope in ('merge','full'):
-        result['powerpoint_com'] = 'NOT_EXECUTED'
-        if result['output_writable'] == 'PASS' and not any(result['runtime_dependencies'].get(n) == 'FAIL' for n in ('pptx','lxml','win32com')):
-            ok, detail = _probe_powerpoint(output_dir)
-            result['powerpoint_com'] = 'PASS' if ok else 'FAIL'
-            if not ok:
-                result['blockers'].append({'stage':'local_merge','code':'POWERPOINT_NATIVE_IMPORT_UNAVAILABLE',
-                                           'environment':True,'user_action':True,'detail':detail})
+        hosts = ('powerpoint', 'wps') if office_host == 'auto' else (office_host,)
+        for host in hosts:
+            result[host + '_com'] = 'NOT_EXECUTED'
+        if result['output_writable'] == 'PASS' and not missing:
+            from merge_pptx import OFFICE_PROGIDS
+            for host in hosts:
+                probe = _probe_powerpoint if host == 'powerpoint' else _probe_wps
+                ok, detail = _safe_office_probe(probe, output_dir)
+                result[host + '_com'] = 'PASS' if ok else 'FAIL'
+                result['office_diagnostics'].append({'host': host, 'progid': OFFICE_PROGIDS[host], 'status': 'PASS' if ok else 'FAIL', 'detail': detail})
+                if ok:
+                    result.update(office_host=host, office_progid=OFFICE_PROGIDS[host])
+                    break
+            if result['office_host'] is None:
+                for attempt in result['office_diagnostics']:
+                    result['blockers'].append({'stage':'local_merge','code':attempt['host'].upper() + '_NATIVE_IMPORT_UNAVAILABLE',
+                                               'environment':True,'user_action':True,'detail':attempt['detail']})
     if scope in ('acquisition','full'):
         result['acquisition_route'] = acquisition_route
         if acquisition_route == 'codex-canva':
@@ -165,7 +207,8 @@ if __name__ == '__main__':
     p.add_argument('--host-report')
     p.add_argument('--runtime-state')
     p.add_argument('--slide-id')
+    p.add_argument('--office-host',choices=('auto','powerpoint','wps'),default='auto')
     a = p.parse_args()
-    report = check(a.skill_dir,a.output_dir,a.scope,a.acquisition_route,a.host_report,a.runtime_state,a.slide_id)
+    report = check(a.skill_dir,a.output_dir,a.scope,a.acquisition_route,a.host_report,a.runtime_state,a.slide_id,office_host=a.office_host)
     print(json.dumps(report,ensure_ascii=False,indent=2))
     raise SystemExit(exit_code(report))

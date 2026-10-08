@@ -504,7 +504,7 @@ Editable Single-Page Canva Design
         ↓
 Codex Browser Host（现有 Design 的 PowerPoint/PPTX UI）
         ↓
-精确 Browser download event / Preferences / History / file 证据
+当前 design_id / 唯一名称 / 操作前后文件证据（event 与最小只读下载记录为辅助）
         ↓
 现有 finalizer
         ↓
@@ -659,7 +659,7 @@ text_restore_fingerprint
 - 默认不嵌入字体；
 - 每个 Manifest element 恢复一次且只能一次。
 
-Native Text Visual Fit 结束后才进入最终单页质量门。
+Native Text Visual Fit 结束后，若当前普通正文页启用统一标题，按协议 07 的独立标题后处理调整本页原生主标题，再进入最终单页质量门；其余页面保持原顺序。
 
 ---
 
@@ -997,7 +997,7 @@ Stage 3 的失败必须先按根因分类，再决定动作。禁止只看到“
 
 最小原则：
 
-- **结构性 No-op retry 仍禁止**：Magic Layers 结构结果仅按既有 `RETRY_ONCE` 规则处理；但 `WAIT_DOWNLOAD` acquisition 使用 `docs/codex-canva-bridge.md` 的有界恢复合同。查询/UI 临时异常先退避重试；最终 Download 后未知状态先按 10/20/30/45/60s 复查；只有独立确认的 terminal export failure 才可创建新的 numbered export，整轮最多 5 次真实 Download。普通 transient/recoverable failure 不因首次异常直接 STOP；
+- **结构性 No-op retry 仍禁止**：Magic Layers 结构结果继续按既有 RETRY_ONCE 规则处理；WAIT_DOWNLOAD 使用 Host 按状态恢复：脚本直下首选、浏览器下载及“点击这里”备选。连续三次同类失败先诊断或换通道，不设固定下载拒绝次数；无法推进时说明原因并询问。下载重试不触发新的 Magic 重建。
 - 执行 Controller 采用 `RECOVER → WAIT/RETRY → DIAGNOSE → RUNTIME REPAIR → RESUME`；身份/lineage/provenance/授权不可信或恢复耗尽且继续可能产生重复副作用时才 Hard STOP；
 - 已发布 Skill 在运行期是 **READ-ONLY PRODUCT**；Controller 可修 session/UI/network/file/finalizer/bind 运行现场，但不得热修改正式协议、production scripts、tests 或 manifest。若证据指向产品实现缺陷，记录 `IMPLEMENTATION_DEFECT_SUSPECTED` 并保存现场；
 - 不无限重试 Magic Layers；
@@ -1186,4 +1186,25 @@ Local PPTX Merge 的代码实现不写死在本协议中，只要满足第 13 �
 
 ## Runtime dispatch: Magic acquisition and restoration boundaries
 
-**Magic Layer 分支:** Magic Layers receives the Formal Text-Clean Render; Canva restores structure only. For `WAIT_DOWNLOAD`, use the recovery-first Host contract in `docs/codex-canva-bridge.md`: trusted ACCEPT identity -> bounded query/UI recovery -> persisted `INTENT_LOCKED` -> one final Download for that acquisition -> bounded post-click observation, including a fresh explicit same-operation recovery affordance when safely available -> exact browser History/file proof -> unchanged finalizer -> bind. Query/UI retry uses 2/5/10/15/20s; after intent, observation uses 10/20/30/45/60s and never unlocks another click. Only independently confirmed terminal export failure may create the next numbered acquisition; the round permits at most five real Download clicks, while each new export record gets a fresh bounded local retry budget. Unknown, in-progress or completed download never authorizes another click. Browser session/network/UI problems are repaired and resumed from the same checkpoint where safe; identity/provenance/auth ambiguity is a Hard STOP. The executing Agent may repair runtime/session state but the installed Skill is a **READ-ONLY PRODUCT** and must not be hot-modified; suspected product defects are reported as `IMPLEMENTATION_DEFECT_SUSPECTED`. Never guess a conventional Downloads path or the newest file: establish the actual browser profile/configuration and matching completed record. Do not substitute Resize or REST API. Finalizer/bind failure reuses the same exact downloaded bytes and never triggers Magic Layers or a new Download. During text restoration, references 06/07 retain the original <=5-source-pixel path and add verified same-framing uniform adaptation for larger unit/size differences; use the shared content rectangle for graphics, native-text geometry and glyph size. Original downloads, approved canvas and source bindings remain immutable. Acquisition prefers the documented same-call DOM/download-event candidate when supported; the original UI/observation route remains a bounded fallback. After intent lock every uncertain result permits observation/recovery only, never a repeated ordinary Download. Only single-page PPTX files sealed after all four Hard Gates enter `scripts/merge_pptx.py`; Merge remains unchanged.
+**Magic Layer 分支:** Magic Layers receives the Formal Text-Clean Render; Canva restores structure only. For WAIT_DOWNLOAD read Host §§3.1–3.6: current accepted identity and actual return design_id -> browser 文件/··· -> 下载 -> explicitly select PPTX -> export -> current recovery href -> direct GET, or actual browser fallback -> request/operation-linked file -> unchanged finalizer/bind. Identity locks allow state recovery without fixed download refusal budgets and do not authorize new Magic calls. The executing Agent may repair session/runtime failures, but the installed Skill remains a READ-ONLY PRODUCT during ordinary execution; report suspected implementation defects rather than hot-editing. Never guess file ownership from names, times or a shared-directory delta. During text restoration, references 06/07 retain the original <=5-source-pixel path and add verified same-framing uniform adaptation for larger unit/size differences; use the shared content rectangle for graphics, native-text geometry and glyph size. Original downloads, approved canvas and source bindings remain immutable. Acquisition uses current-link direct GET first and browser/点击这里 fallback, with registered task-bound transport receipts and actual files. No mandatory name, event, History or visual page_check; full lineage and source association remain. Only single-page PPTX files sealed after all four Hard Gates enter `scripts/merge_pptx.py`; Merge remains unchanged.
+
+
+<!-- TITLE_POLICY_BEGIN -->
+## Optional ordinary-heading restoration pointer
+
+If title_policy=uniform, read Reference 03 Optional ordinary-page Title Contract and Reference 07 Optional heading reference during native text restoration. Complete the automatic first normal-heading bind in Stage 2, preserve page-bound snapshots and primary occurrence IDs. Both register-text-plan and its currentness recheck enforce the same title binding before destructive invalidation. This adds no user title approval, fifth Gate, download, Magic call or retry permission. The existing 5-source-pixel canvas tolerance, controlled mapping and native fit remain.
+The optional sequence is: all native text restored -> independent primary-title adjustment -> existing four Gates and seal -> final deck title notes. Intentional bound title formatting is reviewed against the common native target, while text truth/readability and non-title graphics retain their original checks. Bind reviews to final postprocessed bytes; do not rewrite frozen inputs or redo remote reconstruction. Final title residuals are disclosed without automatic page repair; PASS never means exact title identity.
+<!-- TITLE_POLICY_END -->
+
+
+### Native assembly application selection
+Use the existing sealed-page assembly and four Gates. Codex Host §4 defines --office-host auto|powerpoint|wps: prefer PowerPoint, use capability-tested KWPP.Application as the small WPS fallback, then keep that selection for the merge. This changes the native application only, not source identities, canvas mapping, text restoration or integrity checks. Existing validated candidates resume without another merge.
+
+
+### File-first acquisition clarification
+
+Host §§3.1–3.6 define direct-first transport and browser fallback. Registered upload bytes, actual returned design_id, current lookup, request/operation source and exact file hash retain identity; titles are optional trace metadata. Download receipt policy removes mandatory names, visual comparison, events and History without relaxing source association or the downstream four Gates. Unknown file ownership is FILE_SOURCE_PENDING, not no-download. Historical bindings keep their original evidence checks. A title/updated_at change alone is not proof of content revision; known changes require fresh source observation.
+
+### 轻量维护补充
+
+沿当前 Host 指导精简重复结果镜像和本地检查，不移除来源/文件校验或逐目标覆盖。正常/恢复/重新导出的动作映射一致，稳定未知文件如实报告。DONE 本地结果缺失仅恢复原 task_id，独立目录验证后更新引用，不降级原状态或再次 submit。总览不是通过证据，原始目标图及四 Hard Gates 保留。

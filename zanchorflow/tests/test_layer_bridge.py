@@ -28,16 +28,34 @@ def image_state(tmp_path):
     return state
 
 
-def approve_ready_plan(state,slide_id):
+def approve_ready_plan(state,slide_id,new_policy=False):
     import layer_bridge as lb, layer_policy
     rec=lb.approve_plan(state,slide_id)
     saved=runtime.load_runtime_state(state); plan=saved['layer_bridge']['plans'][slide_id]
+    if not new_policy:
+        # Simulate a pre-V1 persisted Plan for inherited compatibility tests.
+        plan.pop('editing_review_required',None);plan.pop('selection_policy',None)
+        runtime._save_runtime_state(state,saved)
     evidence=Path(plan['plan_path']).parent/(slide_id+'-readiness.json')
     evidence.write_text(json.dumps({'page_id':slide_id,'text_clean_sha256':plan['text_clean_sha256'],
         'plan_sha256':plan['plan_sha256'],'checks':{k:'READY' for k in layer_policy.READINESS},
         'reasons':{k:'fixture explicitly checked' for k in layer_policy.READINESS}}),encoding='utf-8')
     lb.register_readiness(state,slide_id,evidence)
     return rec
+
+def human_request(state,slide_id,provider,path=None):
+    """Synthetic offline human instruction; never a real user authorization."""
+    import layer_bridge as lb
+    saved=runtime.load_runtime_state(state);plan=saved['layer_bridge']['plans'][slide_id]
+    data={'source':'user','user_requested_relayer':True,'authorized':True,
+          'user_message_id':'synthetic-user-request','user_message':'Offline fixture: re-layer this page once',
+          'authorization_id':'fixture-'+str(lb._submission_count(saved,slide_id)),
+          'remaining_image_calls':1,'accept_duplicate_charge_risk':True,'page_id':slide_id,'run_id':plan['run_id'],
+          'text_clean_sha256':plan['text_clean_sha256'],'plan_sha256':plan['plan_sha256'],
+          'provider_identity':lb._provider_identity(provider)}
+    path=Path(path or Path(state).parent/'human-request.json');path.write_text(json.dumps(data),encoding='utf-8')
+    return path
+
 
 def test_plan_binds_text_clean_and_becomes_stale_when_clean_changes(tmp_path):
     import layer_bridge as lb
@@ -47,7 +65,7 @@ def test_plan_binds_text_clean_and_becomes_stale_when_clean_changes(tmp_path):
     assert lb.status(state)['status']=='LAYER_PLAN_APPROVAL_REQUIRED'
     changed=tmp_path/'changed.png'; Image.new('RGB',(1600,900),'black').save(changed)
     runtime.register_stage2_artifact(state,'text_clean:S001',changed)
-    assert lb.status(state)=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S001'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'LAYER_PLAN_REQUIRED','slide_id':'S001'}
 
 
 def test_submit_requires_approval_and_api_key_without_remote_call(tmp_path,monkeypatch):
@@ -73,11 +91,11 @@ def test_submit_uncertain_blocks_blind_retry_and_requires_duplicate_risk_authori
         @staticmethod
         def submit_task(*a,**k): Provider.calls+=1; raise OSError('lost response')
     assert lb.submit(state,'S001',tmp_path/'work',Provider)['status']=='LAYER_REQUEST_UNCERTAIN'
-    with pytest.raises(ValueError,match='LAYER_REQUEST_UNCERTAIN'):
+    with pytest.raises(ValueError,match='USER_INITIATED_RELAYER_REQUIRED'):
         lb.submit(state,'S001',tmp_path/'work',Provider)
     with pytest.raises(ValueError,match='duplicate charge risk'):
         lb.authorize_retry(state,'S001')
-    auth=lb.authorize_retry(state,'S001',accept_duplicate_charge_risk=True)
+    auth=lb.authorize_retry(state,'S001',accept_duplicate_charge_risk=True,authorization_path=human_request(state,'S001',Provider))
     assert auth['status']=='RETRY_AUTHORIZED'
 
 
@@ -120,9 +138,9 @@ def test_terminal_failure_needs_explicit_retry_authorization(tmp_path,monkeypatc
         def query_task(*a,**k): return {'task_id':'task-1','normalized_status':'FAILED','status':'failed'}
     lb.submit(state,'S001',tmp_path/'work',Provider)
     assert lb.query(state,'S001',tmp_path/'work',Provider)['status']=='LAYER_RETRY_APPROVAL_REQUIRED'
-    with pytest.raises(ValueError,match='retry authorization'):
+    with pytest.raises(ValueError,match='USER_INITIATED_RELAYER_REQUIRED'):
         lb.submit(state,'S001',tmp_path/'work',Provider)
-    assert lb.authorize_retry(state,'S001')['status']=='RETRY_AUTHORIZED'
+    assert lb.authorize_retry(state,'S001',authorization_path=human_request(state,'S001',Provider))['status']=='RETRY_AUTHORIZED'
 
 
 def seed_current_result_and_bundle(state,tmp_path,slide_id='S001'):
@@ -259,8 +277,8 @@ def test_image_layer_assembly_uses_shared_merge_and_layer_merged_provenance(tmp_
         sub=tmp_path/sid; sub.mkdir()
         restored,review=_seed_image_restoration_inputs(state,sub,sid)
         lb.seal_page(state,sid,restored,review)
-    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs:{'blockers':[]})
-    def fake_merge(inputs,order,output,state_path):
+    monkeypatch.setattr(assembly.preflight,'check',lambda *_args,**_kwargs:{'blockers':[], 'office_host':'powerpoint'})
+    def fake_merge(inputs,order,output,state_path, *, office_host='auto'):
         output.parent.mkdir(parents=True,exist_ok=True); output.write_bytes('|'.join(order).encode())
         runtime.seal_merged_deck(state_path,order,inputs,output)
         return {'status':'PASS','path':str(output),'deck_order':order}
@@ -301,14 +319,14 @@ def test_explicit_provider_submit_failure_needs_retry_authorization_without_dupl
             raise ValueError('LAYER_REQUEST_FAILED: provider rejected submit')
     result=lb.submit(state,'S001',tmp_path/'work',Provider)
     assert result=={'status':'LAYER_RETRY_APPROVAL_REQUIRED','slide_id':'S001'}
-    assert lb.authorize_retry(state,'S001')['status']=='RETRY_AUTHORIZED'
+    assert lb.authorize_retry(state,'S001',authorization_path=human_request(state,'S001',Provider))['status']=='RETRY_AUTHORIZED'
 
 
 def test_graphics_first_requires_current_visual_qa_bound_to_bundle(tmp_path):
     import layer_bridge as lb
     state=image_state(tmp_path); plan,overlay=write_plan(tmp_path); lb.register_plan(state,'S001',plan,overlay); approve_ready_plan(state,'S001')
     bundle,page=seed_current_result_and_bundle(state,tmp_path); lb.bind_bundle(state,'S001',bundle)
-    assert lb.status(state)=={'status':'LAYER_VISUAL_QA_REQUIRED','slide_id':'S001'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'LAYER_VISUAL_QA_REQUIRED','slide_id':'S001'}
     with pytest.raises(ValueError,match='LAYER_VISUAL_QA_FAILED'):
         lb.bind_graphics_first(state,'S001',page,bundle)
     manifest_sha=lb_sha(Path(bundle)/'manifest.json')
@@ -316,14 +334,13 @@ def test_graphics_first_requires_current_visual_qa_bound_to_bundle(tmp_path):
         'page_id':'S001','bundle_manifest_sha256':manifest_sha,
         'checks':{'layer_isolation':'PASS','background_repair':'FAIL','recomposite_fidelity':'PASS'},
         'evidence':{'layer_isolation':'checked','background_repair':'ghost remains','recomposite_fidelity':'checked'}}),encoding='utf-8')
-    with pytest.raises(ValueError,match='LAYER_VISUAL_QA_FAILED'):
-        lb.register_visual_qa(state,'S001',bad)
+    assert lb.register_visual_qa(state,'S001',bad)['status']=='LAYER_VISUAL_QA_FAILED'
     good=tmp_path/'qa-good.json'; good.write_text(json.dumps({
         'page_id':'S001','bundle_manifest_sha256':manifest_sha,
         'checks':{'layer_isolation':'PASS','background_repair':'PASS','recomposite_fidelity':'PASS'},
         'evidence':{'layer_isolation':'target isolated','background_repair':'background clean','recomposite_fidelity':'composite matches text-clean'}}),encoding='utf-8')
     qa=lb.register_visual_qa(state,'S001',good)
     assert qa['status']=='LAYER_VISUAL_QA_PASS'
-    assert lb.status(state)=={'status':'LAYER_GRAPHICS_FIRST_REQUIRED','slide_id':'S001'}
+    assert {k:v for k,v in lb.status(state).items() if k not in ('page_statuses','actionable_pages','automatic_resubmit')}=={'status':'LAYER_GRAPHICS_FIRST_REQUIRED','slide_id':'S001'}
     bound=lb.bind_graphics_first(state,'S001',page,bundle)
     assert bound['visual_qa_sha256']==lb_sha(good)

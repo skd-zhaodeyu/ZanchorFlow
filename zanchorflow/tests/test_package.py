@@ -10,7 +10,7 @@ def test_skill_frontmatter_and_runtime_governance():
     assert '# ZAnchorFlow' in raw
     assert fm['description'].startswith('Use when ')
     manifest = yaml.safe_load((root/'manifest.yaml').read_text(encoding='utf-8'))
-    assert manifest['skill_version'] == '0.9.0-rc19-candidate'
+    assert manifest['skill_version'] == '1.0'
     assert manifest['protocol_baseline'] == 'RC17'
     refs = manifest['canonical_protocols']
     assert len(refs) == 8

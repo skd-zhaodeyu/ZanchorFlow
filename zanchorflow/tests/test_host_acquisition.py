@@ -11,7 +11,10 @@ from pptx import Presentation
 def fixture(tmp_path):
     state,identity,lookup=setup(tmp_path)
     req={'identity':identity,'edit_url':lookup['response']['design']['urls']['edit_url'],'status':'WAIT_DOWNLOAD'}
-    record=tmp_path/'record.json';host.ready(record,req);host.lock(record)
+    record=tmp_path/'record.json';host.ready(record,req)
+    # Historical persisted acquisition shape, not a new-policy record.
+    legacy=host._read(record);legacy.pop('require_transport_receipt');host._save(record,legacy)
+    host.lock(record)
     profile=tmp_path/'profile';profile.mkdir()
     target=tmp_path/'custom-downloads';target.mkdir()
     (profile/'Preferences').write_text(json.dumps({'download':{'default_directory':str(target)}}))
@@ -43,7 +46,7 @@ def test_restart_reuses_accepted_identity(tmp_path):
     result=host.acquire(record,state,profile,url,True)
     assert result['identity']['design_id']=='fixture-design'
 
-@pytest.mark.parametrize('kind',['event','identity','incomplete','ambiguous','file_changed','url'])
+@pytest.mark.parametrize('kind',['identity','incomplete','ambiguous','file_changed','url'])
 def test_unproven_download_rejected_without_runtime_change(tmp_path,kind):
     state,record,profile,f,url=fixture(tmp_path);before=state.read_bytes();event=True
     if kind=='event':event=False
@@ -188,3 +191,10 @@ def test_recovery_url_chain_before_intent_lock_is_ignored(tmp_path):
     with pytest.raises(ValueError,match='same-design download record pending'):
         host.acquire(record,state,profile,url,True)
     assert state.read_bytes()==before
+
+
+def test_valid_optional_record_without_event_is_accepted(tmp_path):
+    state,record,profile,f,url=fixture(tmp_path)
+    result=host.acquire(record,state,profile,url,False)
+    assert result['status']=='ACQUIRED'
+    assert result['download_evidence']['download_event_confirmed'] is False
