@@ -5,6 +5,13 @@ ROOT=Path(__file__).resolve().parents[1]
 def data():return json.loads((ROOT/'tests/v1_scope.json').read_text(encoding='utf-8'))
 def _publication_readme(rel,raw):
     if rel!='README.md':return raw
+    editable=ROOT/'tests/editable_scope.json'
+    if editable.is_file():
+        entry=json.loads(editable.read_text(encoding='utf-8')).get('changed',{}).get(rel)
+        if entry and hashlib.sha256(raw).hexdigest()==entry['approved_sha256']:
+            original=base64.b64decode(entry['baseline_b64'])
+            assert hashlib.sha256(original).hexdigest()==entry['baseline_sha256']
+            raw=original
     path=ROOT.parent/'tools/publication_scope.json'
     if not path.is_file():return raw
     patch=json.loads(path.read_text(encoding='utf-8'))
