@@ -1066,6 +1066,9 @@ def stage2_handoff_status(runtime_state_path):
 def expected_lineage_from_state(state, slide_id):
     """Recompute expected lineage from current approved upstream artifacts."""
     slide = state['slides'][slide_id]
+    if _current_reconstruction_backend(state)=='editable_path':
+        from editable_bridge import expected_lineage
+        return expected_lineage(state,slide_id)
     if state.get('stage2_run', {}).get('title_policy', {}).get('mode') == 'uniform':
         titles.validate_manifest(state, slide_id, json.loads(_state_path(state, slide['finalized_manifest']).read_text(encoding='utf-8')))
     def read_json(key):
@@ -1122,7 +1125,7 @@ def validate_current_artifact(record, state, slide_id):
         errors.append('slide_id_mismatch')
     if record.get('validated') is not True or sealed.get('validated') is not True:
         errors.append('four_gates_not_validated')
-    for field in LINEAGE_FIELDS:
+    for field in (tuple(k for k in expected if k != 'slide_id') if expected.get('backend')=='editable_path' else LINEAGE_FIELDS):
         if record.get(field) != expected[field] or sealed.get(field) != expected[field]:
             errors.append('stale_' + field)
     if record.get('path') != sealed.get('path'):
@@ -1249,7 +1252,7 @@ def _current_reconstruction_backend(state):
             or record.get('page_order') != run.get('page_order')):
         return None
     backend=record.get('backend')
-    return backend if backend in ('magic_layer','image_layer') else None
+    return backend if backend in ('magic_layer','image_layer','editable_path') else None
 
 
 def resume_stage(a, runtime_state_path=None):
@@ -1290,7 +1293,7 @@ def resume_stage(a, runtime_state_path=None):
                 if handoff['status'] != 'COMPLETE':
                     return 'stage2_to_stage3_handoff'
                 # Once the Stage 2 handoff is current, page-local Stage 3 artifacts may resume independently.
-                if a.get('slide_id'):
+                if a.get('slide_id') and _current_reconstruction_backend(state)!='editable_path':
                     for flag, kind in (('text_clean', 'text_clean'), ('graphics_first_pptx', 'graphics_first_pptx')):
                         if a.get(flag) and not stage2_artifact_current(
                                 runtime_state_path, f'{kind}:{a["slide_id"]}'):
@@ -1312,6 +1315,8 @@ def resume_stage(a, runtime_state_path=None):
                         return 'complete'
                     return 'deck_validation'
                 current = False
+            if _current_reconstruction_backend(state)=='editable_path':return 'stage3_editable_path'
+            if state['stage2_run'].get('reconstruction_selection_timing')=='before_cleanup' and _current_reconstruction_backend(state) is None:return 'stage3_reconstruction_backend_selection'
             if a.get('slide_id') and a.get('graphics_first_pptx') and stage2_artifact_current(
                     runtime_state_path, f'graphics_first_pptx:{a["slide_id"]}'):
                 return 'stage3_text_restoration'

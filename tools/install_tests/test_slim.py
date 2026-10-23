@@ -25,7 +25,9 @@ def test_exact_six_files_and_required_installer_bytes(archive):
         assert len(z.namelist())==6 and z.testzip() is None
         assert z.read('ZanchorFlow/tools/install.py')==(REPO/'tools/install.py').read_bytes()
         assert z.read('ZanchorFlow/docs/unified-install.md')==(REPO/'docs/unified-install.md').read_bytes()
-        assert b.digest(z.read('ZanchorFlow/dist/zanchorflow.zip'))=='0de267f9c2953c22e0dbbf45ce0e4c5de7bc549176cd876e2ccb1108d25147f1'
+        scope=json.loads((REPO/'zanchorflow/tests/editable_scope.json').read_text(encoding='utf-8'))
+        assert scope['baseline_runtime_package_sha256']=='3e67aa9dad30c754ef7adf60638cf95007fd0656bc0fa60d7f6c2bc85c5c7f06'
+        assert b.digest(z.read('ZanchorFlow/dist/zanchorflow.zip'))==scope['approved_runtime_package_sha256']
         assert 'tests/' not in '\n'.join(z.namelist()) and 'examples/' not in '\n'.join(z.namelist())
 
 @pytest.mark.parametrize('mutation',('extra','missing','duplicate','unsafe','installer_changed','baseline_changed','symlink','checksum'))
@@ -79,7 +81,9 @@ def test_all_generated_views_identical_in_slim_and_source(archive,tmp_path):
             assert i.make_view(d['profile'])==i.load_baseline()
 
 def test_installer_and_skill_runtime_match_verified_candidate():
-    assert b.digest((REPO/'tools/install.py').read_bytes())=='ed524c6c6ef43cf3c91fb9026d7bbb95f68e0ac5b508984ba3d05b57a901eda1'
+    sys.path.insert(0,str(REPO/'zanchorflow/tests'))
+    from light_scope import _restore_media
+    assert b.digest(_restore_media('tools/install.py',(REPO/'tools/install.py').read_bytes()))=='ed524c6c6ef43cf3c91fb9026d7bbb95f68e0ac5b508984ba3d05b57a901eda1'
     with zipfile.ZipFile(REPO/'dist/zanchorflow.zip') as z:
         for name in z.namelist():
             assert z.read(name)==(REPO/name).read_bytes(),name

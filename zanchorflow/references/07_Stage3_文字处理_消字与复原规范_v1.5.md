@@ -1390,10 +1390,13 @@ After Text-Clean processing, use `stage3-text-clean-display --state <state>` for
 After **all Text-Clean pages are current**, run `python scripts/reconstruction_router.py status --state <state>`. At `AWAITING_RECONSTRUCTION_BACKEND_SELECTION`, show the user exactly these two reconstruction paths and wait for an explicit choice:
 
 ```text
-A. Magic Layer 分支（推荐）
-B. Image Layer 分支
+A. Magic Layer 分支
+   通过 Canva Magic Layers 拆解消字后的页面，取得并验证 PPTX，再恢复原生文字；图形编辑单位以实际返回并验收的对象为准。
+   Canva 免费用户额度有限，每月一般不超过 20 页，具体以账户实际额度为准。
 
-推荐使用 Magic Layer 分支。
+B. Image Layer 分支
+   通过图像分层服务将消字后的页面拆为背景和独立前景图片，再恢复原生文字；图形可独立移动、缩放和替换，内部仍是图片。
+   需要配置分层服务，提交前核实权益、余额与价格并确认费用授权。
 ```
 
 Record the decision with `python scripts/reconstruction_router.py choose-backend --state <state> --backend magic_layer|image_layer`. Do not silently select or automatically fall back between branches. Protocol loading is branch-specific: **Magic Layer 分支 = 05 + 06 + 07**; **Image Layer 分支 = 08 + 07**. Before a branch is selected, reuse the existing text-plan/Text-Clean implementation only for shared text preparation; never call a Magic reconstruction attempt before the explicit branch decision.

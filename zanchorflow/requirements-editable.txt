@@ -1,0 +1,7 @@
+-r requirements-base.txt
+Pillow>=10
+numpy>=1.26
+PyMuPDF>=1.24
+requests>=2.31
+# Optional full LaTeX: external engine through --engine; no automatic installation.
+# Optional actual Office audit: pywin32 on Windows, PowerPoint installed.

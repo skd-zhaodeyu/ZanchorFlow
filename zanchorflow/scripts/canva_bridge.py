@@ -30,26 +30,24 @@ def resolve(state, value):
 @contextmanager
 def transaction(state_path):
     """Helpers operate on a same-directory copy; commit once, never stale rollback."""
-    path = Path(state_path).resolve()
-    lock = path.with_name(path.name+'.bridge-lock')
-    fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    os.close(fd)
-    temporary = None
-    try:
-        before = path.read_bytes()
-        with tempfile.NamedTemporaryFile(dir=path.parent, suffix='.json',
-                                         prefix='.bridge-state-', delete=False) as stream:
-            temporary = Path(stream.name)
-            stream.write(before)
-        yield temporary
-        r.load_runtime_state(temporary)
-        if path.read_bytes() != before:
-            raise ValueError('runtime state changed during operation; stop and inspect')
-        os.replace(temporary, path)
-    finally:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
-        lock.unlink(missing_ok=True)
+    path=Path(state_path).resolve()
+    import state_lock
+    with state_lock.ownership(path):
+        temporary = None
+        try:
+            before = path.read_bytes()
+            with tempfile.NamedTemporaryFile(dir=path.parent, suffix='.json',
+                                             prefix='.bridge-state-', delete=False) as stream:
+                temporary = Path(stream.name)
+                stream.write(before)
+            yield temporary
+            r.load_runtime_state(temporary)
+            if path.read_bytes() != before:
+                raise ValueError('runtime state changed during operation; stop and inspect')
+            os.replace(temporary, path)
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
 
 
 def init(state_path, route='codex-canva'):
@@ -65,7 +63,7 @@ def init(state_path, route='codex-canva'):
     return {'status':'INITIALIZED','route':route}
 
 
-def start_run(state_path, title_choice_required=False):
+def start_run(state_path, title_choice_required=False, early_reconstruction_selection=False):
     """Wrap the original start; archive old page state only on a real run change."""
     with transaction(state_path) as temp:
         before = r.load_runtime_state(temp)
@@ -81,14 +79,24 @@ def start_run(state_path, title_choice_required=False):
                     'run_id':previous['run_id'],'slides':copy.deepcopy(before['slides']),
                     'bridge_records':{key:copy.deepcopy(before.get('canva_bridge',{}).get(key))
                                       for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history','upload_observations','upload_results','design_observations','transport_requirements','observation_history')},
+                    'editable_records':copy.deepcopy(before.get('editable_bridge')),
+                    'branch_records':{key:copy.deepcopy(before.get(key)) for key in ('reconstruction_backend','layer_bridge')},
                     'deck_records':{key:copy.deepcopy(before.get(key))
                                     for key in ('deck_order','merged_deck','validated_deck')}})
+            if 'editable_bridge' in state:
+                state.setdefault('editable_history',[]).append(state.pop('editable_bridge'))
+            if early_reconstruction_selection:
+                for key in ('reconstruction_backend','layer_bridge'):state.pop(key,None)
             state['slides'] = {sid:{} for sid in run['page_order']}
             for key in ('active','downloads','validated','merged','text_plan','text_plan_history','text_preparation','text_preparation_history','upload_observations','upload_results','design_observations','transport_requirements','observation_history'):
                 bridge.pop(key,None)
             for key in ('deck_order','merged_deck','validated_deck'):
                 state.pop(key,None)
             r._save_runtime_state(temp,state)
+    if early_reconstruction_selection:
+        import editable_bridge
+        editable_bridge.enable(state_path)
+        run=r.load_runtime_state(state_path)['stage2_run']
     return run
 
 
@@ -1073,7 +1081,10 @@ def deck_provenance(state, order):
 
 
 def status(state_path):
-    if Path(state_path).resolve().with_name(Path(state_path).name+'.bridge-lock').exists():
+    import state_lock
+    lock_status=state_lock.inspect_lock(state_path)['status']
+    if lock_status=='RECOVERABLE':return {'status':'LOCK_RECOVERY_AVAILABLE','detail':'next write will verify and recover the exited owner; status is read-only'}
+    if lock_status!='CLEAR':
         return {'status':'BLOCKED','detail':'operation running or interrupted; inspect lock, do not auto-unlock/retry'}
     state = r.load_runtime_state(state_path)
     try:
@@ -1094,13 +1105,24 @@ def status(state_path):
         return {'status':'AWAITING_USER_VISUAL_APPROVAL'}
     if r.stage2_handoff_status(state_path)['status'] != 'COMPLETE':
         return {'status':'STAGE2_HANDOFF_INCOMPLETE'}
+    backend=r._current_reconstruction_backend(state)
+    if backend=='editable_path':
+        import editable_bridge
+        pending=editable_bridge.status(state_path)
+        if pending['status']!='EDITABLE_PAGES_SEALED':return pending
+    elif backend is None and state['stage2_run'].get('reconstruction_selection_timing')=='before_cleanup':
+        import reconstruction_router
+        return reconstruction_router.status(state_path)
     run_order = state['stage2_run']['page_order']
     order = state.get('deck_order',run_order)
     if not run_order or not isinstance(order,list) or not r.validate_deck_order(run_order,order) or not r.validate_deck_order(list(state['slides']),order):
         return {'status':'BLOCKED','detail':'trusted page order invalid'}
     for sid in order:
         try:
-            page_provenance(state,sid)
+            if backend=='editable_path':
+                import reconstruction_router
+                reconstruction_router.page_provenance(state,sid)
+            else:page_provenance(state,sid)
             continue
         except (OSError,ValueError,KeyError,TypeError) as error:
             detail = str(error)
@@ -1140,8 +1162,12 @@ def status(state_path):
             except (OSError,ValueError,KeyError,TypeError) as error:
                 return {'status':'BLOCKED','slide_id':sid,'detail':str(error)}
         return {'status':'RESTORE_TEXT','slide_id':sid,'detail':detail}
-    provenance = deck_provenance(state,order)
-    merged = state.get('canva_bridge',{}).get('merged')
+    if backend=='editable_path':
+        import reconstruction_router
+        provenance=reconstruction_router.deck_provenance(state,order);merged=reconstruction_router.merged_provenance(state)
+    else:
+        provenance = deck_provenance(state,order)
+        merged = state.get('canva_bridge',{}).get('merged')
     if r.validate_current_merged_deck(state) or not isinstance(merged,dict) or merged.get('pages') != provenance:
         return {'status':'PREPARE_DECK','deck_order':order}
     if merged.get('merged_pptx_sha256') != state['merged_deck']['merged_pptx_sha256']:
@@ -1154,6 +1180,7 @@ def status(state_path):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--early-reconstruction-selection',action='store_true')
     parser.add_argument('action',choices=('init','status','start-run','register-text-plan','register-text-clean','begin-attempt','accept-attempt','register-design-url','bind-download','seal-page','register-upload','register-design-observation','register-upload-result'))
     parser.add_argument('--state',required=True)
     parser.add_argument('--route',choices=('codex-canva','external'),default='codex-canva')
@@ -1167,7 +1194,7 @@ def main():
     try:
         if args.action == 'init': result = init(args.state,args.route)
         elif args.action == 'status': result = status(args.state)
-        elif args.action == 'start-run': result = {**start_run(args.state,args.title_choice_required), 'status':'RUN_READY'}
+        elif args.action == 'start-run': result = {**start_run(args.state,args.title_choice_required,args.early_reconstruction_selection), 'status':'RUN_READY'}
         elif args.action == 'register-text-plan': result = register_text_plan(args.state,args.slide_id,args.manifest,args.inventory)
         elif args.action == 'register-text-clean': result = register_text_clean(args.state,args.slide_id,args.artifact)
         elif args.action == 'begin-attempt': result = begin_attempt(args.state,args.slide_id,args.rebuild,args.recovery_evidence)

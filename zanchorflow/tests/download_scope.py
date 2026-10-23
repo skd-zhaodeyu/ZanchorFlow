@@ -31,7 +31,8 @@ def restore_repo_text(rel,text):
 
 def new_runtime():
     from v1_scope import new_runtime as v1_new
-    return {**json.loads((ROOT/'tests/download_new_files.json').read_text(encoding='utf-8')),**v1_new()}
+    from editable_scope import new_runtime as editable_new
+    return {**json.loads((ROOT/'tests/download_new_files.json').read_text(encoding='utf-8')),**v1_new(),**editable_new()}
 def verify_new_runtime(rel,raw):
     from light_scope import restore_bytes as restore_light
     raw=restore_light('zanchorflow/'+rel,raw)

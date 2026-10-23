@@ -43,9 +43,16 @@ def test_backend_choice_requires_all_current_text_clean(tmp_path):
 def test_selection_prompt_contract():
     import reconstruction_router as router
     prompt=router.selection_prompt()
-    assert 'Magic Layer 分支（推荐）' in prompt
+    assert 'Magic Layer 分支' in prompt
+    assert 'Editable Path 分支' in prompt
+    assert '每月一般不超过 20 页' in prompt
+    assert '无需额外购买分层服务' in prompt
+    assert '现有套餐额度及计费规则' in prompt
+    assert '内部仍是图片' in prompt
+    assert '跳过消字' in prompt
     assert 'Image Layer 分支' in prompt
-    assert '推荐使用 Magic Layer 分支。' in prompt
+    assert '推荐' not in prompt
+    assert 'editable path' not in prompt
     assert 'Canva 分支' not in prompt
 
 

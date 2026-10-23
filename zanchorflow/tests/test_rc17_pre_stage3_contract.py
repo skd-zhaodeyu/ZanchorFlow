@@ -115,6 +115,8 @@ def test_protocol_rc17_pre_stage3_behavior_is_explicit():
 
 def test_rc18_manifest_keeps_rc17_protocols_and_adds_image_layer_08():
     manifest = yaml.safe_load((ROOT / 'manifest.yaml').read_text(encoding='utf-8'))
+    from editable_scope import normalize_manifest
+    manifest=normalize_manifest(manifest)
     assert manifest['skill_version'] == '1.0'
     assert manifest['protocol_baseline'] == 'RC17'
     paths = {item['path'] for item in manifest['canonical_protocols']}

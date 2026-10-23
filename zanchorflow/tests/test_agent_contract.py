@@ -170,9 +170,11 @@ SKILL=Path(__file__).resolve().parents[1]/'SKILL.md'
 
 def test_rc18_skill_has_explicit_reconstruction_branch_gate_and_fixed_image_onboarding():
     raw=SKILL.read_text(encoding='utf-8')
-    assert 'Magic Layer 分支（推荐）' in raw
+    assert 'Magic Layer 分支' in raw
+    assert 'Editable Path' in raw
     assert 'Image Layer 分支' in raw
-    assert '推荐使用 Magic Layer 分支。' in raw
+    assert '推荐使用 Magic Layer 分支。' not in raw
+    assert 'Magic Layer 分支（推荐）' not in raw
     image = (SKILL.parent / 'references' / '08_Image_Layer_Model可编辑PPT重建协议_v1.1.md').read_text(encoding='utf-8')
     assert 'Image Layer preparation/QA/retry must read 08' in raw
     assert 'https://research.360.cn/workspace/apikeys' in image

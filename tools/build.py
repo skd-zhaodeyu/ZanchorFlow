@@ -3,7 +3,7 @@ import argparse,hashlib,json,shutil,stat,sys,tempfile,zipfile
 from pathlib import Path
 REPO=Path(__file__).resolve().parents[1]
 SKILL=REPO/'zanchorflow'
-ROOT_FILES={'SKILL.md','manifest.yaml','LICENSE','requirements-base.txt','requirements-image.txt','requirements-office.txt'}
+ROOT_FILES={'SKILL.md','manifest.yaml','LICENSE','requirements-base.txt','requirements-image.txt','requirements-office.txt','THIRD_PARTY_NOTICES.md','requirements-editable.txt'}
 DOC_FILES={'installation.md','codex-canva-bridge.md','image-layer-backend.md','image-layer-box-selection.md'}
 def digest(data):return hashlib.sha256(data).hexdigest()
 def source_files():
@@ -13,7 +13,7 @@ def source_files():
         (p.parent==SKILL/'scripts' and p.suffix in {'.py','.ps1'}) or
         (p.parent==SKILL/'docs' and p.name in DOC_FILES))]
     assert {p.name for p in paths if p.parent==SKILL}==ROOT_FILES,'required root file missing'
-    assert len([p for p in paths if p.parent==SKILL/'references'])==8,'eight protocols required'
+    assert len([p for p in paths if p.parent==SKILL/'references'])==9,'nine protocols required'
     return sorted(paths)
 def build(work,output):
     work=Path(work).resolve();output=Path(output).resolve();work.mkdir(parents=True,exist_ok=True)

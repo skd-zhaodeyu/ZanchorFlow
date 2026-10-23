@@ -55,10 +55,9 @@ def _eligible(policy, sid):
 
 
 def _check_existing_lock(state_path):
-    from pathlib import Path
-    path = Path(state_path).resolve()
-    if any(Path(str(path)+suffix).exists() for suffix in ('.bridge-lock', '.router-lock')):
-        raise ValueError('TITLE_STATE_OPERATION_RUNNING: preserve locks and existing work')
+    import state_lock
+    try:state_lock.prepare_write(state_path)
+    except FileExistsError as exc:raise ValueError('TITLE_STATE_OPERATION_RUNNING: preserve locks and existing work') from exc
 
 
 def _classify_roles(state, run, page_roles):

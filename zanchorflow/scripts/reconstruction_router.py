@@ -11,17 +11,15 @@ import runtime as r
 
 MAGIC_LAYER = 'magic_layer'
 IMAGE_LAYER = 'image_layer'
-VALID_BACKENDS = {MAGIC_LAYER, IMAGE_LAYER}
+EDITABLE_PATH = 'editable_path'
+VALID_BACKENDS = {MAGIC_LAYER, IMAGE_LAYER, EDITABLE_PATH}
 IMAGE_LAYER_API_KEY_ENV = 'ZANCHORFLOW_360_API_KEY'
 IMAGE_LAYER_API_KEY_URL = 'https://research.360.cn/workspace/apikeys'
 IMAGE_LAYER_FREE_COPY = '请核实当前账户的免费权益、余额与价格，并在真实提交前确认费用授权。'
 
 
 def selection_prompt():
-    return ('请选择 PPTX 重建方式：\n\n'
-            'A. Magic Layer 分支（推荐）\n   使用现有 Magic Layers 路线完成图形结构重建。\n\n'
-            'B. Image Layer 分支\n   对消字后的页面进行对象选框，并通过图像分层模型 API 拆成独立图层后重建为可编辑 PPTX。\n\n'
-            '推荐使用 Magic Layer 分支。')
+    return '请选择 PPTX 重建方式：\n\nA. Magic Layer 分支\n   通过 Canva Magic Layers 拆解消字后的页面，取得并验证 PPTX，再恢复原生文字；图形编辑单位以实际返回并验收的对象为准。\n   Canva 免费用户额度有限，每月一般不超过 20 页，具体以账户实际额度为准。\n\nB. Image Layer 分支\n   通过图像分层服务将消字后的页面拆为背景和独立前景图片，再恢复原生文字；图形可独立移动、缩放和替换，内部仍是图片。\n   需要配置分层服务，提交前核实权益、余额与价格并确认费用授权。\n\nC. Editable Path 分支\n   直接依据批准的完整页面和 Truth 重建原生文字、表格及可表达的结构；复杂图形优先复用素材，必要时用图像编辑分离为独立图片。跳过消字，不要求全元素矢量化。\n   无需额外购买分层服务；必要的图像编辑使用当前宿主的生图能力，受现有套餐额度及计费规则约束。'
 
 
 def image_layer_onboarding():
@@ -79,6 +77,8 @@ def _has_backend_work(state):
     cb=state.get('canva_bridge',{})
     if isinstance(cb,dict) and any(cb.get(k) for k in ('active','downloads','validated')):
         return True
+    if any(state.get('editable_bridge',{}).get(k) for k in ('plans','built','validated','jobs')):return True
+    if any(state.get('stage2_run',{}).get('run_id') in job.get('run_ids',[]) for job in state.get('editable_asset_jobs',{}).values()):return True
     lb=state.get('layer_bridge',{})
     return isinstance(lb,dict) and any(lb.get(k) for k in ('plans','requests','results','bundles','graphics_first','validated'))
 
@@ -86,21 +86,21 @@ def _has_backend_work(state):
 @contextmanager
 def transaction(state_path):
     """Use the same <state>.bridge-lock contract as canva_bridge without importing it."""
-    path=Path(state_path).resolve(); lock=path.with_name(path.name+'.bridge-lock')
-    fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY); os.close(fd)
-    temporary=None
-    try:
-        before=path.read_bytes()
-        with tempfile.NamedTemporaryFile(dir=path.parent,suffix='.json',prefix='.router-state-',delete=False) as stream:
-            temporary=Path(stream.name); stream.write(before)
-        yield temporary
-        r.load_runtime_state(temporary)
-        if path.read_bytes()!=before:
-            raise ValueError('runtime state changed during operation; stop and inspect')
-        os.replace(temporary,path)
-    finally:
-        if temporary is not None: temporary.unlink(missing_ok=True)
-        lock.unlink(missing_ok=True)
+    path=Path(state_path).resolve()
+    import state_lock
+    with state_lock.ownership(path):
+        temporary=None
+        try:
+            before=path.read_bytes()
+            with tempfile.NamedTemporaryFile(dir=path.parent,suffix='.json',prefix='.router-state-',delete=False) as stream:
+                temporary=Path(stream.name); stream.write(before)
+            yield temporary
+            r.load_runtime_state(temporary)
+            if path.read_bytes()!=before:
+                raise ValueError('runtime state changed during operation; stop and inspect')
+            os.replace(temporary,path)
+        finally:
+            if temporary is not None: temporary.unlink(missing_ok=True)
 
 
 def validate_image_target_emu(value):
@@ -181,25 +181,34 @@ def choose_backend(state_path, backend):
         raise ValueError('invalid reconstruction backend')
     state=r.load_runtime_state(state_path)
     missing=_first_missing_text_clean(state_path,state)
-    if missing:
+    early=state['stage2_run'].get('reconstruction_selection_timing')=='before_cleanup'
+    if early:
+        r.require_stage2_visual_approval(state_path)
+        if r.stage2_handoff_status(state_path)['status']!='COMPLETE':raise ValueError('RECONSTRUCTION_HANDOFF_REQUIRED')
+    if missing and not early:
         raise ValueError('RECONSTRUCTION_BACKEND_SELECTION_NOT_READY: '+missing)
     current=state.get('reconstruction_backend')
     if _selection_current(state,current):
         if current['backend']==backend:
-            if backend==IMAGE_LAYER: require_image_target(state_path,state)
+            if backend==EDITABLE_PATH and _approved_target_slide_emu(state_path,state)!=current.get('target_slide_emu'):raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
+            if backend==IMAGE_LAYER:
+                target=_approved_target_slide_emu(state_path,state) if missing else require_image_target(state_path,state)
+                if target!=current['target_slide_emu']:raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
             return current
         if _has_backend_work(state):
             raise ValueError('BACKEND_SWITCH_REQUIRES_EXPLICIT_RESET')
     payload=_selection_payload(state)
     record={'schema_version':1,'backend':backend,**payload,'selection_fingerprint':_fingerprint(payload)}
     if backend==IMAGE_LAYER:
-        record['target_slide_emu']=_image_target_slide_emu(state_path,state)
+        record['target_slide_emu']=_image_target_slide_emu(state_path,state) if not missing else _approved_target_slide_emu(state_path,state)
+    elif backend==EDITABLE_PATH:record['target_slide_emu']=_approved_target_slide_emu(state_path,state)
     with transaction(state_path) as temp:
         current_state=r.load_runtime_state(temp)
         old=current_state.get('reconstruction_backend')
         if isinstance(old,dict): current_state.setdefault('reconstruction_backend_history',[]).append(old)
-        if backend==IMAGE_LAYER and _image_target_slide_emu(temp,current_state)!=record['target_slide_emu']:
+        if backend==IMAGE_LAYER and (_approved_target_slide_emu(temp,current_state) if missing else _image_target_slide_emu(temp,current_state))!=record['target_slide_emu']:
             raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED: canvas changed before selection')
+        if backend==EDITABLE_PATH and _approved_target_slide_emu(temp,current_state)!=record['target_slide_emu']:raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
         current_state['reconstruction_backend']=record
         r._save_runtime_state(temp,current_state)
     return record
@@ -222,6 +231,9 @@ def _backend_from_state(state):
 
 def page_provenance(state, slide_id):
     backend=_backend_from_state(state)
+    if backend==EDITABLE_PATH:
+        import editable_bridge
+        return editable_bridge.page_provenance(state,slide_id)
     if backend==IMAGE_LAYER:
         import layer_bridge
         return layer_bridge.page_provenance(state,slide_id)
@@ -235,22 +247,28 @@ def deck_provenance(state, order):
 
 def merged_provenance(state):
     backend=_backend_from_state(state)
-    root='layer_bridge' if backend==IMAGE_LAYER else 'canva_bridge'
+    root='editable_bridge' if backend==EDITABLE_PATH else ('layer_bridge' if backend==IMAGE_LAYER else 'canva_bridge')
     value=state.get(root,{}).get('merged')
     return value if isinstance(value,dict) else {}
 
 
 def set_merged_provenance(state, pages, merged_sha256):
     backend=_backend_from_state(state)
-    root='layer_bridge' if backend==IMAGE_LAYER else 'canva_bridge'
+    root='editable_bridge' if backend==EDITABLE_PATH else ('layer_bridge' if backend==IMAGE_LAYER else 'canva_bridge')
     state.setdefault(root,{})['merged']={'pages':pages,'merged_pptx_sha256':merged_sha256}
     return state[root]['merged']
 
 def status(state_path):
     state=r.load_runtime_state(state_path)
     missing=_first_missing_text_clean(state_path,state)
-    if missing: return {'status':'PREPARE_TEXT','slide_id':missing}
     backend=selected_backend(state_path)
+    if backend==EDITABLE_PATH:
+        import editable_bridge
+        pending=editable_bridge.status(state_path)
+        if pending['status']!='EDITABLE_PAGES_SEALED':return pending
+        import canva_bridge
+        return canva_bridge.status(state_path)
+    if missing and not (backend is None and state['stage2_run'].get('reconstruction_selection_timing')=='before_cleanup'): return {'status':'PREPARE_TEXT','slide_id':missing}
     if backend is None:
         return {'status':'AWAITING_RECONSTRUCTION_BACKEND_SELECTION','prompt':selection_prompt()}
     if backend==IMAGE_LAYER:
@@ -278,5 +296,37 @@ def main(argv=None):
         result={'status':'FAIL','details':[str(exc)]}
     print(json.dumps(result,ensure_ascii=False,indent=2))
     return 1 if result.get('status')=='FAIL' else 0
+
+
+
+
+def _approved_target_slide_emu(state_path,state):
+    from PIL import Image
+    import layer_geometry
+    sizes=[];targets=[]
+    for sid in _run(state)['page_order']:
+        if r.current_stage2_approved_render(state_path,sid) is None:raise ValueError('CURRENT_APPROVED_RENDER_REQUIRED')
+        slide=state['slides'][sid]
+        with Image.open(resolve(state,slide['approved_render'])) as im:sizes.append(im.size)
+        record=_run(state).get('artifacts',{}).get('canvas:'+sid)
+        if slide.get('canvas') is not None or record is not None:
+            if (not slide.get('canvas') or not isinstance(record,dict) or not record.get('path')
+                or resolve(state,slide['canvas']).resolve()!=resolve(state,record['path']).resolve()
+                or not r.stage2_artifact_current(state_path,'canvas:'+sid)):
+                raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED: current registered canvas required')
+            c=json.loads(resolve(state,slide['canvas']).read_text(encoding='utf-8'))
+            if not isinstance(c,dict):raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
+        else:c={}
+        if any(k in c for k in ('target_slide_width_emu','target_slide_height_emu')):
+            if any(type(c.get(k)) is not int for k in ('source_width','source_height')) or [c['source_width'],c['source_height']]!=list(sizes[-1]):
+                raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED: registered source dimensions differ')
+        keys=('target_slide_width_emu','target_slide_height_emu')
+        targets.append(validate_image_target_emu([c.get(k) for k in keys]) if any(k in c for k in keys) else None)
+    if any(t is not None for t in targets):
+        if any(t is None or t!=targets[0] for t in targets):raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
+        for (sw,sh),(tw,th) in zip(sizes,targets):
+            if abs(tw*sh/th-sw)>5 or abs(th*sw/tw-sh)>5:raise ValueError('TARGET_DECK_CANVAS_UNRESOLVED')
+        return targets[0]
+    return validate_image_target_emu(layer_geometry.resolve_target_slide_size_emu(sizes))
 
 if __name__=='__main__': raise SystemExit(main())

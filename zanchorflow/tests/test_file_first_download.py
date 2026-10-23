@@ -187,7 +187,8 @@ def test_maintenance_does_not_modify_unrelated_existing_functions():
     for name,changed in allowed.items():
         entry=data()['zanchorflow/scripts/'+name]
         baseline=ast.parse(base64.b64decode(entry['baseline_b64']).decode())
-        current=ast.parse((root/'scripts'/name).read_text(encoding='utf-8'))
+        from editable_scope import restore_bytes as restore_editable
+        current=ast.parse(restore_editable('zanchorflow/scripts/'+name,(root/'scripts'/name).read_bytes()).decode('utf-8'))
         old={n.name:ast.dump(n) for n in baseline.body if isinstance(n,ast.FunctionDef)}
         now={n.name:ast.dump(n) for n in current.body if isinstance(n,ast.FunctionDef)}
         assert set(now)-set(old)==new_allowed[name]

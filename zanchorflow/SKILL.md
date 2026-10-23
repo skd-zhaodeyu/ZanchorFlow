@@ -7,7 +7,7 @@ metadata:
 
 # ZAnchorFlow
 
-The archive, directory and invocation name remain `zanchorflow`. Distinguish updates by `updated_at_utc` and ZIP hash; V1.0 is the current release; historical RC labels describe source baselines. Normal communication uses ZAnchorFlow, Magic Layer 分支 and Image Layer 分支.
+The archive, directory and invocation name remain `zanchorflow`. Distinguish updates by `updated_at_utc` and ZIP hash; V1.0 is the current release; historical RC labels describe source baselines. Normal communication uses ZAnchorFlow, Magic Layer 分支, Image Layer 分支 and Editable Path 分支.
 
 ## Entry and invariant boundaries
 
@@ -21,11 +21,13 @@ Outline review must show the complete current six-field review_view and wait for
 
 At every human decision gate, interpret the user's reply in the context of the decision currently pending, not by matching a fixed phrase list. Short contextual replies can express a complete decision. Questions, uncertainty, rejection, rework or concrete modification intent take priority over approval; if intent is genuinely ambiguous, keep the gate pending and clarify. The Agent carries that interpretation through the structured Runtime action/decision and passes the actual user reply alongside it; Runtime enforces state, fingerprint and display integrity rather than re-interpreting natural language.
 
-Before destructive cleanup, classify text-like regions by their reading or graphic-expression role under 07 §6, then register and validate Text Manifest + Removal Inventory. Frozen plans and sources cannot be silently rewritten; unknown high-impact text-like regions block cleanup. After all Text-Clean pages are current, wait at AWAITING_RECONSTRUCTION_BACKEND_SELECTION and explicitly offer A. Magic Layer 分支（推荐） / B. Image Layer 分支. 推荐使用 Magic Layer 分支。 Record the user's choice; no automatic selection or fallback. Magic = 05 + 06 + 07; Image = 08 + 07. Shared preparation before choice uses 07 only.
+For legacy cleanup-first runs and Image-only host profiles, preserve the following order. Before destructive cleanup, classify text-like regions by their reading or graphic-expression role under 07 §6, then register and validate Text Manifest + Removal Inventory. Frozen plans and sources cannot be silently rewritten; unknown high-impact text-like regions block cleanup. After all Text-Clean pages are current, wait at AWAITING_RECONSTRUCTION_BACKEND_SELECTION and explicitly offer A. Magic Layer 分支 / B. Image Layer 分支. Record the user's choice; no automatic selection or fallback. Magic = 05 + 06 + 07; Image = 08 + 07. Shared preparation before choice uses 07 only.
 
 Restore text by current Manifest/Truth and existing Native Text Visual Fit. Clean only proven safe ordinary text; never erase protected graphics or waive four Hard Gates. Preserve original download/source/canvas bindings; both original tolerance and controlled uniform mapping remain. Bind/seal through the chosen bridge. Merge only current four-gate-sealed single pages; publish only validated exact merged bytes.
 
 After Outline approval, new tasks choose uniform/free ordinary-page headings once (reuse explicit author instructions). Read Reference 03 Optional ordinary-page Title Contract and 04 generation wiring. Keep cover preview/batches; no second-page sample or title-standard approval. The first ordinary normal-heading PASS seeds a separate immutable Title Contract automatically; cover/display headings never seed it. Before each generation query `runtime.py stage2-title-context`; carry its ref into the candidate. For restoration and independent title postprocessing load 07's optional heading reference; final title differences are notes, not automatic repairs. Legacy states stay free; preserve existing NON_COVER protection, fit and four Gates.
+
+For **new full Codex runs**, start with `canva_bridge.py start-run --title-choice-required --early-reconstruction-selection --state <state>`. After current ordered visual approval and Truth reconciliation, use `reconstruction_router.py status` and explicitly offer Magic Layer / Image Layer / **Editable Path** before any cleanup. Show the actual selection_prompt with the mechanism, editing units and cost/limits for each available route; do not recommend or preselect a route. Respect the user's actual choice. Magic and Image retain 07 cleanup/restoration and all their existing limits; Editable Path follows Reference 09 directly from the approved text-bearing render and Truth, with local native objects and selective independent image assets. No blanket pre-cleanup, fabricated Text-Clean files, automatic backend selection or fallback. Existing tasks retain their recorded timing and backend. Qwen/WorkBuddy Image-only profiles cannot use Editable Path or the early-selection flag.
 
 ## Read only the current step
 
@@ -39,6 +41,7 @@ After Outline approval, new tasks choose uniform/free ordinary-page headings onc
 | Magic Layer branch orchestration, gates and delivery | `references/06_Canva_Magic_Layers可编辑PPT重建协议_v2.4.md` |
 | Shared text preparation or restoration | `references/07_Stage3_文字处理_消字与复原规范_v1.5.md` |
 | Image Layer branch reconstruction | `references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md` |
+| Editable Path: local mixed native-object reconstruction | `references/09_Editable_Path重建协议_v1.0.md` |
 
 Load the selected protocol's shared prerequisites/invariants and relevant failure/forbidden rules, then these chapters, the current step's Runtime dispatch, and applicable cross-references. Cross-step dependencies remain mandatory; no full-file reads by default.
 
@@ -68,3 +71,5 @@ On first start and final delivery, attach “ZAnchorFlow · by David-Z” to the
 For Image Layer new tasks use editing-value-first boxes and per-target hidden/moved evidence (08 and Image Layer Host docs). Never auto re-layer after quality/technical failure or a Plan/provider/input change. Prior fee approval is not a human re-layer instruction; retain page/run submission ledger and require a current one-use user-request scope for any later submit. Report bad output honestly without prompting retries; continue other actionable pages, never seal failed pages. Preserve frozen legacy Plans/reports and the unchanged four Hard Gates.
 
 Light maintenance: use compact Host result records in current CLI recipes; retain pre-submit intent, real transfer/file identity and independent boundary checks. Stable unreadable bytes without completion evidence are FILE_UNVERIFIED, not growing or proven damaged. For Image Layer reuse hash-verified local previews, move only move targets, use overview for navigation and full-resolution evidence for actual judgments. Recover DONE files through the same task_id, never a new submit.
+
+At every reconstruction choice, briefly explain each available route and its costs without recommending a route. Magic Layer: 通过 Canva Magic Layers 拆解消字后的页面，取得并验证 PPTX，再恢复原生文字；图形编辑单位以实际返回并验收的对象为准。Canva 免费用户额度有限，每月一般不超过 20 页，具体以账户实际额度为准。 Image Layer: 通过图像分层服务将消字后的页面拆为背景和独立前景图片，再恢复原生文字；图形可独立移动、缩放和替换，内部仍是图片。需要配置分层服务，提交前核实权益、余额与价格并确认费用授权。 Editable Path: 直接依据批准的完整页面和 Truth 重建原生文字、表格及可表达的结构；复杂图形优先复用素材，必要时用图像编辑分离为独立图片。跳过消字，不要求全元素矢量化。无需额外购买分层服务；必要的图像编辑使用当前宿主的生图能力，受现有套餐额度及计费规则约束。 Host-specific Image-only views continue to offer only their supported route.

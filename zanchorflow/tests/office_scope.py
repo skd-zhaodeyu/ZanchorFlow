@@ -27,7 +27,8 @@ def restore_repo_text(rel,text):
 
 def normalize_manifest(payload):
     from visual_text_scope import normalize_manifest as normalize_visual
-    m=normalize_visual(payload);d=data()
+    from light_scope import normalize_media_manifest
+    m=normalize_visual(normalize_media_manifest(payload));d=data()
     assert m['revision_scope']==d['baseline_revision_scope']+d['added_revision_scope'],'undeclared or missing revision scope'
     m['revision_scope']=d['baseline_revision_scope']
     return m

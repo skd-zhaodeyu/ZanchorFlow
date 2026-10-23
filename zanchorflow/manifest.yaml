@@ -18,12 +18,12 @@ canonical_protocols:
   stage: 2
 - path: references/03_PPT视觉探索与Anchor延续协议_v2.12.md
   version: v2.12
-  sha256: b95809d261dad79d820e19d4546086a76abab51704add032a04849db799ffbc4
+  sha256: d85ec831e852ddc04800355ab96d8efe2863bf050a5245116170a96aa994c04a
   classification: runtime
   stage: 3
 - path: references/04_页面二维生成前置约束与渲染协议_v2.9.md
   version: v2.9
-  sha256: 22c19a522c5989b6227aa1165799344e00657f73ea4351370adfddeb5c2a7b48
+  sha256: 1aaeb80a4c862ddf66c357272b7ecdcd2624fbaf8c09e7536279f01d292199c7
   classification: runtime
   stage: 4
 - path: references/05_Stage2至Stage3_Magic_Layers接口协议_v1.4.md
@@ -38,7 +38,7 @@ canonical_protocols:
   stage: 6
 - path: references/07_Stage3_文字处理_消字与复原规范_v1.5.md
   version: v1.5
-  sha256: 6fa18ff6e740cea9ac7576bfbac4aeb5931d08b3ed526cd6a740fa638d65d0d1
+  sha256: 4bd1c4e79d1178863e31765b146e7036d0385ba85fce267cdfaa0ee593385929
   classification: runtime
   stage: 7
 - path: references/08_Image_Layer_Model可编辑PPT重建协议_v1.1.md
@@ -46,6 +46,11 @@ canonical_protocols:
   sha256: d434cf28c9657f04ce142f550815a761f4beb4744b0c167fcc806bc2ad4ded88
   classification: runtime
   stage: 8
+- path: references/09_Editable_Path重建协议_v1.0.md
+  version: v1.0
+  sha256: 1820759154afd58bfe0f7eaccfc3a554327a6243a67f40867140d1884a61c616
+  classification: runtime
+  stage: 9
 non_runtime:
 - tests/
 - docs/
@@ -68,20 +73,25 @@ progressive_loading:
   - 6
   stage3_image_layer:
   - 8
+  stage3_editable_path:
+  - 9
 implementation_dependencies:
   python: required
   python_pptx: required_for_codex_single_page_validation_and_native_merge
   lxml: required_for_codex_single_page_validation_and_native_merge
   pywin32: required_for_native_merge
-  Pillow: conditional_image_layer_geometry_and_tests
+  Pillow: conditional_image_layer_or_editable_assets_and_measurement
   pytest: required_for_tests
   openpyxl: required_for_tests
   PowerPoint_COM: preferred_capability_preflight_required
   canva_magic_layers: external
   canva_web_pptx_acquisition: codex_host_browser_and_local_finalizer_or_external_adapter
   360_reveal_layer: external
-  numpy: conditional_image_layer_geometry_only
+  numpy: conditional_image_layer_geometry_or_editable_local_text_measurement
   WPS_COM: conditional_KWPP_Application_capability_preflight_required
+  PyMuPDF: conditional_editable_formula_conversion
+  LaTeX: conditional_editable_formula_full_tex_engine_external_or_project_portable
+  requests: conditional_optional_editable_OCR
 implementation_status:
   local_pptx_merge: verified_on_local_windows_fixture
   stage2_qualification_runtime: implemented_and_locally_tested
@@ -107,6 +117,7 @@ implementation_status:
   design_id_upload_naming: IMPLEMENTED_SEPARATE_HASHED_OBSERVATIONS_LEGACY_ATTEMPTS_IMMUTABLE
   download_preview: LOCAL_POWERPOINT_READONLY_PNG_EXPORT_AND_SOURCE_HASH_PRESERVATION_VERIFIED
   canva_optional_title: LIVE_READONLY_API_TITLE_OMISSION_OBSERVED_HOST_CAPTURE_CONTRACT_TESTED
+  editable_path: LOCAL_CONTRACT_AND_ACTUAL_POWERPOINT_CONTROLLED_RUNTIME_REPLAY_VERIFIED_NOT_GENERAL_MODEL_SUPERIORITY
 tests:
   command: python -m pytest tests -q
   rc13_skill_regression: run previous Skill 0.9.0-rc13 regression, preserving known
@@ -145,8 +156,11 @@ tests:
     live_glyph_misclassification: UNVERIFIED
     controlled_model_context_replay: UNVERIFIED
 image_layer_protocol_revision: v1.1
-updated_at_utc: '2026-10-07T15:04:43Z'
+updated_at_utc: '2026-10-23T12:53:35Z'
 revision_scope:
+- editable_path_native_reconstruction
+- symmetric_visual_medium_convergence
+- medium_neutral_render_fragment
 - controlled_magic_canvas_mapping
 - host_dom_event_candidate_with_original_fallback
 - noncritical_glyph_local_handling
@@ -239,3 +253,54 @@ release_coverage:
   cross_machine_validation: not_verified
   canva_download: previous-two-design-live-downloads-and-offline-lineage-regression
   canva_new_magic_full_chain: not_live_verified
+editable_path_validation:
+  upstream_commit: b7be494e31a0ed56ef98716891db5474606b8cdf
+  actual_powerpoint_program_fixtures: 12
+  controlled_runtime_comparison_pages: 3
+  actual_builtin_image_calls: 3
+  own_calls: 1
+  upstream_calls: 2
+  comparison_scope: controlled_synthetic_sources_shared_author_geometry_knowledge_not_blind_model_evaluation
+  model_version: builtin_tool_does_not_disclose_exact_model_version
+  native_merge: three_pages_actual_edit_save_reopen_and_zero_RGB_drift_against_sealed_single_pages
+  ocr_service: optional_not_called
+  cross_machine: not_verified
+  universal_superiority: not_claimed
+sparse_sheet_maintenance:
+  max_source_pages: 3
+  actual_image_calls: 1
+  actual_source_pages: 3
+  actual_objects: 3
+  real_correction_sheet_triggered: false
+  correction_regroup_validation: offline fixtures only; no artificial live failure
+  approval_checks: preserved
+  scope: controlled synthetic raster fixtures, not blind or general quality benchmark
+com_error_reporting_maintenance:
+  primary_failure_preserved: true
+  failed_workspace_retained_if_locked: true
+  original_com_trigger: not reproduced; not attributed to user activity
+  no_automatic_com_operation_retry: true
+receipt_recovery_maintenance:
+  issues:
+  - R01
+  - R02
+  - R03
+  - R04
+  - R05
+  generation_calls: 0
+  normal_sheet_approval_checks: preserved
+  reconciliation: append facts only; current asset gates still required
+  lock_recovery: proven exited local owner only; unknown/legacy locks blocked
+  platform_validation: Windows local child processes; other platforms not verified
+  com_trigger: historical cause remains unconfirmed
+route_selection_maintenance:
+  public_names:
+  - Magic Layer
+  - Image Layer
+  - Editable Path
+  recommendation: false
+  free_magic_allowance: 'author verified: generally no more than 20 pages/month; account
+    allowance applies'
+  editable_cost: no separate layering-service purchase; host image tools use their
+    own quota and billing
+  legacy_timing_and_backend_keys: unchanged

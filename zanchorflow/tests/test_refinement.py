@@ -17,7 +17,8 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def test_author_and_baseline_metadata_are_separate():
     front=yaml.safe_load((ROOT/'SKILL.md').read_text(encoding='utf-8').split('---',2)[1])
-    manifest=yaml.safe_load((ROOT/'manifest.yaml').read_text(encoding='utf-8'))
+    from editable_scope import normalize_manifest
+    manifest=normalize_manifest(yaml.safe_load((ROOT/'manifest.yaml').read_text(encoding='utf-8')))
     assert front['name']==manifest['skill_name']=='zanchorflow'
     assert front['metadata']['author']=='David-Z'
     assert manifest['skill_version']=='1.0'

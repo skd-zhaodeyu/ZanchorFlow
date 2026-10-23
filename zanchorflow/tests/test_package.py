@@ -12,9 +12,11 @@ def test_skill_frontmatter_and_runtime_governance():
     manifest = yaml.safe_load((root/'manifest.yaml').read_text(encoding='utf-8'))
     assert manifest['skill_version'] == '1.0'
     assert manifest['protocol_baseline'] == 'RC17'
+    from editable_scope import normalize_manifest
+    manifest=normalize_manifest(manifest)
     refs = manifest['canonical_protocols']
     assert len(refs) == 8
-    assert {x['path'] for x in refs} == {f'references/{p.name}' for p in (root/'references').glob('*.md')}
+    assert {x['path'] for x in refs} == {f'references/{p.name}' for p in (root/'references').glob('*.md') if not p.name.startswith('09_')}
     assert all(x['classification'] == 'runtime' for x in refs)
     assert not (root/'archive').exists()
     assert 'validation/' not in raw

@@ -16,7 +16,7 @@ import zipfile
 
 REPO = Path(__file__).resolve().parents[1]
 SOURCE_BASE_SHA = 'c40a4adc513b83493e465860898e8da2a8c215c109ed1345b690733086e5cef7'
-BASE_SHA = '0de267f9c2953c22e0dbbf45ce0e4c5de7bc549176cd876e2ccb1108d25147f1'
+BASE_SHA = 'ad6072eca40aa112833c3ed9beb968a266c2182fedd1e0d60bfa626ecadcc0f8'
 CODEX_MARKERS = ('CODEX_THREAD_ID','CODEX_SESSION_ID','CODEX_APP_TOOLS_PIPE_PATH')
 PROFILE_HOSTS = {'qwen','workbuddy'}
 ALLOWED_DIFFS = {'SKILL.md','scripts/reconstruction_router.py','scripts/canva_bridge.py','docs/host-tools.md'}
@@ -127,7 +127,7 @@ def make_view(profile,baseline=None):
     if profile=='full':return files
     if profile not in PROFILE_HOSTS:raise Blocked('INVALID_PROFILE')
     skill=files['SKILL.md'].decode('utf-8')
-    old=('After all Text-Clean pages are current, wait at AWAITING_RECONSTRUCTION_BACKEND_SELECTION and explicitly offer A. Magic Layer 分支（推荐） / B. Image Layer 分支. 推荐使用 Magic Layer 分支。 Record the user\'s choice; no automatic selection or fallback. Magic = 05 + 06 + 07; Image = 08 + 07. Shared preparation before choice uses 07 only.')
+    old=('After all Text-Clean pages are current, wait at AWAITING_RECONSTRUCTION_BACKEND_SELECTION and explicitly offer A. Magic Layer 分支 / B. Image Layer 分支. Record the user\'s choice; no automatic selection or fallback. Magic = 05 + 06 + 07; Image = 08 + 07. Shared preparation before choice uses 07 only.')
     new=('Installed host profile: '+profile+'. After all Text-Clean pages are current, wait at AWAITING_RECONSTRUCTION_BACKEND_SELECTION and ask the user to confirm Image Layer 分支. This installed view supports Image Layer only; record the actual confirmation, with no automatic selection, fallback or gate waiver. Image = 08 + 07. Shared preparation before confirmation uses 07 only.')
     skill=replace_once(skill,old,new)
     skill=replace_once(skill,'The sole docs runtime exception is `docs/codex-canva-bridge.md`, for Codex wiring and assembly only.',
@@ -135,9 +135,9 @@ def make_view(profile,baseline=None):
     skill+='\n## Installed host tool wiring\n\nRead `docs/host-tools.md` for the current '+profile+' tool entry. Keep Style DNA, every visual approval, Native Text Visual Fit and all four Hard Gates. No model capability exemption. Use the original shared init/start-run/text-preparation commands; after text preparation use reconstruction_router.py status and confirm Image Layer. Installed host binding is fixed; do not infer another host from references, reports or files.\n'
     files['SKILL.md']=skill.encode('utf-8')
     router=files['scripts/reconstruction_router.py'].decode('utf-8')
-    router=replace_once(router,'VALID_BACKENDS = {MAGIC_LAYER, IMAGE_LAYER}','VALID_BACKENDS = {IMAGE_LAYER}')
+    router=replace_once(router,'VALID_BACKENDS = {MAGIC_LAYER, IMAGE_LAYER, EDITABLE_PATH}','VALID_BACKENDS = {IMAGE_LAYER}')
     router=replace_function(router,'selection_prompt', '''def selection_prompt():
-    return '当前安装视图仅支持 Image Layer 分支。请确认使用 Image Layer；原视觉验收及四项 Hard Gates 完整保留。'
+    return '当前安装视图仅支持 Image Layer 分支。通过图像分层服务将消字页面拆为背景和独立前景图片，再恢复原生文字；图形内部仍是图片。需要配置服务，提交前核实权益、余额与价格并确认费用授权。请确认使用 Image Layer；原视觉验收及四项 Hard Gates 完整保留。'
 ''')
     guard='''def _installed_image_only_guard(state):
     selection=state.get('reconstruction_backend')

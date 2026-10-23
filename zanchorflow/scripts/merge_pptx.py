@@ -9,6 +9,8 @@ import json
 import os
 import posixpath
 import tempfile
+import shutil
+from contextlib import contextmanager
 import zipfile
 from pathlib import Path
 from urllib.parse import unquote
@@ -169,14 +171,42 @@ def _create_office_app(office_host, diagnostics):
             return app
 
 
+
+@contextmanager
+def _merge_workspace(parent,diagnostics):
+    """Cleanup must never replace the primary merge/COM failure."""
+    parent=Path(parent).resolve()
+    folder=Path(tempfile.mkdtemp(prefix='merge-',dir=parent)).resolve()
+    cleanup={'status':'PENDING'}
+    diagnostics['workspace_cleanup']=cleanup
+    try:
+        yield folder
+    finally:
+        try:
+            if folder.parent!=parent or not folder.name.startswith('merge-') or folder.is_symlink():
+                raise ValueError('unexpected merge workspace; retained for inspection')
+            shutil.rmtree(folder)
+            cleanup['status']='REMOVED'
+        except (OSError,ValueError) as exc:
+            cleanup.update(status='RETAINED',path=str(folder),error=str(exc))
+
+
+def _native_error(exc,stage):
+    value={'stage':stage,'type':type(exc).__name__,'message':str(exc)}
+    if getattr(exc,'hresult',None) is not None:value['hresult']=exc.hresult
+    if getattr(exc,'excepinfo',None) is not None:value['excepinfo']=list(exc.excepinfo)
+    return value
+
 def _native_merge(inputs, order, target, *, office_host='auto', diagnostics=None):
     import win32com.client
     diagnostics = {} if diagnostics is None else diagnostics
+    diagnostics['stage']='create_application'
     app = _create_office_app(office_host, diagnostics)
     selected = diagnostics['office_host']
     prs = None
     failure = None
     try:
+        diagnostics['stage']='initialize_presentation'
         app.Visible = True
         prs = app.Presentations.Add(-1)
         from pptx import Presentation
@@ -185,25 +215,33 @@ def _native_merge(inputs, order, target, *, office_host='auto', diagnostics=None
         prs.PageSetup.SlideHeight = source.slide_height / 12700
         by_id = {x['slide_id']: x for x in inputs}
         for slide_id in order:
+            diagnostics['stage']='import_slide'
             inserted = prs.Slides.InsertFromFile(str(Path(by_id[slide_id]['path']).resolve()), prs.Slides.Count)
             if inserted != 1:
                 raise RuntimeError(f'native import produced {inserted} slides for {slide_id}')
+            diagnostics['stage']='load_design'
             design = prs.Designs.Load(str(Path(by_id[slide_id]['path']).resolve()))
             prs.Slides(prs.Slides.Count).Design = design
+        diagnostics['stage']='save_candidate'
         prs.SaveAs(str(target), 24)
+        diagnostics['stage']='close_saved_candidate'
         prs.Close(); prs = None
         if selected == 'wps':
             app = None
             app = win32com.client.DispatchEx(OFFICE_PROGIDS[selected])
+        diagnostics['stage']='reopen_candidate'
         prs = app.Presentations.Open(str(target), 0, 0, 0)
         actual = prs.Slides.Count
+        diagnostics['stage']='save_reopened_candidate'
         prs.Save()
+        diagnostics['stage']='close_reopened_candidate'
         prs.Close()
         prs = None
         if actual != len(order):
             raise RuntimeError(f'{selected} reopened {actual} slides; expected {len(order)}')
     except BaseException as exc:
         failure = exc
+        diagnostics['primary_error']=_native_error(exc,diagnostics.get('stage'))
         raise
     finally:
         cleanup = []
@@ -240,9 +278,9 @@ def merge(inputs, deck_order, output, runtime_state_path=None, *, office_host='a
     size = (Presentation(ordered[0]['path']).slide_width, Presentation(ordered[0]['path']).slide_height)
     output = Path(output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
+    native = {}
+    with _merge_workspace(output.parent,native) as tmp:
         candidate = Path(tmp)/'merged.pptx'
-        native = {}
         try:
             _native_merge(inputs, deck_order, candidate, office_host=office_host, diagnostics=native)
             actual_prs = Presentation(candidate)
@@ -264,6 +302,7 @@ def merge(inputs, deck_order, output, runtime_state_path=None, *, office_host='a
             seal_merged_deck(runtime_state_path, deck_order, ordered, output)
             return {'status':'PASS', 'path':str(output), 'deck_order':deck_order, 'slides':len(deck_order), 'ooxml_relationships':'PASS', 'native_reopen':'PASS', **native}
         except Exception as exc:
+            native.setdefault('primary_error',_native_error(exc,native.get('stage','integrity_or_seal')))
             return {'status':'FAIL', 'code':'DECK_MERGE_INTEGRITY_FAILED', 'details':[str(exc)], **native}
 
 

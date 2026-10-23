@@ -88,7 +88,7 @@ Magic Layers 案例制作于 2026-10-01，Image Layer 竖向案例制作于 2026
 
 ## 工作流程
 
-材料 → 内容架构与大纲确认 → 多种 Anchor 样页 → 选定风格与逐页生成 → 文字计划和消字 → 重建路线选择 → 原生文字恢复 → 单页验收、合并和整套交付。
+材料 → 内容架构与大纲确认 → 多种 Anchor 样页 → 选定风格与逐页生成 → Truth 对账与重建路线选择 → 按路径消字或直接重建 → 原生文字恢复 → 单页验收、合并和整套交付。
 
 - 内容：明确页面任务、核心表达、关键信息与语义关系。
 - 视觉：由选定 Anchor 延续 Style DNA；已验收页面保持锁定。
@@ -107,7 +107,7 @@ Python 基础依赖：
 ~~~powershell
 python -m pip install -r zanchorflow/requirements-base.txt
 ~~~
-Image Layer 另使用 requirements-image.txt。原生整套合并需要 Windows 桌面 PowerPoint 或通过能力预检的 WPS 演示，以及 requirements-office.txt；默认优先 PowerPoint，WPS 为备用。执行 agent 仅在当前步骤实际缺少 Python 或必要依赖时说明准备工作，不固定开场提醒。已验证的版本组合、预检命令和独立试用方法见安装说明；不安装也可让 Codex 读取解压目录的 SKILL.md 开始测试。
+Image Layer 另使用 requirements-image.txt；Editable Path 使用 requirements-editable.txt，完整 LaTeX 公式渲染按需提供外部引擎。原生整套合并需要 Windows 桌面 PowerPoint 或通过能力预检的 WPS 演示，以及 requirements-office.txt；默认优先 PowerPoint，WPS 为备用。执行 agent 仅在当前步骤实际缺少 Python 或必要依赖时说明准备工作，不固定开场提醒。已验证的版本组合、预检命令和独立试用方法见安装说明；不安装也可让 Codex 读取解压目录的 SKILL.md 开始测试。
 
 ## 第一次使用
 
@@ -117,19 +117,33 @@ Image Layer 另使用 requirements-image.txt。原生整套合并需要 Windows 
 
 Codex 会按当前步骤读取规范，并在大纲、样页选择、页面正式展示和重建路线等现有确认点与你协作。
 
-## 两条重建路线
+## 三条重建路线
 
-**Magic Layer 分支（推荐）**：使用 Canva 实际可用的 Magic Layers，取得并验证 PPTX，再恢复原生文字。支持已批准的受控等比例画布映射与下载恢复。
+三条路径由用户自行选择，不预设推荐。Full Codex 新任务在完整页面视觉批准与 Truth 对账后、第一次消字前选择；已有任务保留原来的选路时机。Qwen/WorkBuddy 的 Image-only 安装视图仅提供 Image Layer。
 
-**Image Layer 分支**：在消字后的页面上形成 Layer Plan，通过图像分层模型返回独立图片资产，再按批准画布重建、恢复原生文字。按实际选框保留编辑分组，940/941 等小幅源尺寸差异通过通用的每轴 5 源像素规则处理。
+**Magic Layer**：通过 Canva Magic Layers 拆解消字后的页面，取得并验证 PPTX，再恢复原生文字；图形编辑单位以实际返回并验收的对象为准。支持已批准的受控等比例画布映射与下载恢复。
 
-Image Layer 真实提交前需配置 ZANCHORFLOW_360_API_KEY，核实当前账户权益、余额与价格并确认费用授权。密钥只放执行进程环境，不能进入文件或日志。
+Canva 免费用户额度有限，每月一般不超过 20 页，具体以账户实际额度为准。
+
+**Image Layer**：通过图像分层服务将消字后的页面拆为背景和独立前景图片，再恢复原生文字；图形可独立移动、缩放和替换，内部仍是图片。按实际选框保留编辑分组，源尺寸差异仍按既有画布规则处理。
+
+需要配置分层服务，提交前核实权益、余额与价格并确认费用授权。配置 `ZANCHORFLOW_360_API_KEY`；密钥只放执行进程环境，不能进入文件或日志。
+
+**Editable Path**：直接依据批准的完整页面和 Truth 重建原生文字、表格及可表达的结构；复杂图形优先复用素材，必要时用图像编辑分离为独立图片。跳过消字，不要求全元素矢量化。无需强制使用 OCR 上传平台，保留公式来源和对象级来源证据。
+
+无需额外购买分层服务；必要的图像编辑使用当前宿主的生图能力，受现有套餐额度及计费规则约束。
 
 ## 续作与更新
 
 让 Codex 读取当前 SKILL.md 和独立项目状态，使用 status 定位下一步；保留原身份、锁、预算和文件，复用已完成结果。
 
 包名和调用名始终为 zanchorflow。新旧通过 manifest 的 updated_at_utc 和 ZIP SHA-256 区分。原有协议文件名、格式版本和来源兼容字段保留，不新增发布版本号。
+
+## Editable Path 的素材与恢复
+
+复杂前景优先复用合格素材；确需图像编辑分离时，可按页面顺序组成稀疏素材板，每板最多来自 3 个已批准页面。以有效分辨率、完整边界和处理兼容性决定容量，不为填满画布强行缩小对象。返回后逐对象验收；合格结果保留，失败对象可重新组板，每个对象仍只有首次与一次定向修正的额度。
+
+已预留调用的迟到结果可通过受限补录归档，重复回执按 token 和内容指纹识别；补录事实不代表资产已验收。使用前仍检查当前审批、Truth、来源与证据。新格式残留锁仅在可靠确认同机原持有进程已退出时恢复，活锁与不明锁保持阻断。详见[Editable Path 协议](zanchorflow/references/09_Editable_Path重建协议_v1.0.md)和[桥接说明](zanchorflow/docs/codex-canva-bridge.md)。
 
 ## 开发与测试
 
@@ -139,7 +153,7 @@ Image Layer 真实提交前需配置 ZANCHORFLOW_360_API_KEY，核实当前账�
 
 ## English
 
-ZAnchorFlow is a Codex skill for turning source material into a coherent, editable PowerPoint deck. It connects content planning, approved visual anchors, page generation, text restoration and two reconstruction routes: Canva Magic Layers and Image Layer assets.
+ZAnchorFlow is a Codex skill for turning source material into a coherent, editable PowerPoint deck. It connects content planning, approved visual anchors, page generation, text restoration and three reconstruction routes: Canva Magic Layers, Image Layer assets, and Editable Path. Users choose a route after its mechanism, editing units and cost limits are explained; no route is recommended.
 
 Download the fixed-name installation ZIP, check its SHA-256, and follow the installation guide. The source repository includes development tests; the slim ZIP retains the complete runtime. Updates are identified by an internal UTC timestamp and archive hash.
 
